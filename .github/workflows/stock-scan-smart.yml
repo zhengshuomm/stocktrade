@@ -107,6 +107,7 @@ jobs:
     - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
+        cd program
         python scan_stock_30min.py --max-stocks 10 --delay 0.5
         echo "扫描完成"
         
