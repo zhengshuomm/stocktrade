@@ -1,0 +1,55 @@
+name: 时区助手 - 检查当前时间
+
+on:
+  schedule:
+    # 每小时检查一次当前时间
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-timezone:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检查当前时区信息
+      run: |
+        echo "=== 时区信息 ==="
+        echo "当前 UTC 时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        echo "当前本地时间: $(date '+%Y-%m-%d %H:%M:%S %Z')"
+        echo "时区偏移: $(date '+%z')"
+        
+        echo ""
+        echo "=== 美国西部时间 ==="
+        echo "PST (冬季): $(TZ='America/Los_Angeles' date '+%Y-%m-%d %H:%M:%S %Z')"
+        echo "PDT (夏季): $(TZ='America/Los_Angeles' date '+%Y-%m-%d %H:%M:%S %Z')"
+        
+        echo ""
+        echo "=== 夏令时状态 ==="
+        python3 -c "
+        import datetime
+        import pytz
+        
+        # 获取美国西部时区
+        pacific = pytz.timezone('America/Los_Angeles')
+        now_pacific = datetime.datetime.now(pacific)
+        
+        print(f'美国西部当前时间: {now_pacific.strftime(\"%Y-%m-%d %H:%M:%S %Z\")}')
+        print(f'是否为夏令时: {now_pacific.dst() != datetime.timedelta(0)}')
+        print(f'UTC 偏移: {now_pacific.utcoffset()}')
+        
+        # 计算下次夏令时变化
+        year = now_pacific.year
+        # 3月第二个周日
+        march_second_sunday = pacific.localize(datetime.datetime(year, 3, 8))
+        while march_second_sunday.weekday() != 6:  # 找到周日
+            march_second_sunday += datetime.timedelta(days=1)
+        march_second_sunday += datetime.timedelta(days=7)  # 第二个周日
+        
+        # 11月第一个周日
+        november_first_sunday = pacific.localize(datetime.datetime(year, 11, 1))
+        while november_first_sunday.weekday() != 6:  # 找到周日
+            november_first_sunday += datetime.timedelta(days=1)
+        
+        print(f'下次夏令时开始: {march_second_sunday.strftime(\"%Y-%m-%d %H:%M:%S %Z\")}')
+        print(f'下次夏令时结束: {november_first_sunday.strftime(\"%Y-%m-%d %H:%M:%S %Z\")}')
+        "
