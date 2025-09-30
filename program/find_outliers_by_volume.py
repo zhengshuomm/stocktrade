@@ -375,8 +375,24 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
     """保存成交量异常结果"""
     ensure_dir(out_dir)
     ts = datetime.now().strftime("%Y%m%d-%H%M")
+    
+    # 定义列顺序：前面几个重要列
+    priority_columns = [
+        "contractSymbol", "strike", "signal_type", "stock_price_change_pct", 
+        "option_type", "volume_change_abs", "amount_threshold", "amount_to_market_cap_pct", 
+        "openInterest_new", "amount_tier", "expiry_date"
+    ]
+    
+    # 重新排列列顺序
+    available_priority_cols = [col for col in priority_columns if col in df.columns]
+    other_cols = [col for col in df.columns if col not in priority_columns]
+    reordered_columns = available_priority_cols + other_cols
+    
+    # 重新排列DataFrame
+    df_reordered = df[reordered_columns]
+    
     out_path = os.path.join(out_dir, f"volume_outlier_{ts}.csv")
-    df.to_csv(out_path, index=False, encoding="utf-8-sig")
+    df_reordered.to_csv(out_path, index=False, encoding="utf-8-sig")
     
     # 另存为Excel并按金额分档着色
     try:
@@ -389,15 +405,15 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
         }
 
         with pd.ExcelWriter(xlsx_path, engine="xlsxwriter") as writer:
-            df.to_excel(writer, index=False, sheet_name="volume_outliers")
+            df_reordered.to_excel(writer, index=False, sheet_name="volume_outliers")
             workbook = writer.book
             worksheet = writer.sheets["volume_outliers"]
 
             # 找到 amount_tier 列索引
-            header = list(df.columns)
+            header = list(df_reordered.columns)
             tier_col_idx = header.index("amount_tier") if "amount_tier" in header else None
             if tier_col_idx is not None:
-                n_rows = len(df)
+                n_rows = len(df_reordered)
                 n_cols = len(header)
                 excel_range = 1, 0, n_rows, n_cols - 1
 
