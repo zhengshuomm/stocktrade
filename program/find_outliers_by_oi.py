@@ -455,6 +455,97 @@ class DiscordSender:
         self.channel_id = 1422402343135088663
         self.message_title = "OI异常"
         
+    def _colorize_signal_type(self, signal_type):
+        """为信号类型添加颜色"""
+        if "看涨" in signal_type:
+            return f"🔴 {signal_type}"
+        elif "看跌" in signal_type:
+            return f"🟢 {signal_type}"
+        else:
+            return signal_type
+    
+    def format_outlier_message(self, row):
+        """格式化异常数据消息为Discord嵌入消息"""
+        symbol = row.get('symbol', 'N/A')
+        contract_symbol = row.get('contractSymbol', 'N/A')
+        strike = row.get('strike', 'N/A')
+        expiry_date = row.get('expiry_date', 'N/A')
+        signal_type = row.get('signal_type', 'N/A')
+        amount_threshold = row.get('amount_threshold', 0)
+        stock_change_pct = row.get('stock_price_change_pct', 0)
+        option_change_pct = row.get('option_price_change_pct', 0)
+        oi_change_abs = row.get('oi_change_abs', 0)
+        open_interest_new = row.get('openInterest_new', row.get('openInterest', 0))
+        open_interest_old = row.get('openInterest_old', 0)
+        last_price_new = row.get('lastPrice_new', row.get('lastPrice', 0))
+        last_price_old = row.get('lastPrice_old', 0)
+        amount_tier = row.get('amount_tier', 'N/A')
+        yahoo_url = f"https://finance.yahoo.com/quote/{contract_symbol}"
+        
+        # 根据金额档位设置前缀和颜色
+        if amount_tier == ">50M":
+            prefix = "!!!!! "
+            color_emoji = "🔴"
+        elif amount_tier == "10M-50M":
+            prefix = "! "
+            color_emoji = "🟠"
+        else:
+            prefix = ""
+            color_emoji = "⚪"
+        
+        # 创建Discord嵌入消息
+        embed = discord.Embed(
+            title=f"{color_emoji} {prefix}{self.message_title} --- {symbol}",
+            color=0xff0000 if amount_tier == ">50M" else (0xff8c00 if amount_tier == "10M-50M" else 0xffffff),
+            timestamp=datetime.now()
+        )
+        # 让标题可点击跳转
+        try:
+            embed.url = yahoo_url
+        except Exception:
+            pass
+        
+        # 处理信号类型颜色
+        colored_signal_type = self._colorize_signal_type(signal_type)
+        
+        # 添加字段
+        embed.add_field(
+            name="📊 合约信息",
+            value=f"**Symbol**: `{symbol}`\n**Strike**: ${strike}\n**Expiry**: {expiry_date}",
+            inline=True
+        )
+        
+        embed.add_field(
+            name="📈 变化数据",
+            value=f"**股票变化**: {stock_change_pct:.2f}%\n**期权变化**: {option_change_pct:.2f}%\n**OI变化**: {oi_change_abs:,.0f}\n**OI(new)**: {open_interest_new:,.0f}\n**OI(old)**: {open_interest_old:,.0f}",
+            inline=True
+        )
+
+        # 数值明细
+        embed.add_field(
+            name="🔢 数值",
+            value=f"**lastPrice(new)**: ${last_price_new}\n**lastPrice(old)**: ${last_price_old}",
+            inline=True
+        )
+        
+        embed.add_field(
+            name="🚨 异常信号",
+            value=f"**信号类型**: {colored_signal_type}\n**金额门槛**: ${amount_threshold:,.0f}\n**金额档位**: {amount_tier}",
+            inline=False
+        )
+
+        # 添加Yahoo链接
+        embed.add_field(
+            name="🔗 Yahoo",
+            value=yahoo_url,
+            inline=False
+        )
+        
+        # 设置footer
+        embed.set_footer(text=f"检测时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        
+        return embed
+        
     async def send_outliers(self, outliers_df):
         """发送异常数据到 Discord"""
         if outliers_df.empty:
@@ -477,11 +568,10 @@ class DiscordSender:
                     
                     print(f"开始发送汇总统计到 Discord...")
                     
-                    # 只发送按股票统计的汇总结果
+                    # 发送汇总统计
                     stats_message = f"🔍 **{self.message_title}检测结果**\n"
                     stats_message += f"📊 检测到 {len(outliers_df)} 个异常合约\n"
                     
-                    # 按股票统计
                     if "symbol" in outliers_df.columns and "signal_type" in outliers_df.columns:
                         st = outliers_df["signal_type"].astype(str)
                         outliers_df_copy = outliers_df.copy()
@@ -497,38 +587,79 @@ class DiscordSender:
                         grouped = grouped.sort_values(by=["total", "bullish_count"], ascending=[False, False])
                         
                         stats_message += "\n📈 **按股票统计:**\n"
-                        for _, row in grouped.iterrows():  # 显示所有股票统计
+                        for _, row in grouped.iterrows():
                             sym = row["symbol"]
                             bull = int(row["bullish_count"])
                             bear = int(row["bearish_count"])
                             tot = int(row["total"])
                             stats_message += f"• {sym}: 看涨 {bull} 个, 看跌 {bear} 个, 合计 {tot}\n"
                     
-                    # 在消息最后添加两个换行符
                     stats_message += "\n\n"
                     
                     await channel.send(stats_message)
-                    
                     print(f"✅ 成功发送汇总统计到 Discord")
+                    
+                    # 为每个股票symbol发送单个消息（只发送amount_threshold最大的记录）
+                    print(f"开始发送单个合约详情到 Discord...")
+                    
+                    # 按symbol分组，每组取amount_threshold最大的记录，并按统计值顺序排列
+                    if "symbol" in outliers_df.columns and "amount_threshold" in outliers_df.columns:
+                        # 先按symbol分组，每组取amount_threshold最大的记录
+                        max_records = outliers_df.loc[outliers_df.groupby("symbol")["amount_threshold"].idxmax()]
+                        
+                        # 按统计值的顺序重新排列（与grouped的顺序一致）
+                        # 使用原始outliers_df来计算统计值，确保顺序一致
+                        if "signal_type" in outliers_df.columns:
+                            st = outliers_df["signal_type"].astype(str)
+                            outliers_df_copy = outliers_df.copy()
+                            outliers_df_copy["is_bullish"] = st.str.contains("看涨", na=False)
+                            outliers_df_copy["is_bearish"] = st.str.contains("看跌", na=False)
+                            
+                            # 计算每个symbol的统计值（使用原始数据）
+                            symbol_stats = outliers_df_copy.groupby("symbol").agg(
+                                bullish_count=("is_bullish", "sum"),
+                                bearish_count=("is_bearish", "sum"),
+                                total=("symbol", "count")
+                            ).reset_index()
+                            
+                            # 按["total", "bullish_count"]降序排列
+                            symbol_stats = symbol_stats.sort_values(by=["total", "bullish_count"], ascending=[False, False])
+                            
+                            # 按统计值顺序重新排列max_records
+                            max_records = max_records.set_index("symbol").loc[symbol_stats["symbol"]].reset_index()
+                        
+                        success_count = 0
+                        for index, row in max_records.iterrows():
+                            try:
+                                embed = self.format_outlier_message(row)
+                                await channel.send(embed=embed)
+                                success_count += 1
+                                print(f"✅ 发送 {row['symbol']} 的最大金额记录成功")
+                                
+                                # 消息间延时
+                                if index < len(max_records) - 1:
+                                    await asyncio.sleep(1.0)
+                                    
+                            except Exception as e:
+                                print(f"❌ 发送 {row['symbol']} 记录失败: {e}")
+                        
+                        print(f"✅ 成功发送 {success_count}/{len(max_records)} 个股票的单个合约详情")
+                    
                 except Exception as e:
                     print(f"❌ 发送消息失败: {e}")
                 finally:
-                    # 确保连接被正确关闭
                     if client and not client.is_closed():
                         await client.close()
+                        await asyncio.sleep(0.1)
             
             await client.start(self.token)
             
         except Exception as e:
             print(f"❌ Discord发送失败: {e}")
         finally:
-            # 确保客户端被正确关闭
             if client and not client.is_closed():
                 await client.close()
-                # 添加小延迟确保连接完全关闭
                 await asyncio.sleep(0.1)
-            
-            # 清理 aiohttp 连接池
             import gc
             gc.collect()
 
