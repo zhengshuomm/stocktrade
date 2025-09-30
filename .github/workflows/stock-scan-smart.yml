@@ -60,12 +60,22 @@ jobs:
     - name: 准备历史数据
       run: |
         if [ -d "./data/option_data" ]; then
-          echo "找到历史期权数据，复制到当前目录"
-          cp -r ./data/option_data/* ./option_data/ 2>/dev/null || true
+          echo "找到历史期权数据，只复制时间戳最大的文件"
+          # 找到时间戳最大的期权数据文件
+          latest_option_file=$(ls -t ./data/option_data/all-*.csv 2>/dev/null | head -1)
+          if [ -n "$latest_option_file" ]; then
+            echo "复制最新的期权数据文件: $(basename "$latest_option_file")"
+            cp "$latest_option_file" ./option_data/ 2>/dev/null || true
+          fi
         fi
         if [ -d "./data/stock_price" ]; then
-          echo "找到历史股票价格数据，复制到当前目录"
-          cp -r ./data/stock_price/* ./stock_price/ 2>/dev/null || true
+          echo "找到历史股票价格数据，只复制时间戳最大的文件"
+          # 找到时间戳最大的股票价格数据文件
+          latest_stock_file=$(ls -t ./data/stock_price/all-*.csv 2>/dev/null | head -1)
+          if [ -n "$latest_stock_file" ]; then
+            echo "复制最新的股票价格数据文件: $(basename "$latest_stock_file")"
+            cp "$latest_stock_file" ./stock_price/ 2>/dev/null || true
+          fi
         fi
         if [ -d "./data/stock_symbol" ]; then
           echo "找到历史股票代码数据，复制到当前目录"
