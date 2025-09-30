@@ -62,35 +62,43 @@ jobs:
         # 创建 data 目录结构
         mkdir -p data/option_data data/stock_price data/stock_symbol data/outlier data/volume_outlier
         
-        if [ -d "./data/option_data" ] && [ "$(ls -A ./data/option_data 2>/dev/null)" ]; then
-          echo "找到历史期权数据，只复制时间戳最大的文件"
-          # 找到时间戳最大的期权数据文件
-          latest_option_file=$(ls -t ./data/option_data/all-*.csv 2>/dev/null | head -1)
-          if [ -n "$latest_option_file" ]; then
-            echo "复制最新的期权数据文件: $(basename "$latest_option_file")"
-            cp "$latest_option_file" ./data/option_data/ 2>/dev/null || true
+        # 检查是否成功下载了 Artifacts
+        if [ -d "./data" ] && [ "$(ls -A ./data 2>/dev/null)" ]; then
+          echo "✅ 成功下载历史数据 Artifacts"
+          
+          if [ -d "./data/option_data" ] && [ "$(ls -A ./data/option_data 2>/dev/null)" ]; then
+            echo "找到历史期权数据，只复制时间戳最大的文件"
+            # 找到时间戳最大的期权数据文件
+            latest_option_file=$(ls -t ./data/option_data/all-*.csv 2>/dev/null | head -1)
+            if [ -n "$latest_option_file" ]; then
+              echo "复制最新的期权数据文件: $(basename "$latest_option_file")"
+              cp "$latest_option_file" ./data/option_data/ 2>/dev/null || true
+            fi
           fi
-        fi
-        if [ -d "./data/stock_price" ] && [ "$(ls -A ./data/stock_price 2>/dev/null)" ]; then
-          echo "找到历史股票价格数据，只复制时间戳最大的文件"
-          # 找到时间戳最大的股票价格数据文件
-          latest_stock_file=$(ls -t ./data/stock_price/all-*.csv 2>/dev/null | head -1)
-          if [ -n "$latest_stock_file" ]; then
-            echo "复制最新的股票价格数据文件: $(basename "$latest_stock_file")"
-            cp "$latest_stock_file" ./data/stock_price/ 2>/dev/null || true
+          if [ -d "./data/stock_price" ] && [ "$(ls -A ./data/stock_price 2>/dev/null)" ]; then
+            echo "找到历史股票价格数据，只复制时间戳最大的文件"
+            # 找到时间戳最大的股票价格数据文件
+            latest_stock_file=$(ls -t ./data/stock_price/all-*.csv 2>/dev/null | head -1)
+            if [ -n "$latest_stock_file" ]; then
+              echo "复制最新的股票价格数据文件: $(basename "$latest_stock_file")"
+              cp "$latest_stock_file" ./data/stock_price/ 2>/dev/null || true
+            fi
           fi
-        fi
-        if [ -d "./data/stock_symbol" ] && [ "$(ls -A ./data/stock_symbol 2>/dev/null)" ]; then
-          echo "找到历史股票代码数据，复制到当前目录"
-          cp -r ./data/stock_symbol/* ./data/stock_symbol/ 2>/dev/null || true
-        fi
-        if [ -d "./data/outlier" ] && [ "$(ls -A ./data/outlier 2>/dev/null)" ]; then
-          echo "找到历史持仓量异常数据，复制到当前目录"
-          cp -r ./data/outlier/* ./data/outlier/ 2>/dev/null || true
-        fi
-        if [ -d "./data/volume_outlier" ] && [ "$(ls -A ./data/volume_outlier 2>/dev/null)" ]; then
-          echo "找到历史成交量异常数据，复制到当前目录"
-          cp -r ./data/volume_outlier/* ./data/volume_outlier/ 2>/dev/null || true
+          if [ -d "./data/stock_symbol" ] && [ "$(ls -A ./data/stock_symbol 2>/dev/null)" ]; then
+            echo "找到历史股票代码数据，复制到当前目录"
+            cp -r ./data/stock_symbol/* ./data/stock_symbol/ 2>/dev/null || true
+          fi
+          if [ -d "./data/outlier" ] && [ "$(ls -A ./data/outlier 2>/dev/null)" ]; then
+            echo "找到历史持仓量异常数据，复制到当前目录"
+            cp -r ./data/outlier/* ./data/outlier/ 2>/dev/null || true
+          fi
+          if [ -d "./data/volume_outlier" ] && [ "$(ls -A ./data/volume_outlier 2>/dev/null)" ]; then
+            echo "找到历史成交量异常数据，复制到当前目录"
+            cp -r ./data/volume_outlier/* ./data/volume_outlier/ 2>/dev/null || true
+          fi
+        else
+          echo "⚠️  未找到历史数据 Artifacts，这是第一次运行或 Artifacts 已过期"
+          echo "将使用现有的 stock_symbol 数据开始扫描"
         fi
         
         echo "当前期权数据文件："
