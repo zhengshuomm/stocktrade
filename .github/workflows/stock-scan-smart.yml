@@ -67,10 +67,16 @@ jobs:
           echo "找到历史股票价格数据，复制到当前目录"
           cp -r ./data/stock_price/* ./stock_price/ 2>/dev/null || true
         fi
+        if [ -d "./data/stock_symbol" ]; then
+          echo "找到历史股票代码数据，复制到当前目录"
+          cp -r ./data/stock_symbol/* ./stock_symbol/ 2>/dev/null || true
+        fi
         echo "当前期权数据文件："
         ls -la option_data/ || echo "期权数据目录为空"
         echo "当前股票价格数据文件："
         ls -la stock_price/ || echo "股票价格数据目录为空"
+        echo "当前股票代码数据文件："
+        ls -la stock_symbol/ || echo "股票代码数据目录为空"
         
     - name: 运行股票期权扫描
       run: |
@@ -99,6 +105,7 @@ jobs:
         path: |
           option_data/
           stock_price/
+          stock_symbol/
           outlier/
           volume_outlier/
         retention-days: 30
