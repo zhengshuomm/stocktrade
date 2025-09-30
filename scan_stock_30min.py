@@ -399,8 +399,8 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description='批量扫描股票期权数据程序')
     
-    parser.add_argument('--symbol-file', '-f', type=str, default='stock_symbol/symbol_market.csv',
-                       help='股票代码文件路径 (默认: stock_symbol/symbol_market.csv)')
+    parser.add_argument('--symbol-file', '-f', type=str, default='data/stock_symbol/symbol_market.csv',
+                       help='股票代码文件路径 (默认: data/stock_symbol/symbol_market.csv)')
     
     parser.add_argument('--max-deviation', '-m', type=float, default=0.3,
                        help='最大执行价格偏差比例 (默认: 0.3, 即30%%)')
