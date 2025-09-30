@@ -311,6 +311,17 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             oi_new_val = row.get("openInterest", None)
             if oi_new_val is not None:
                 outlier_row["openInterest_new"] = oi_new_val
+            
+            # 写入最新 lastPrice（如果存在于最新期权数据中）
+            last_price_new_val = row.get("lastPrice", None)
+            if last_price_new_val is not None:
+                outlier_row["lastPrice_new"] = last_price_new_val
+            
+            # 写入最新 volume（如果存在于最新期权数据中）
+            volume_new_val = row.get("volume", None)
+            if volume_new_val is not None:
+                outlier_row["volume_new"] = volume_new_val
+            
             outliers.append(outlier_row)
     
     # 添加统计信息
@@ -378,8 +389,8 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
     
     # 定义列顺序：前面几个重要列
     priority_columns = [
-        "contractSymbol", "strike", "signal_type", "stock_price_change_pct", 
-        "option_type", "volume_change_abs", "amount_threshold", "amount_to_market_cap_pct", 
+        "contractSymbol", "strike", "lastPrice_new", "signal_type", "stock_price_change_pct", 
+        "option_type", "volume_change_abs", "volume_new", "amount_threshold", "amount_to_market_cap_pct", 
         "openInterest_new", "amount_tier", "expiry_date"
     ]
     
