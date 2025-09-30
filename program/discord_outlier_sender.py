@@ -15,7 +15,7 @@ import argparse
 import re
 
 class DiscordOutlierSender:
-    def __init__(self, outlier_dir="outlier"):
+    def __init__(self, outlier_dir="data/outlier"):
         self.outlier_dir = outlier_dir
         self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
         self.channel_id = 1422402343135088663  # 常规文字频道
@@ -35,7 +35,7 @@ class DiscordOutlierSender:
         print(f"找到最新CSV文件: {latest_file}")
         return latest_file
 
-    def compute_timeframe_from_option_dir(self, option_dir: str = "option_data") -> str:
+    def compute_timeframe_from_option_dir(self, option_dir: str = "data/option_data") -> str:
         """从 option_data 中最新两个 all-*.csv 文件计算时间范围字符串"""
         try:
             files = glob.glob(os.path.join(option_dir, "all-*.csv"))
@@ -267,7 +267,7 @@ class DiscordClient(discord.Client):
             self.sender.message_title = "OI异常"
 
         # 计算时间范围（来自 option_data 最新两个 all-*.csv）
-        self.sender.timeframe = self.sender.compute_timeframe_from_option_dir("option_data")
+        self.sender.timeframe = self.sender.compute_timeframe_from_option_dir("data/option_data")
 
         try:
             df = pd.read_csv(csv_file)
@@ -324,8 +324,8 @@ class DiscordClient(discord.Client):
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Discord发送outlier CSV数据程序')
     
-    parser.add_argument('--outlier-dir', '-d', type=str, default='outlier',
-                       help='outlier目录路径 (默认: outlier)')
+    parser.add_argument('--outlier-dir', '-d', type=str, default='data/outlier',
+                       help='outlier目录路径 (默认: data/outlier)')
     
     parser.add_argument('--delay', '-t', type=float, default=2.0,
                        help='每条消息之间的延时秒数 (默认: 2.0)')

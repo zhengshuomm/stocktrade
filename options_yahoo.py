@@ -23,7 +23,7 @@ class BabaOptionsYahooAnalyzer:
         """
         self.symbol = symbol
         self.ticker = yf.Ticker(symbol)
-        self.output_dir = "option_data"
+        self.output_dir = "data/option_data"
         
         # 创建输出目录
         self._create_output_directory()

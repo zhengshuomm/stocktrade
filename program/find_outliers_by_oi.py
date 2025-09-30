@@ -71,10 +71,10 @@ import pandas as pd
 from datetime import datetime
 import re
 
-OPTION_DIR = "option_data"
-STOCK_PRICE_DIR = "stock_price"
-OUTLIER_DIR = "outlier"
-MARKET_CAP_FILE = "stock_symbol/symbol_market.csv"
+OPTION_DIR = "data/option_data"
+STOCK_PRICE_DIR = "data/stock_price"
+OUTLIER_DIR = "data/outlier"
+MARKET_CAP_FILE = "data/stock_symbol/symbol_market.csv"
 
 # 金额门槛全局变量
 THRESHOLD_5M = 5_000_000    # 500万

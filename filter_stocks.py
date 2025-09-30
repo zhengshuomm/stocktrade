@@ -95,8 +95,8 @@ def main():
     print("=" * 60)
     
     # 输入文件路径
-    input_file = "stock_symbol/nasdaq_screener_1759097351927.csv"
-    output_file = "stock_symbol/symbol.csv"
+    input_file = "data/stock_symbol/nasdaq_screener_1759097351927.csv"
+    output_file = "data/stock_symbol/symbol.csv"
     
     # 检查输入文件是否存在
     if not os.path.exists(input_file):

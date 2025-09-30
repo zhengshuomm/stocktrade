@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 
 class StockOptionsScanner:
-    def __init__(self, symbol_file="stock_symbol/symbol_market.csv"):
+    def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv"):
         """
         初始化扫描器
         
@@ -25,8 +25,8 @@ class StockOptionsScanner:
             symbol_file: 包含股票代码的CSV文件路径
         """
         self.symbol_file = symbol_file
-        self.output_dir = "option_data"
-        self.stock_price_dir = "stock_price"
+        self.output_dir = "data/option_data"
+        self.stock_price_dir = "data/stock_price"
         self.symbols = []
         self.results = []
         self.print_lock = Lock()  # 用于线程安全的打印

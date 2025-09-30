@@ -66,10 +66,10 @@ import pandas as pd
 from datetime import datetime
 import re
 
-OPTION_DIR = "option_data"
-STOCK_PRICE_DIR = "stock_price"
-VOLUME_OUTLIER_DIR = "volume_outlier"
-MARKET_CAP_FILE = "stock_symbol/symbol_market.csv"
+OPTION_DIR = "data/option_data"
+STOCK_PRICE_DIR = "data/stock_price"
+VOLUME_OUTLIER_DIR = "data/volume_outlier"
+MARKET_CAP_FILE = "data/stock_symbol/symbol_market.csv"
 
 # 成交量异常检测参数
 MIN_VOLUME = 3000  # 最新成交量必须大于3000
