@@ -50,6 +50,28 @@ jobs:
         print(f'当前日期: {now.day}')
         "
         
+    - name: 下载历史数据文件
+      uses: actions/download-artifact@v4
+      with:
+        name: stock-data
+        path: ./data
+      continue-on-error: true
+      
+    - name: 准备历史数据
+      run: |
+        if [ -d "./data/option_data" ]; then
+          echo "找到历史期权数据，复制到当前目录"
+          cp -r ./data/option_data/* ./option_data/ 2>/dev/null || true
+        fi
+        if [ -d "./data/stock_price" ]; then
+          echo "找到历史股票价格数据，复制到当前目录"
+          cp -r ./data/stock_price/* ./stock_price/ 2>/dev/null || true
+        fi
+        echo "当前期权数据文件："
+        ls -la option_data/ || echo "期权数据目录为空"
+        echo "当前股票价格数据文件："
+        ls -la stock_price/ || echo "股票价格数据目录为空"
+        
     - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
@@ -69,6 +91,17 @@ jobs:
         cd program
         python find_outliers_by_volume.py
         echo "成交量异常检测完成"
+        
+    - name: 上传数据文件到 Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: stock-data
+        path: |
+          option_data/
+          stock_price/
+          outlier/
+          volume_outlier/
+        retention-days: 30
         
     - name: 提交所有数据文件
       run: |
