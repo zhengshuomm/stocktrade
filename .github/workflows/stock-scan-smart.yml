@@ -1,4 +1,4 @@
-name: 股票期权数据扫描 (智能时区)
+name: 完整股票分析流程 (扫描+异常检测)
 
 on:
   schedule:
@@ -53,17 +53,31 @@ jobs:
     - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
-        python scan_stock_30min.py --max-stocks 50 --delay 0.5
+        python scan_stock_30min.py --max-stocks 10 --delay 0.5
         echo "扫描完成"
         
-    - name: 提交数据文件
+    - name: 运行持仓量异常检测
+      run: |
+        echo "开始持仓量异常检测..."
+        cd program
+        python find_outliers_by_oi.py
+        echo "持仓量异常检测完成"
+        
+    - name: 运行成交量异常检测
+      run: |
+        echo "开始成交量异常检测..."
+        cd program
+        python find_outliers_by_volume.py
+        echo "成交量异常检测完成"
+        
+    - name: 提交所有数据文件
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add option_data/ stock_price/
+        git add option_data/ stock_price/ outlier/ volume_outlier/
         if git diff --staged --quiet; then
           echo "没有新的数据文件需要提交"
         else
-          git commit -m "Auto-update: 股票期权数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
+          git commit -m "Auto-update: 完整股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
           git push
         fi
