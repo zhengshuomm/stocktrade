@@ -70,6 +70,8 @@ import glob
 import pandas as pd
 from datetime import datetime
 import re
+import asyncio
+import discord
 
 OPTION_DIR = "data/option_data"
 STOCK_PRICE_DIR = "data/stock_price"
@@ -258,6 +260,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
     # 判断异常情况
     outliers = []
     
+    more_than_5m = 0
     for _, row in merged.iterrows():
         symbol = row["symbol"]
         option_type = row["option_type"]
@@ -288,6 +291,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
         if amount_threshold <= THRESHOLD_5M:
             continue  # 跳过不满足金额门槛的合约
         
+        more_than_5m += 1
         # 判断是否满足异常条件
         is_outlier = False
         signal_type = ""
@@ -349,20 +353,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
     tier_10m = merged[merged["amount_threshold"] > THRESHOLD_10M]
     tier_50m = merged[merged["amount_threshold"] > THRESHOLD_50M]
     
-    print(f"金额门槛超过500万的合约: {len(tier_5m)}")
-    if not tier_5m.empty:
-        print("  合约代码:", ", ".join(tier_5m["contractSymbol"].tolist()))
-    
-    print(f"金额门槛超过1000万的合约: {len(tier_10m)}")
-    if not tier_10m.empty:
-        print("  合约代码:", ", ".join(tier_10m["contractSymbol"].tolist()))
-    
-    print(f"金额门槛超过5000万的合约: {len(tier_50m)}")
-    if not tier_50m.empty:
-        print("  合约代码:", ", ".join(tier_50m["contractSymbol"].tolist()))
-    
-    print(f"检测到的异常合约: {len(outliers)}")
-    
+    print(f"\n处理完成，一共处理了 {more_than_5m} 行数据，金额门槛超过500万的合约\n")
     if not outliers:
         return pd.DataFrame()
     
@@ -395,8 +386,22 @@ def ensure_dir(path: str):
 def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
     ensure_dir(out_dir)
     ts = datetime.now().strftime("%Y%m%d-%H%M")
+    
+    # 定义列顺序：前面几个重要列
+    priority_columns = [
+        "contractSymbol", "strike", "oi_change", "signal_type", "stock_price_change_pct",
+        "option_type", "openInterest_new", "openInterest_old", "amount_threshold", 
+        "amount_to_market_cap", "amount_tier", "expiry_date"
+    ]
+    
+    # 重新排列列顺序
+    available_priority_cols = [col for col in priority_columns if col in df.columns]
+    other_cols = [col for col in df.columns if col not in priority_columns]
+    reordered_columns = available_priority_cols + other_cols
+    df_reordered = df[reordered_columns]
+    
     out_path = os.path.join(out_dir, f"{ts}.csv")
-    df.to_csv(out_path, index=False, encoding="utf-8-sig")
+    df_reordered.to_csv(out_path, index=False, encoding="utf-8-sig")
 
     # 另存为Excel并按金额分档着色
     try:
@@ -411,16 +416,16 @@ def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
         }
 
         with pd.ExcelWriter(xlsx_path, engine="xlsxwriter") as writer:
-            df.to_excel(writer, index=False, sheet_name="outliers")
+            df_reordered.to_excel(writer, index=False, sheet_name="outliers")
             workbook  = writer.book
             worksheet = writer.sheets["outliers"]
 
             # 找到 amount_tier 列索引
-            header = list(df.columns)
+            header = list(df_reordered.columns)
             tier_col_idx = header.index("amount_tier") if "amount_tier" in header else None
             if tier_col_idx is not None:
                 # 从第二行开始（第一行是表头），对整行应用条件格式
-                n_rows = len(df)
+                n_rows = len(df_reordered)
                 n_cols = len(header)
                 excel_range = 1, 0, n_rows, n_cols - 1  # (first_row, first_col, last_row, last_col)
 
@@ -442,6 +447,92 @@ def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
     return out_path
 
 
+class DiscordSender:
+    """Discord 发送器类"""
+    def __init__(self):
+        # 从 discord_outlier_sender.py 中获取的配置
+        self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
+        self.channel_id = 1422402343135088663
+        self.message_title = "OI异常"
+        
+    async def send_outliers(self, outliers_df):
+        """发送异常数据到 Discord"""
+        if outliers_df.empty:
+            print("没有异常数据需要发送到 Discord")
+            return
+            
+        client = None
+        try:
+            client = discord.Client(intents=discord.Intents.default())
+            
+            @client.event
+            async def on_ready():
+                try:
+                    print(f'Discord Bot登录成功: {client.user}')
+                    channel = client.get_channel(self.channel_id)
+                    
+                    if not channel:
+                        print("❌ Discord频道未找到!")
+                        return
+                    
+                    print(f"开始发送汇总统计到 Discord...")
+                    
+                    # 只发送按股票统计的汇总结果
+                    stats_message = f"🔍 **{self.message_title}检测结果**\n"
+                    stats_message += f"📊 检测到 {len(outliers_df)} 个异常合约\n"
+                    
+                    # 按股票统计
+                    if "symbol" in outliers_df.columns and "signal_type" in outliers_df.columns:
+                        st = outliers_df["signal_type"].astype(str)
+                        outliers_df_copy = outliers_df.copy()
+                        outliers_df_copy["is_bullish"] = st.str.contains("看涨", na=False)
+                        outliers_df_copy["is_bearish"] = st.str.contains("看跌", na=False)
+                        
+                        grouped = outliers_df_copy.groupby("symbol").agg(
+                            bullish_count=("is_bullish", "sum"),
+                            bearish_count=("is_bearish", "sum"),
+                            total=("symbol", "count")
+                        ).reset_index()
+                        
+                        grouped = grouped.sort_values(by=["total", "bullish_count"], ascending=[False, False])
+                        
+                        stats_message += "\n📈 **按股票统计:**\n"
+                        for _, row in grouped.iterrows():  # 显示所有股票统计
+                            sym = row["symbol"]
+                            bull = int(row["bullish_count"])
+                            bear = int(row["bearish_count"])
+                            tot = int(row["total"])
+                            stats_message += f"• {sym}: 看涨 {bull} 个, 看跌 {bear} 个, 合计 {tot}\n"
+                    
+                    # 在消息最后添加两个换行符
+                    stats_message += "\n\n"
+                    
+                    await channel.send(stats_message)
+                    
+                    print(f"✅ 成功发送汇总统计到 Discord")
+                except Exception as e:
+                    print(f"❌ 发送消息失败: {e}")
+                finally:
+                    # 确保连接被正确关闭
+                    if client and not client.is_closed():
+                        await client.close()
+            
+            await client.start(self.token)
+            
+        except Exception as e:
+            print(f"❌ Discord发送失败: {e}")
+        finally:
+            # 确保客户端被正确关闭
+            if client and not client.is_closed():
+                await client.close()
+                # 添加小延迟确保连接完全关闭
+                await asyncio.sleep(0.1)
+            
+            # 清理 aiohttp 连接池
+            import gc
+            gc.collect()
+
+
 def main():
     import argparse
     
@@ -449,6 +540,8 @@ def main():
     parser = argparse.ArgumentParser(description='持仓量异常检测程序')
     parser.add_argument('--files', '-f', type=str, nargs=2, metavar=('LATEST', 'PREVIOUS'),
                        help='指定要对比的期权文件名，例如: --files all-20250930-0923.csv all-20250930-1150.csv')
+    parser.add_argument('--discord', '-d', action='store_true',
+                       help='发送结果到 Discord (默认: 不发送)')
     
     args = parser.parse_args()
     
@@ -483,6 +576,15 @@ def main():
         out_path = save_outliers(out_df, OUTLIER_DIR)
         print(f"已保存异常结果: {out_path}")
         print(f"异常条数: {len(out_df)}")
+        
+        # 发送到 Discord (如果启用)
+        if args.discord:
+            print("\n开始发送到 Discord...")
+            try:
+                discord_sender = DiscordSender()
+                asyncio.run(discord_sender.send_outliers(out_df))
+            except Exception as e:
+                print(f"❌ Discord发送失败: {e}")
         
         # 显示异常类型统计
         if "signal_type" in out_df.columns:
