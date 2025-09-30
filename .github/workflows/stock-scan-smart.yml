@@ -116,7 +116,7 @@ jobs:
       run: |
         echo "开始扫描股票期权数据..."
         cd program
-        python scan_stock_30min.py --max-stocks 10 --delay 0.5
+        python scan_stock_30min.py --max-stocks 10 --delay 0.5 --symbol-file ../data/stock_symbol/symbol_market.csv
         echo "扫描完成"
         
     - name: 运行持仓量异常检测
