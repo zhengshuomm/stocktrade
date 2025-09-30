@@ -94,18 +94,31 @@ def parse_ts_from_filename(path: str) -> datetime:
 def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_files: list = None):
     """查找最新的两份期权数据和对应的股票价格数据"""
     if specified_files and len(specified_files) >= 2:
-        # 使用指定的文件
-        latest_option = os.path.join(option_dir, specified_files[0])
-        previous_option = os.path.join(option_dir, specified_files[1])
+        # 使用指定的文件，但按时间顺序排列
+        file1 = os.path.join(option_dir, specified_files[0])
+        file2 = os.path.join(option_dir, specified_files[1])
         
-        if not os.path.exists(latest_option):
-            raise FileNotFoundError(f"指定的期权文件不存在: {latest_option}")
-        if not os.path.exists(previous_option):
-            raise FileNotFoundError(f"指定的期权文件不存在: {previous_option}")
+        if not os.path.exists(file1):
+            raise FileNotFoundError(f"指定的期权文件不存在: {file1}")
+        if not os.path.exists(file2):
+            raise FileNotFoundError(f"指定的期权文件不存在: {file2}")
         
-        # 提取时间戳
-        latest_ts = parse_ts_from_filename(latest_option)
-        previous_ts = parse_ts_from_filename(previous_option)
+        # 提取时间戳并按时间排序
+        ts1 = parse_ts_from_filename(file1)
+        ts2 = parse_ts_from_filename(file2)
+        
+        if ts1 > ts2:
+            # file1 时间更晚，作为最新文件
+            latest_option = file1
+            previous_option = file2
+            latest_ts = ts1
+            previous_ts = ts2
+        else:
+            # file2 时间更晚，作为最新文件
+            latest_option = file2
+            previous_option = file1
+            latest_ts = ts2
+            previous_ts = ts1
         
         # 查找对应的股票价格文件
         latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
@@ -482,8 +495,9 @@ def main():
     try:
         if args.files:
             print(f"使用指定的文件进行对比:")
-            print(f"  最新文件: {args.files[0]}")
-            print(f"  对比文件: {args.files[1]}")
+            print(f"  指定文件1: {args.files[0]}")
+            print(f"  指定文件2: {args.files[1]}")
+            print("  (将按时间顺序自动排列)")
         else:
             print("自动查找最新的两个文件进行对比")
         
