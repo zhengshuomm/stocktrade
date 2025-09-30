@@ -1,0 +1,51 @@
+name: 成交量异常检测
+
+on:
+  schedule:
+    # 美国西部时间 (PST/PDT) 周一到周五
+    # 7:00 AM PST = 15:00 UTC (冬季) / 14:00 UTC (夏季)
+    # 8:00 AM PST = 16:00 UTC (冬季) / 15:00 UTC (夏季)
+    # 9:00 AM PST = 17:00 UTC (冬季) / 16:00 UTC (夏季)
+    # 10:00 AM PST = 18:00 UTC (冬季) / 17:00 UTC (夏季)
+    # 11:00 AM PST = 19:00 UTC (冬季) / 18:00 UTC (夏季)
+    # 12:00 PM PST = 20:00 UTC (冬季) / 19:00 UTC (夏季)
+    # 2:00 PM PST = 22:00 UTC (冬季) / 21:00 UTC (夏季)
+    - cron: '0 15,16,17,18,19,20,22 * * 1-5'  # 使用冬季时间，夏季需要调整
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  detect-volume-outliers:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置 Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install yfinance pandas numpy xlsxwriter
+        
+    - name: 运行成交量异常检测
+      run: |
+        echo "开始成交量异常检测..."
+        cd program
+        python find_outliers_by_volume.py
+        echo "成交量异常检测完成"
+        
+    - name: 提交异常检测结果
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add volume_outlier/
+        if git diff --staged --quiet; then
+          echo "没有新的异常检测结果需要提交"
+        else
+          git commit -m "Auto-update: 成交量异常检测结果 $(date '+%Y-%m-%d %H:%M')"
+          git push
+        fi
