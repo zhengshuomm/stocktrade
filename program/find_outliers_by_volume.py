@@ -91,29 +91,53 @@ def parse_ts_from_filename(path: str) -> datetime:
     return datetime.strptime(ymd + hm, "%Y%m%d%H%M")
 
 
-def find_latest_two_all_csv(option_dir: str, stock_price_dir: str):
+def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_files: list = None):
     """查找最新的两份期权数据和对应的股票价格数据"""
-    option_pattern = os.path.join(option_dir, "all-*.csv")
-    option_files = glob.glob(option_pattern)
-    if not option_files or len(option_files) < 2:
-        raise FileNotFoundError("未找到至少两份期权数据文件用于对比")
-    
-    option_files_sorted = sorted(option_files, key=lambda p: parse_ts_from_filename(p), reverse=True)
-    latest_option = option_files_sorted[0]
-    previous_option = option_files_sorted[1]
-    
-    # 提取时间戳
-    latest_ts = parse_ts_from_filename(latest_option)
-    previous_ts = parse_ts_from_filename(previous_option)
-    
-    # 查找对应的股票价格文件
-    latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
-    previous_stock = os.path.join(stock_price_dir, f"all-{previous_ts.strftime('%Y%m%d-%H%M')}.csv")
-    
-    if not os.path.exists(latest_stock):
-        raise FileNotFoundError(f"未找到对应的股票价格文件: {latest_stock}")
-    if not os.path.exists(previous_stock):
-        raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
+    if specified_files and len(specified_files) >= 2:
+        # 使用指定的文件
+        latest_option = os.path.join(option_dir, specified_files[0])
+        previous_option = os.path.join(option_dir, specified_files[1])
+        
+        if not os.path.exists(latest_option):
+            raise FileNotFoundError(f"指定的期权文件不存在: {latest_option}")
+        if not os.path.exists(previous_option):
+            raise FileNotFoundError(f"指定的期权文件不存在: {previous_option}")
+        
+        # 提取时间戳
+        latest_ts = parse_ts_from_filename(latest_option)
+        previous_ts = parse_ts_from_filename(previous_option)
+        
+        # 查找对应的股票价格文件
+        latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
+        previous_stock = os.path.join(stock_price_dir, f"all-{previous_ts.strftime('%Y%m%d-%H%M')}.csv")
+        
+        if not os.path.exists(latest_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {latest_stock}")
+        if not os.path.exists(previous_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
+    else:
+        # 自动查找最新的文件
+        option_pattern = os.path.join(option_dir, "all-*.csv")
+        option_files = glob.glob(option_pattern)
+        if not option_files or len(option_files) < 2:
+            raise FileNotFoundError("未找到至少两份期权数据文件用于对比")
+        
+        option_files_sorted = sorted(option_files, key=lambda p: parse_ts_from_filename(p), reverse=True)
+        latest_option = option_files_sorted[0]
+        previous_option = option_files_sorted[1]
+        
+        # 提取时间戳
+        latest_ts = parse_ts_from_filename(latest_option)
+        previous_ts = parse_ts_from_filename(previous_option)
+        
+        # 查找对应的股票价格文件
+        latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
+        previous_stock = os.path.join(stock_price_dir, f"all-{previous_ts.strftime('%Y%m%d-%H%M')}.csv")
+        
+        if not os.path.exists(latest_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {latest_stock}")
+        if not os.path.exists(previous_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
     
     return latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts
 
@@ -446,8 +470,26 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
 
 def main():
     """主函数"""
+    import argparse
+    
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='成交量异常检测程序')
+    parser.add_argument('--files', '-f', type=str, nargs=2, metavar=('LATEST', 'PREVIOUS'),
+                       help='指定要对比的期权文件名，例如: --files all-20250930-0923.csv all-20250930-1150.csv')
+    
+    args = parser.parse_args()
+    
     try:
-        latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts = find_latest_two_all_csv(OPTION_DIR, STOCK_PRICE_DIR)
+        if args.files:
+            print(f"使用指定的文件进行对比:")
+            print(f"  最新文件: {args.files[0]}")
+            print(f"  对比文件: {args.files[1]}")
+        else:
+            print("自动查找最新的两个文件进行对比")
+        
+        latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts = find_latest_two_all_csv(
+            OPTION_DIR, STOCK_PRICE_DIR, args.files
+        )
         print(f"最新期权文件: {latest_option}")
         print(f"上一份期权文件: {previous_option}")
         print(f"最新股票价格文件: {latest_stock}")
