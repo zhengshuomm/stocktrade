@@ -26,7 +26,7 @@
    - amount_threshold > 200万 (金额门槛必须大于200万)
    
    跨日额外过滤条件 (当 volume_old = 0 时)：
-   - amount_threshold / market_cap > 0.001% (相对于市值的比例过滤)
+   - amount_threshold / market_cap > MIN_MARKET_CAP_RATIO (相对于市值的比例过滤)
 
 4. 异常信号判断：
    根据股票价格变化、期权价格变化和成交量变化的方向组合判断异常类型：
@@ -49,7 +49,7 @@
    - 最小成交量：3000
    - 最小成交量增幅：30%
    - 最小金额门槛：200万
-   - 跨日市值比例阈值：0.001%
+   - 跨日市值比例阈值：MIN_MARKET_CAP_RATIO
 
 6. 输出排序：
    - 按 amount_threshold (金额门槛) 从大到小排序
@@ -80,6 +80,7 @@ MARKET_CAP_FILE = f"{DEFAULT_DATA_FOLDER}/stock_symbol/symbol_market.csv"
 MIN_VOLUME = 3000  # 最新成交量必须大于3000
 MIN_VOLUME_INCREASE_PCT = 0.30  # 成交量增幅必须大于30%
 MIN_AMOUNT_THRESHOLD = 2_000_000  # 金额门槛必须大于200万
+MIN_MARKET_CAP_RATIO = 0.00001  # 最小市值比例要求 (0.001% = 0.00001)
 
 # 股票和期权价格变化阈值
 STOCK_CHANGE_THRESHOLD = 0.01  # 股票价格变化阈值1%
@@ -293,7 +294,7 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             if market_cap > 0:
                 # 计算 amount_threshold / market_cap 的百分比
                 market_cap_ratio = amount_threshold / market_cap
-                if market_cap_ratio <= 0.00001:  # 0.001% = 0.00001
+                if market_cap_ratio <= MIN_MARKET_CAP_RATIO:
                     continue  # 跳过不满足市值比例要求的合约
             else:
                 # 如果没有市值数据，跳过该合约
