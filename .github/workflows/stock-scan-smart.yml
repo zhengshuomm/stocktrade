@@ -115,7 +115,7 @@ jobs:
     - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
-        python program/scan_stock_30min.py --delay 0.5 --market-cap-ratio 0.000001
+        python program/scan_stock_30min.py --delay 0.5
         echo "扫描完成"
         
     - name: 运行持仓量异常检测
@@ -127,7 +127,7 @@ jobs:
     - name: 运行成交量异常检测
       run: |
         echo "开始成交量异常检测..."
-        python program/find_outliers_by_volume.py -d
+        python program/find_outliers_by_volume.py -d --market-cap-ratio 0.000001
         echo "成交量异常检测完成"
         
     - name: 上传数据文件到 Artifacts
