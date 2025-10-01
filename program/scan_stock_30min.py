@@ -305,16 +305,40 @@ class StockOptionsScanner:
         # 生成时间戳
         timestamp = datetime.now().strftime("%Y%m%d-%H%M")
         
+        # 检查 openInterest 为 0 的比例
+        should_save_data = True
+        if all_options_data:
+            combined_df = pd.concat(all_options_data, ignore_index=True)
+            
+            # 检查 openInterest 列是否存在
+            if 'openInterest' in combined_df.columns:
+                total_contracts = len(combined_df)
+                zero_openinterest_count = (combined_df['openInterest'] == 0).sum()
+                zero_openinterest_ratio = zero_openinterest_count / total_contracts
+                
+                print(f"\n📊 OpenInterest 统计:")
+                print(f"总合约数: {total_contracts}")
+                print(f"OpenInterest = 0 的合约数: {zero_openinterest_count}")
+                print(f"OpenInterest = 0 的比例: {zero_openinterest_ratio:.2%}")
+                
+                if zero_openinterest_ratio > 0.8:
+                    print(f"⚠️  OpenInterest = 0 的比例 ({zero_openinterest_ratio:.2%}) 超过 80%，跳过数据保存")
+                    should_save_data = False
+                else:
+                    print(f"✅ OpenInterest = 0 的比例 ({zero_openinterest_ratio:.2%}) 在可接受范围内，继续保存数据")
+            else:
+                print("⚠️  未找到 openInterest 列，无法进行数据质量检查")
+        
         # 保存期权数据
         options_output_file = None
-        if all_options_data:
+        if all_options_data and should_save_data:
             combined_df = pd.concat(all_options_data, ignore_index=True)
             options_output_file = os.path.join(self.output_dir, f"all-{timestamp}.csv")
             combined_df.to_csv(options_output_file, index=False, encoding='utf-8-sig')
         
         # 保存股票价格数据
         stock_price_output_file = None
-        if all_stock_prices:
+        if all_stock_prices and should_save_data:
             stock_prices_df = pd.DataFrame(all_stock_prices)
             stock_price_output_file = os.path.join(self.stock_price_dir, f"all-{timestamp}.csv")
             stock_prices_df.to_csv(stock_price_output_file, index=False, encoding='utf-8-sig')
@@ -324,6 +348,11 @@ class StockOptionsScanner:
         print("=" * 60)
         print(f"成功扫描: {successful_scans} 个股票")
         print(f"失败扫描: {failed_scans} 个股票")
+        
+        if not should_save_data:
+            print("\n⚠️  由于数据质量检查未通过，未保存任何文件")
+            print("   - OpenInterest = 0 的比例超过 80%")
+            print("   - 建议检查数据源或稍后重试")
         
         if options_output_file:
             print(f"总期权数: {len(combined_df)} 个")
@@ -337,11 +366,19 @@ class StockOptionsScanner:
             option_type_counts = combined_df['option_type'].value_counts()
             for opt_type, count in option_type_counts.items():
                 print(f"  {opt_type}: {count} 个")
+        elif all_options_data and not should_save_data:
+            print(f"\n📊 期权数据统计 (未保存):")
+            combined_df = pd.concat(all_options_data, ignore_index=True)
+            print(f"总期权数: {len(combined_df)} 个")
+            print(f"股票代码数量: {combined_df['symbol'].nunique()}")
         
         if stock_price_output_file:
             print(f"股票价格数据: {len(all_stock_prices)} 个")
             print(f"股票价格文件: {stock_price_output_file}")
             print(f"股票价格文件大小: {os.path.getsize(stock_price_output_file) / 1024:.1f} KB")
+        elif all_stock_prices and not should_save_data:
+            print(f"\n📊 股票价格数据统计 (未保存):")
+            print(f"股票价格数据: {len(all_stock_prices)} 个")
         
         if not all_options_data and not all_stock_prices:
             print("\n❌ 没有获取到任何数据")
