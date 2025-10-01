@@ -512,7 +512,7 @@ class DiscordSender:
             inline=True
         )
 
-        # 占总市值（两位有效数字），优先使用 amount_to_market_cap，其次从 amount_to_market_cap_pct/100 推导
+        # 占总市值（两位有效数字，显示为百分比），优先使用 amount_to_market_cap，其次从 amount_to_market_cap_pct/100 推导
         amt_to_mc = row.get('amount_to_market_cap', None)
         if amt_to_mc is None:
             amt_pct = row.get('amount_to_market_cap_pct', None)
@@ -521,22 +521,25 @@ class DiscordSender:
                     amt_to_mc = float(amt_pct) / 100.0
                 except Exception:
                     amt_to_mc = None
-        def _format_sig2(x):
+        # 格式化为两位有效数字的百分比（不使用科学计数法）
+        def _format_sig2_percent(x):
             try:
                 x = float(x)
                 if x == 0:
-                    return "0"
-                s = f"{x:.2g}"
+                    return "0%"
+                # 转换为百分比
+                percent = x * 100
+                s = f"{percent:.2g}%"
                 if 'e' in s or 'E' in s:
                     from decimal import Decimal
-                    s = format(Decimal(s), 'f')
+                    s = f"{format(Decimal(str(percent)), 'f')}%"
                 return s
             except Exception:
                 return "N/A"
         if amt_to_mc is not None:
             embed.add_field(
                 name="📐 占总市值",
-                value=_format_sig2(amt_to_mc),
+                value=_format_sig2_percent(amt_to_mc),
                 inline=True
             )
         
