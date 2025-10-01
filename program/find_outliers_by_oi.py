@@ -405,47 +405,6 @@ def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
     out_path = os.path.join(out_dir, f"{ts}.csv")
     df_reordered.to_csv(out_path, index=False, encoding="utf-8-sig")
 
-    # 另存为Excel并按金额分档着色
-    try:
-        xlsx_path = os.path.join(out_dir, f"{ts}.xlsx")
-        # 颜色方案（可按需调整）：
-        #  "<=5M": 蓝色; "5M-10M": 橙色; "10M-50M": 红色; ">50M": 紫色
-        color_map = {
-            "<=5M": "#2F80ED",   # 蓝
-            "5M-10M": "#F2994A", # 橙
-            "10M-50M": "#EB5757",# 大红
-            ">50M": "#9B51E0"    # 特殊色（紫）
-        }
-
-        with pd.ExcelWriter(xlsx_path, engine="xlsxwriter") as writer:
-            df_reordered.to_excel(writer, index=False, sheet_name="outliers")
-            workbook  = writer.book
-            worksheet = writer.sheets["outliers"]
-
-            # 找到 amount_tier 列索引
-            header = list(df_reordered.columns)
-            tier_col_idx = header.index("amount_tier") if "amount_tier" in header else None
-            if tier_col_idx is not None:
-                # 从第二行开始（第一行是表头），对整行应用条件格式
-                n_rows = len(df_reordered)
-                n_cols = len(header)
-                excel_range = 1, 0, n_rows, n_cols - 1  # (first_row, first_col, last_row, last_col)
-
-                for tier, color in color_map.items():
-                    format_obj = workbook.add_format({"font_color": color})
-                    worksheet.conditional_format(
-                        excel_range[0], excel_range[1], excel_range[2], excel_range[3],
-                        {
-                            "type": "formula",
-                            # Excel列号从A=0开始，需要把 tier_col_idx 转成列字母
-                            "criteria": f'=${chr(ord("A") + tier_col_idx)}2="{tier}"',
-                            "format": format_obj
-                        }
-                    )
-        # 忽略上色失败等非致命错误
-    except Exception:
-        pass
-
     return out_path
 
 

@@ -447,42 +447,6 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
     
     out_path = os.path.join(out_dir, f"volume_outlier_{ts}.csv")
     df_reordered.to_csv(out_path, index=False, encoding="utf-8-sig")
-    
-    # 另存为Excel并按金额分档着色
-    try:
-        xlsx_path = os.path.join(out_dir, f"volume_outlier_{ts}.xlsx")
-        color_map = {
-            "<=5M": "#2F80ED",   # 蓝
-            "5M-10M": "#F2994A", # 橙
-            "10M-50M": "#EB5757",# 大红
-            ">50M": "#9B51E0"    # 特殊色（紫）
-        }
-
-        with pd.ExcelWriter(xlsx_path, engine="xlsxwriter") as writer:
-            df_reordered.to_excel(writer, index=False, sheet_name="volume_outliers")
-            workbook = writer.book
-            worksheet = writer.sheets["volume_outliers"]
-
-            # 找到 amount_tier 列索引
-            header = list(df_reordered.columns)
-            tier_col_idx = header.index("amount_tier") if "amount_tier" in header else None
-            if tier_col_idx is not None:
-                n_rows = len(df_reordered)
-                n_cols = len(header)
-                excel_range = 1, 0, n_rows, n_cols - 1
-
-                for tier, color in color_map.items():
-                    format_obj = workbook.add_format({"font_color": color})
-                    worksheet.conditional_format(
-                        excel_range[0], excel_range[1], excel_range[2], excel_range[3],
-                        {
-                            "type": "formula",
-                            "criteria": f'=${chr(ord("A") + tier_col_idx)}2="{tier}"',
-                            "format": format_obj
-                        }
-                    )
-    except Exception:
-        pass
 
     return out_path
 
