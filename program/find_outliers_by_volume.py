@@ -202,7 +202,7 @@ def load_market_cap_csv(path: str) -> pd.DataFrame:
 
 def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFrame, 
                           latest_stock_df: pd.DataFrame, prev_stock_df: pd.DataFrame, 
-                          market_cap_df: pd.DataFrame = None) -> pd.DataFrame:
+                          market_cap_df: pd.DataFrame = None, market_cap_ratio: float = MIN_MARKET_CAP_RATIO) -> pd.DataFrame:
     """
     根据成交量变化判断异常情况
     """
@@ -293,8 +293,8 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             market_cap = row["market_cap"]
             if market_cap > 0:
                 # 计算 amount_threshold / market_cap 的百分比
-                market_cap_ratio = amount_threshold / market_cap
-                if market_cap_ratio <= MIN_MARKET_CAP_RATIO:
+                calculated_ratio = amount_threshold / market_cap
+                if calculated_ratio <= market_cap_ratio:
                     continue  # 跳过不满足市值比例要求的合约
             else:
                 # 如果没有市值数据，跳过该合约
@@ -728,6 +728,8 @@ def main():
                        help='指定要对比的期权文件名，例如: --files all-20250930-0923.csv all-20250930-1150.csv')
     parser.add_argument('--discord', '-d', action='store_true',
                        help='发送结果到 Discord (默认: 不发送)')
+    parser.add_argument('--market-cap-ratio', type=float, default=MIN_MARKET_CAP_RATIO,
+                       help=f'最小市值比例要求 (默认: {MIN_MARKET_CAP_RATIO})')
     
     args = parser.parse_args()
     
@@ -775,7 +777,7 @@ def main():
             # 安全兜底，遇到解析异常不影响主流程
             pass
 
-        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df)
+        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df, args.market_cap_ratio)
         if out_df.empty:
             print("未发现符合成交量异常条件的期权合约。")
             return
