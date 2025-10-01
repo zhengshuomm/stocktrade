@@ -123,17 +123,17 @@ jobs:
       shell: bash
       run: |
         should_run=$(python - <<'PY'
-import datetime
-now = datetime.datetime.utcnow()
-hour = now.hour
-year = now.year
-dst_start = datetime.datetime(year, 3, 8)
-dst_end = datetime.datetime(year, 11, 7)
-in_dst = dst_start <= now <= dst_end
-pdt = {12,13,14,15,16,17,18,20}
-pst = {13,14,15,16,17,18,19,21}
-print('1' if hour in (pdt if in_dst else pst) else '0')
-PY
+        import datetime
+        now = datetime.datetime.utcnow()
+        hour = now.hour
+        year = now.year
+        dst_start = datetime.datetime(year, 3, 8)
+        dst_end = datetime.datetime(year, 11, 7)
+        in_dst = dst_start <= now <= dst_end
+        pdt = {12,13,14,15,16,17,18,20}
+        pst = {13,14,15,16,17,18,19,21}
+        print('1' if hour in (pdt if in_dst else pst) else '0')
+        PY
         )
         echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
 
