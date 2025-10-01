@@ -429,7 +429,11 @@ class StockTrader:
                         if bullish >= 2 and bearish == 0:
                             logger.info(f"{symbol}: 看涨 {bullish} 个, 看跌 {bearish} 个, 决定买入")
                             if self.buy_stock(symbol, buy_amount):
-                                break  # 每次只买入一只股票
+                                # 更新用户信息以获取最新现金余额
+                                user_info = self.get_user_info()
+                                if not user_info or float(user_info['cash']) < buy_amount:
+                                    logger.info(f"现金不足，停止买入。当前现金: {float(user_info['cash']) if user_info else 0:.2f}, 需要: {buy_amount:.2f}")
+                                    break
             else:
                 logger.info(f"现金不足，无法买入。现金: {float(user_info['cash']):.2f}, 需要: {buy_amount:.2f}")
                 
