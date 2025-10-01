@@ -573,14 +573,17 @@ class DiscordSender:
                     
                     # 生成时间戳
                     from datetime import datetime
+                    from pytz import timezone
                     timestamp = datetime.now().strftime("%Y%m%d-%H%M")
+                    pst_timestamp = (datetime.now().astimezone(timezone('US/Pacific'))).strftime("%Y%m%d-%H%M")
+
                     
                     # 确定执行类型
                     execution_type = "GENERAL Execution" if self.data_folder == "data" else "Priority Execution"
                     
                     # 发送汇总统计
                     stats_message = "******************************\n"
-                    stats_message += f"{timestamp}\n"
+                    stats_message += f"# {pst_timestamp} PST #\n"
                     stats_message += f"{execution_type}\n"
                     stats_message += f"🔍 **{self.message_title}检测结果**\n"
                     stats_message += f"📊 检测到 {len(outliers_df)} 个异常合约\n"
