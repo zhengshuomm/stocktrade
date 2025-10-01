@@ -4,3 +4,4 @@ numpy>=1.21.0
 xlsxwriter>=3.0.0
 discord.py>=2.0.0
 pytz>=2023.3
+psycopg2-binary>=2.9.9
