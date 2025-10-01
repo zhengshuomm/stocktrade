@@ -15,16 +15,18 @@ import time
 import sys
 
 class StockOptionsScanner:
-    def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv"):
+    def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv", data_folder="data"):
         """
         初始化扫描器
         
         Args:
             symbol_file: 包含股票代码的CSV文件路径
+            data_folder: 数据文件夹路径 (默认: data)
         """
+        self.data_folder = data_folder
         self.symbol_file = symbol_file
-        self.output_dir = "data/option_data"
-        self.stock_price_dir = "data/stock_price"
+        self.output_dir = f"{data_folder}/option_data"
+        self.stock_price_dir = f"{data_folder}/stock_price"
         self.symbols = []
         self.results = []
         
@@ -353,8 +355,11 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description='批量扫描股票期权数据程序')
     
-    parser.add_argument('--symbol-file', '-f', type=str, default='data/stock_symbol/symbol_market.csv',
-                       help='股票代码文件路径 (默认: data/stock_symbol/symbol_market.csv)')
+    parser.add_argument('--folder', type=str, default='data',
+                       help='数据文件夹路径 (默认: data)')
+    
+    parser.add_argument('--symbol-file', '-f', type=str, default=None,
+                       help='股票代码文件路径 (默认: {folder}/stock_symbol/symbol_market.csv)')
     
     parser.add_argument('--max-deviation', '-m', type=float, default=0.3,
                        help='最大执行价格偏差比例 (默认: 0.3, 即30%%)')
@@ -373,16 +378,21 @@ def main():
     """
     args = parse_arguments()
     
+    # 设置默认的symbol_file路径
+    if args.symbol_file is None:
+        args.symbol_file = f"{args.folder}/stock_symbol/symbol_market.csv"
+    
     print("=" * 60)
     print("批量股票期权数据扫描程序")
     print("=" * 60)
+    print(f"数据文件夹: {args.folder}")
     print(f"股票代码文件: {args.symbol_file}")
     print(f"最大偏差比例: {args.max_deviation*100:.0f}%")
     print(f"延时设置: {args.delay}秒")
     print()
     
     # 创建扫描器实例
-    scanner = StockOptionsScanner(symbol_file=args.symbol_file)
+    scanner = StockOptionsScanner(symbol_file=args.symbol_file, data_folder=args.folder)
     
     # 开始扫描
     options_file, options_df, stock_price_file = scanner.scan_all_stocks(

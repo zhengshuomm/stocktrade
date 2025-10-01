@@ -73,10 +73,12 @@ import re
 import asyncio
 import discord
 
-OPTION_DIR = "data/option_data"
-STOCK_PRICE_DIR = "data/stock_price"
-OUTLIER_DIR = "data/outlier"
-MARKET_CAP_FILE = "data/stock_symbol/symbol_market.csv"
+# 默认数据路径，可以通过 --folder 参数覆盖
+DEFAULT_DATA_FOLDER = "data"
+OPTION_DIR = f"{DEFAULT_DATA_FOLDER}/option_data"
+STOCK_PRICE_DIR = f"{DEFAULT_DATA_FOLDER}/stock_price"
+OUTLIER_DIR = f"{DEFAULT_DATA_FOLDER}/outlier"
+MARKET_CAP_FILE = f"{DEFAULT_DATA_FOLDER}/stock_symbol/symbol_market.csv"
 
 # 金额门槛全局变量
 THRESHOLD_5M = 5_000_000    # 500万
@@ -669,12 +671,21 @@ def main():
     
     # 解析命令行参数
     parser = argparse.ArgumentParser(description='持仓量异常检测程序')
+    parser.add_argument('--folder', type=str, default=DEFAULT_DATA_FOLDER,
+                       help=f'数据文件夹路径 (默认: {DEFAULT_DATA_FOLDER})')
     parser.add_argument('--files', '-f', type=str, nargs=2, metavar=('LATEST', 'PREVIOUS'),
                        help='指定要对比的期权文件名，例如: --files all-20250930-0923.csv all-20250930-1150.csv')
     parser.add_argument('--discord', '-d', action='store_true',
                        help='发送结果到 Discord (默认: 不发送)')
     
     args = parser.parse_args()
+    
+    # 根据folder参数更新路径
+    global OPTION_DIR, STOCK_PRICE_DIR, OUTLIER_DIR, MARKET_CAP_FILE
+    OPTION_DIR = f"{args.folder}/option_data"
+    STOCK_PRICE_DIR = f"{args.folder}/stock_price"
+    OUTLIER_DIR = f"{args.folder}/outlier"
+    MARKET_CAP_FILE = f"{args.folder}/stock_symbol/symbol_market.csv"
     
     try:
         if args.files:

@@ -136,6 +136,8 @@ def compare_openinterest(file1_path, file2_path):
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description='比较两个期权数据文件的 openInterest 差异')
+    parser.add_argument('--folder', type=str, default='data',
+                       help='数据文件夹路径 (默认: data)')
     parser.add_argument('--file', '-f', nargs=2, metavar=('FILE1', 'FILE2'),
                        help='要比较的两个期权数据文件名，例如: --file all-20250930-0923.csv all-20250930-1150.csv')
     
@@ -149,7 +151,7 @@ def main():
     file1_name, file2_name = args.file
     
     # 构建完整文件路径
-    option_dir = "data/option_data"
+    option_dir = f"{args.folder}/option_data"
     file1_path = os.path.join(option_dir, file1_name)
     file2_path = os.path.join(option_dir, file2_name)
     
