@@ -387,7 +387,8 @@ def ensure_dir(path: str):
 
 def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
     ensure_dir(out_dir)
-    ts = datetime.now().strftime("%Y%m%d-%H%M")
+    # 使用美国西部时区（PST/PDT）时间作为文件名时间戳
+    ts = datetime.now().astimezone(timezone('US/Pacific')).strftime("%Y%m%d-%H%M")
     
     # 定义列顺序：前面几个重要列
     priority_columns = [
