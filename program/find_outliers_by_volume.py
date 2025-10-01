@@ -68,6 +68,7 @@ import re
 import asyncio
 import discord
 import gc
+from pytz import timezone
 
 # 默认数据路径，可以通过 --folder 参数覆盖
 DEFAULT_DATA_FOLDER = "data"
@@ -136,27 +137,27 @@ def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_fil
             raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
     else:
         # 自动查找最新的文件
-    option_pattern = os.path.join(option_dir, "all-*.csv")
-    option_files = glob.glob(option_pattern)
-    if not option_files or len(option_files) < 2:
-        raise FileNotFoundError("未找到至少两份期权数据文件用于对比")
-    
-    option_files_sorted = sorted(option_files, key=lambda p: parse_ts_from_filename(p), reverse=True)
-    latest_option = option_files_sorted[0]
-    previous_option = option_files_sorted[1]
-    
-    # 提取时间戳
-    latest_ts = parse_ts_from_filename(latest_option)
-    previous_ts = parse_ts_from_filename(previous_option)
-    
-    # 查找对应的股票价格文件
-    latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
-    previous_stock = os.path.join(stock_price_dir, f"all-{previous_ts.strftime('%Y%m%d-%H%M')}.csv")
-    
-    if not os.path.exists(latest_stock):
-        raise FileNotFoundError(f"未找到对应的股票价格文件: {latest_stock}")
-    if not os.path.exists(previous_stock):
-        raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
+        option_pattern = os.path.join(option_dir, "all-*.csv")
+        option_files = glob.glob(option_pattern)
+        if not option_files or len(option_files) < 2:
+            raise FileNotFoundError("未找到至少两份期权数据文件用于对比")
+        
+        option_files_sorted = sorted(option_files, key=lambda p: parse_ts_from_filename(p), reverse=True)
+        latest_option = option_files_sorted[0]
+        previous_option = option_files_sorted[1]
+        
+        # 提取时间戳
+        latest_ts = parse_ts_from_filename(latest_option)
+        previous_ts = parse_ts_from_filename(previous_option)
+        
+        # 查找对应的股票价格文件
+        latest_stock = os.path.join(stock_price_dir, f"all-{latest_ts.strftime('%Y%m%d-%H%M')}.csv")
+        previous_stock = os.path.join(stock_price_dir, f"all-{previous_ts.strftime('%Y%m%d-%H%M')}.csv")
+        
+        if not os.path.exists(latest_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {latest_stock}")
+        if not os.path.exists(previous_stock):
+            raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
     
     return latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts
 
@@ -509,8 +510,8 @@ class DiscordSender:
         # 让标题可点击跳转
         try:
             embed.url = yahoo_url
-    except Exception:
-        pass
+        except Exception:
+            pass
 
         # 处理信号类型颜色
         colored_signal_type = self._colorize_signal_type(signal_type)
