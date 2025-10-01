@@ -573,7 +573,7 @@ class DiscordSender:
         # 数值明细
         embed.add_field(
             name="🔢 数值",
-            value=f"**lastPrice(new)**: ${last_price_new}\n**lastPrice(old)**: ${last_price_old}",
+            value=f"**期权价格(new)**: ${last_price_new}\n**期权价格(old)**: ${last_price_old}",
             inline=True
         )
         
