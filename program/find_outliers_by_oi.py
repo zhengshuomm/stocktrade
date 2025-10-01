@@ -451,13 +451,14 @@ def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
 
 class DiscordSender:
     """Discord 发送器类"""
-    def __init__(self, data_folder="data", time_range=None):
+    def __init__(self, data_folder="data", time_range=None, stock_prices=None):
         # 从 discord_outlier_sender.py 中获取的配置
         self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
         self.channel_id = 1422402343135088663
         self.message_title = "OI异常"
         self.data_folder = data_folder
         self.time_range = time_range  # 格式: "20251010-1336 to 20251010-1354"
+        self.stock_prices = stock_prices or {}  # 格式: {symbol: {"new": price, "old": price}}
         
     def _colorize_signal_type(self, signal_type):
         """为信号类型添加颜色"""
@@ -525,11 +526,15 @@ class DiscordSender:
             inline=True
         )
         
-        # 添加时间范围字段
-        if self.time_range:
+        # 添加股票价格字段
+        symbol = row.get('symbol', 'N/A')
+        if symbol in self.stock_prices:
+            stock_price_info = self.stock_prices[symbol]
+            stock_price_new = stock_price_info.get('new', 'N/A')
+            stock_price_old = stock_price_info.get('old', 'N/A')
             embed.add_field(
-                name="⏰ 时间范围",
-                value=f"**比较时段**: {self.time_range}",
+                name="💰 股票价格",
+                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}",
                 inline=True
             )
 
@@ -552,6 +557,14 @@ class DiscordSender:
             value=yahoo_url,
             inline=False
         )
+
+        # 添加时间范围字段
+        if self.time_range:
+            embed.add_field(
+                name="⏰ 时间范围",
+                value=f"**比较时段**: {self.time_range}",
+                inline=True
+            )
         
         # 设置footer
         embed.set_footer(text=f"检测时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -751,7 +764,21 @@ def main():
                 if latest_ts and previous_ts:
                     time_range = f"{previous_ts.strftime('%Y%m%d-%H%M')} to {latest_ts.strftime('%Y%m%d-%H%M')}"
                 
-                discord_sender = DiscordSender(data_folder=args.folder, time_range=time_range)
+                # 计算股票价格数据
+                stock_prices = {}
+                if latest_stock_df is not None and prev_stock_df is not None:
+                    for _, row in latest_stock_df.iterrows():
+                        symbol = row['symbol']
+                        latest_close = row['Close']
+                        prev_row = prev_stock_df[prev_stock_df['symbol'] == symbol]
+                        if not prev_row.empty:
+                            prev_close = prev_row.iloc[0]['Close']
+                            stock_prices[symbol] = {
+                                'new': latest_close,
+                                'old': prev_close
+                            }
+                
+                discord_sender = DiscordSender(data_folder=args.folder, time_range=time_range, stock_prices=stock_prices)
                 asyncio.run(discord_sender.send_outliers(out_df))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
