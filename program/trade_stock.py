@@ -39,7 +39,7 @@ VOLUME_OUTLIER_DIR = "data/volume_outlier"
 INITIAL_CASH = 100000.0
 BUY_RATIO = 0.1  # 每次买入总资产的10%
 HOLD_HOURS_LIMIT = 24  # 持有时间限制（小时）
-FILE_TIMEOUT_MINUTES = 5  # 文件超时时间（分钟）
+FILE_TIMEOUT_MINUTES = 100000  # 文件超时时间（分钟）
 
 
 class StockTrader:
@@ -416,10 +416,10 @@ class StockTrader:
                     self.sell_stock(transaction_id, symbol)
             
             # 处理买入逻辑
-            total_value = user_info['total_value']
+            total_value = float(user_info['total_value'])
             buy_amount = total_value * BUY_RATIO
             
-            if user_info['cash'] >= buy_amount:
+            if float(user_info['cash']) >= buy_amount:
                 for symbol, signal in signals.items():
                     if symbol not in holding_symbols:
                         bullish = signal['bullish']
@@ -431,7 +431,7 @@ class StockTrader:
                             if self.buy_stock(symbol, buy_amount):
                                 break  # 每次只买入一只股票
             else:
-                logger.info(f"现金不足，无法买入。现金: {user_info['cash']}, 需要: {buy_amount}")
+                logger.info(f"现金不足，无法买入。现金: {float(user_info['cash']):.2f}, 需要: {buy_amount:.2f}")
                 
         except Exception as e:
             logger.error(f"处理交易信号失败: {e}")
@@ -479,9 +479,9 @@ class StockTrader:
             # 显示当前状态
             user_info = self.get_user_info()
             if user_info:
-                logger.info(f"当前状态 - 现金: {user_info['cash']:.2f}, "
-                          f"股票: {user_info['stock']:.2f}, "
-                          f"总资产: {user_info['total_value']:.2f}")
+                logger.info(f"当前状态 - 现金: {float(user_info['cash']):.2f}, "
+                          f"股票: {float(user_info['stock']):.2f}, "
+                          f"总资产: {float(user_info['total_value']):.2f}")
             
             logger.info("交易周期完成")
             
