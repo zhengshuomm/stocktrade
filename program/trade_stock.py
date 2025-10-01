@@ -43,7 +43,7 @@ VOLUME_OUTLIER_DIR = None
 INITIAL_CASH = 100000.0
 BUY_RATIO = 0.1  # 每次买入总资产的10%
 HOLD_HOURS_LIMIT = 24  # 持有时间限制（小时）
-FILE_TIMEOUT_MINUTES = 100000  # 文件超时时间（分钟）
+FILE_TIMEOUT_MINUTES = 20  # 文件超时时间（分钟）
 
 
 class StockTrader:
