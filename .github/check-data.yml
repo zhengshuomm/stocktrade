@@ -1,0 +1,114 @@
+name: 检查数据
+
+on:
+  schedule:
+    # 使用更精确的时间配置，考虑夏令时
+    # 美国西部时间 (PST/PDT) 周一到周五
+    # 5:30, 6:30, 7:30, 8:30, 9:30, 10:30, 11:30, 13:30
+    - cron: '30 12,13,14,15,16,17,18,20 * * 1-5'  # 覆盖夏季时间
+    - cron: '30 13,14,15,16,17,18,19,21 * * 1-5'  # 覆盖冬季时间
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  scan-stocks:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置 Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 检查当前时区
+      run: |
+        echo "当前 UTC 时间: $(date -u)"
+        echo "当前本地时间: $(date)"
+        echo "检查是否在夏令时期间..."
+        # 简单的夏令时检查：3月第二个周日到11月第一个周日
+        python3 -c "
+        import datetime
+        now = datetime.datetime.now()
+        # 2024年夏令时：3月10日 - 11月3日
+        # 2025年夏令时：3月9日 - 11月2日
+        dst_start_2024 = datetime.datetime(2024, 3, 10)
+        dst_end_2024 = datetime.datetime(2024, 11, 3)
+        dst_start_2025 = datetime.datetime(2025, 3, 9)
+        dst_end_2025 = datetime.datetime(2025, 11, 2)
+        
+        is_dst = (dst_start_2024 <= now < dst_end_2024) or (dst_start_2025 <= now < dst_end_2025)
+        print(f'是否在夏令时期间: {is_dst}')
+        print(f'当前年份: {now.year}')
+        print(f'当前月份: {now.month}')
+        print(f'当前日期: {now.day}')
+        "
+        
+    - name: 下载历史数据文件
+      uses: actions/download-artifact@v4
+      with:
+        name: stock-data
+        path: ./data
+      continue-on-error: true
+      
+    - name: 准备历史数据
+      run: |
+        # 创建 data 目录结构
+        mkdir -p data/option_data data/stock_price data/stock_symbol data/outlier data/volume_outlier
+        
+        # 检查是否成功下载了 Artifacts
+        if [ -d "./data" ] && [ "$(ls -A ./data 2>/dev/null)" ]; then
+          echo "✅ 成功下载历史数据 Artifacts"
+          
+          if [ -d "./data/option_data" ] && [ "$(ls -A ./data/option_data 2>/dev/null)" ]; then
+            echo "找到历史期权数据，只复制时间戳最大的文件"
+            # 找到时间戳最大的期权数据文件
+            latest_option_file=$(ls -t ./data/option_data/all-*.csv 2>/dev/null | head -1)
+            if [ -n "$latest_option_file" ]; then
+              echo "复制最新的期权数据文件: $(basename "$latest_option_file")"
+              cp "$latest_option_file" ./data/option_data/ 2>/dev/null || true
+            fi
+          fi
+          if [ -d "./data/stock_price" ] && [ "$(ls -A ./data/stock_price 2>/dev/null)" ]; then
+            echo "找到历史股票价格数据，只复制时间戳最大的文件"
+            # 找到时间戳最大的股票价格数据文件
+            latest_stock_file=$(ls -t ./data/stock_price/all-*.csv 2>/dev/null | head -1)
+            if [ -n "$latest_stock_file" ]; then
+              echo "复制最新的股票价格数据文件: $(basename "$latest_stock_file")"
+              cp "$latest_stock_file" ./data/stock_price/ 2>/dev/null || true
+            fi
+          fi
+          if [ -d "./data/stock_symbol" ] && [ "$(ls -A ./data/stock_symbol 2>/dev/null)" ]; then
+            echo "找到历史股票代码数据，复制到当前目录"
+            cp -r ./data/stock_symbol/* ./data/stock_symbol/ 2>/dev/null || true
+          fi
+          if [ -d "./data/outlier" ] && [ "$(ls -A ./data/outlier 2>/dev/null)" ]; then
+            echo "找到历史持仓量异常数据，复制到当前目录"
+            cp -r ./data/outlier/* ./data/outlier/ 2>/dev/null || true
+          fi
+          if [ -d "./data/volume_outlier" ] && [ "$(ls -A ./data/volume_outlier 2>/dev/null)" ]; then
+            echo "找到历史成交量异常数据，复制到当前目录"
+            cp -r ./data/volume_outlier/* ./data/volume_outlier/ 2>/dev/null || true
+          fi
+        else
+          echo "⚠️  未找到历史数据 Artifacts，这是第一次运行或 Artifacts 已过期"
+          echo "将使用现有的 stock_symbol 数据开始扫描"
+        fi
+        
+        echo "当前期权数据文件："
+        ls -la data/option_data/ || echo "期权数据目录为空"
+        echo "当前股票价格数据文件："
+        ls -la data/stock_price/ || echo "股票价格数据目录为空"
+        echo "当前股票代码数据文件："
+        ls -la data/stock_symbol/ || echo "股票代码数据目录为空"
+        echo "当前持仓量异常数据文件："
+        ls -la data/outlier/ || echo "持仓量异常数据目录为空"
+        echo "当前成交量异常数据文件："
+        ls -la data/volume_outlier/ || echo "成交量异常数据目录为空"
+        
