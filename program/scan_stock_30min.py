@@ -401,8 +401,8 @@ def parse_arguments():
     parser.add_argument('--max-deviation', '-m', type=float, default=0.3,
                        help='最大执行价格偏差比例 (默认: 0.3, 即30%%)')
     
-    parser.add_argument('--delay', '-d', type=float, default=1.0,
-                       help='每个股票之间的延时秒数 (默认: 1.0)')
+    parser.add_argument('--delay', '-d', type=float, default=0.5,
+                       help='每个股票之间的延时秒数 (默认: 0.5)')
     
     parser.add_argument('--max-stocks', '-n', type=int, default=None,
                        help='最大扫描股票数量 (默认: 扫描所有)')
