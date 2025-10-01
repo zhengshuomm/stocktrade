@@ -554,6 +554,35 @@ class DiscordSender:
             value=f"**期权价格(new)**: ${last_price_new}\n**期权价格(old)**: ${last_price_old}",
             inline=True
         )
+
+        # 占总市值（两位有效数字），优先使用 amount_to_market_cap，其次从 amount_to_market_cap_pct/100 推导
+        amt_to_mc = row.get('amount_to_market_cap', None)
+        if amt_to_mc is None:
+            amt_pct = row.get('amount_to_market_cap_pct', None)
+            if amt_pct is not None:
+                try:
+                    amt_to_mc = float(amt_pct) / 100.0
+                except Exception:
+                    amt_to_mc = None
+        # 格式化为两位有效数字（不使用科学计数法）
+        def _format_sig2(x):
+            try:
+                x = float(x)
+                if x == 0:
+                    return "0"
+                s = f"{x:.2g}"
+                if 'e' in s or 'E' in s:
+                    from decimal import Decimal
+                    s = format(Decimal(s), 'f')
+                return s
+            except Exception:
+                return "N/A"
+        if amt_to_mc is not None:
+            embed.add_field(
+                name="📐 占总市值",
+                value=_format_sig2(amt_to_mc),
+                inline=True
+            )
         
         embed.add_field(
             name="🚨 异常信号",
