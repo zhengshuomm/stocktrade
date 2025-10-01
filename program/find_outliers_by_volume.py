@@ -489,12 +489,13 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
 
 class DiscordSender:
     """Discord 发送器类"""
-    def __init__(self, data_folder="data"):
+    def __init__(self, data_folder="data", time_range=None):
         # 从 discord_outlier_sender.py 中获取的配置
         self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
         self.channel_id = 1422402343135088663
         self.message_title = "Volume异常"
         self.data_folder = data_folder
+        self.time_range = time_range  # 格式: "20251010-1336 to 20251010-1354"
         
     def _colorize_signal_type(self, signal_type):
         """为信号类型添加颜色"""
@@ -560,6 +561,14 @@ class DiscordSender:
             value=f"**股票变化**: {stock_change_pct:.2f}%\n**期权变化**: {option_change_pct:.2f}%\n**Volume变化**: {volume_change_abs:,.0f}\n**Volume(new)**: {volume_new_val:,.0f}",
             inline=True
         )
+        
+        # 添加时间范围字段
+        if self.time_range:
+            embed.add_field(
+                name="⏰ 时间范围",
+                value=f"**比较时段**: {self.time_range}",
+                inline=True
+            )
 
         # 数值明细
         embed.add_field(
@@ -790,7 +799,12 @@ def main():
         if args.discord:
             print("\n开始发送到 Discord...")
             try:
-                discord_sender = DiscordSender(data_folder=args.folder)
+                # 计算时间范围
+                time_range = None
+                if latest_ts and previous_ts:
+                    time_range = f"{previous_ts.strftime('%Y%m%d-%H%M')} to {latest_ts.strftime('%Y%m%d-%H%M')}"
+                
+                discord_sender = DiscordSender(data_folder=args.folder, time_range=time_range)
                 asyncio.run(discord_sender.send_outliers(out_df))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
