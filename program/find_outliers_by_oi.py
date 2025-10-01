@@ -72,6 +72,7 @@ from datetime import datetime
 import re
 import asyncio
 import discord
+from pytz import timezone
 
 # 默认数据路径，可以通过 --folder 参数覆盖
 DEFAULT_DATA_FOLDER = "data"
@@ -158,7 +159,7 @@ def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_fil
         if not os.path.exists(previous_stock):
             raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
     
-    return latest_option, previous_option, latest_stock, previous_stock
+    return latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts
 
 
 def load_option_csv(path: str) -> pd.DataFrame:
@@ -469,7 +470,7 @@ class DiscordSender:
             embed.url = yahoo_url
         except Exception:
             pass
-        
+
         # 处理信号类型颜色
         colored_signal_type = self._colorize_signal_type(signal_type)
         
@@ -730,7 +731,7 @@ def main():
         else:
             print("自动查找最新的两个文件进行对比")
         
-        latest_option, previous_option, latest_stock, previous_stock = find_latest_two_all_csv(
+        latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts = find_latest_two_all_csv(
             OPTION_DIR, STOCK_PRICE_DIR, args.files
         )
         print(f"最新期权文件: {latest_option}")
