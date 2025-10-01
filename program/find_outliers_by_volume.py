@@ -488,11 +488,12 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
 
 class DiscordSender:
     """Discord 发送器类"""
-    def __init__(self):
+    def __init__(self, data_folder="data"):
         # 从 discord_outlier_sender.py 中获取的配置
         self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
         self.channel_id = 1422402343135088663
         self.message_title = "Volume异常"
+        self.data_folder = data_folder
         
     def _colorize_signal_type(self, signal_type):
         """为信号类型添加颜色"""
@@ -606,8 +607,18 @@ class DiscordSender:
                     
                     print(f"开始发送汇总统计到 Discord...")
                     
+                    # 生成时间戳
+                    from datetime import datetime
+                    timestamp = datetime.now().strftime("%Y%m%d-%H%M")
+                    
+                    # 确定执行类型
+                    execution_type = "GENERAL Execution" if self.data_folder == "data" else "Priority Execution"
+                    
                     # 发送汇总统计
-                    stats_message = f"🔍 **{self.message_title}检测结果**\n"
+                    stats_message = "******************************\n"
+                    stats_message += f"{timestamp}\n"
+                    stats_message += f"{execution_type}\n"
+                    stats_message += f"🔍 **{self.message_title}检测结果**\n"
                     stats_message += f"📊 检测到 {len(outliers_df)} 个异常合约\n"
                     
                     if "symbol" in outliers_df.columns and "signal_type" in outliers_df.columns:
@@ -773,7 +784,7 @@ def main():
         if args.discord:
             print("\n开始发送到 Discord...")
             try:
-                discord_sender = DiscordSender()
+                discord_sender = DiscordSender(data_folder=args.folder)
                 asyncio.run(discord_sender.send_outliers(out_df))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
