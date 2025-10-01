@@ -570,6 +570,13 @@ class DiscordSender:
             stock_price_info = self.stock_prices[symbol]
             stock_price_new = stock_price_info.get('new', 'N/A')
             stock_price_old = stock_price_info.get('old', 'N/A')
+            
+            # 格式化价格，保留2位小数
+            if stock_price_new != 'N/A':
+                stock_price_new = f"{float(stock_price_new):.2f}"
+            if stock_price_old != 'N/A':
+                stock_price_old = f"{float(stock_price_old):.2f}"
+            
             embed.add_field(
                 name="💰 股票价格",
                 value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}",
