@@ -16,6 +16,7 @@ import glob
 import re
 from typing import List, Dict, Tuple, Optional
 import yfinance as yf
+import argparse
 
 # 配置日志
 logging.basicConfig(
@@ -31,9 +32,12 @@ logger = logging.getLogger(__name__)
 # 数据库连接配置
 DATABASE_URL = "postgresql://neondb_owner:npg_actGluWDr3d1@ep-raspy-river-af178kn5-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
-# 数据文件路径
-OUTLIER_DIR = "data/outlier"
-VOLUME_OUTLIER_DIR = "data/volume_outlier"
+# 默认数据文件夹
+DEFAULT_DATA_FOLDER = "data"
+
+# 数据文件路径（将在main函数中动态设置）
+OUTLIER_DIR = None
+VOLUME_OUTLIER_DIR = None
 
 # 交易配置
 INITIAL_CASH = 100000.0
@@ -503,6 +507,22 @@ class StockTrader:
 
 def main():
     """主函数"""
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='股票交易模拟系统')
+    parser.add_argument('--folder', type=str, default=DEFAULT_DATA_FOLDER, 
+                       help=f'数据文件夹路径 (默认: {DEFAULT_DATA_FOLDER})')
+    
+    args = parser.parse_args()
+    
+    # 设置全局数据路径
+    global OUTLIER_DIR, VOLUME_OUTLIER_DIR
+    OUTLIER_DIR = f"{args.folder}/outlier"
+    VOLUME_OUTLIER_DIR = f"{args.folder}/volume_outlier"
+    
+    logger.info(f"使用数据文件夹: {args.folder}")
+    logger.info(f"Outlier目录: {OUTLIER_DIR}")
+    logger.info(f"Volume Outlier目录: {VOLUME_OUTLIER_DIR}")
+    
     trader = StockTrader()
     
     try:
