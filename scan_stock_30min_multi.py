@@ -14,22 +14,24 @@ import os
 import time
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from threading import Lock
+import threading
 
 class StockOptionsScanner:
-    def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv"):
+    def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv", data_folder="data"):
         """
         初始化扫描器
         
         Args:
             symbol_file: 包含股票代码的CSV文件路径
+            data_folder: 数据文件夹路径 (默认: data)
         """
+        self.data_folder = data_folder
         self.symbol_file = symbol_file
-        self.output_dir = "data/option_data"
-        self.stock_price_dir = "data/stock_price"
+        self.output_dir = f"{data_folder}/option_data"
+        self.stock_price_dir = f"{data_folder}/stock_price"
         self.symbols = []
         self.results = []
-        self.print_lock = Lock()  # 用于线程安全的打印
+        self.print_lock = threading.Lock()  # 用于线程安全的打印
         
         # 创建输出目录
         self._create_output_directory()
@@ -215,12 +217,20 @@ class StockOptionsScanner:
                 print(f"    获取 {symbol} 价格数据时出错: {e}")
             return None
     
-    def _process_single_stock(self, symbol, max_deviation, index, total):
+    def _process_single_stock(self, symbol, max_deviation=0.3, delay=1.0):
         """
-        处理单个股票的数据获取（用于多线程）
+        处理单个股票的期权和价格数据（用于多线程）
+        
+        Args:
+            symbol: 股票代码
+            max_deviation: 最大偏差比例
+            delay: 延时（秒）
+            
+        Returns:
+            (symbol, options_data, stock_price_data, success)
         """
         with self.print_lock:
-            print(f"[{index}/{total}] 扫描 {symbol}...")
+            print(f"开始处理 {symbol}...")
         
         try:
             # 获取期权数据
@@ -228,14 +238,6 @@ class StockOptionsScanner:
             
             # 获取股票价格数据
             stock_price_data = self.get_stock_price(symbol)
-            
-            result = {
-                'symbol': symbol,
-                'options_data': options_data,
-                'stock_price_data': stock_price_data,
-                'success': False,
-                'error': None
-            }
             
             if options_data and not options_data['options_chain'].empty:
                 # 保留更多有用的列
@@ -279,36 +281,35 @@ class StockOptionsScanner:
                 # 添加股票代码列
                 filtered_df['symbol'] = symbol
                 
-                result['options_df'] = filtered_df
-                result['success'] = True
-                
                 with self.print_lock:
-                    print(f"  ✅ 成功: {len(filtered_df)} 个期权")
+                    print(f"  ✅ {symbol} 成功: {len(filtered_df)} 个期权")
+                
+                return symbol, filtered_df, stock_price_data, True
             else:
                 with self.print_lock:
-                    print(f"  ❌ 失败: 无期权数据")
-            
+                    print(f"  ❌ {symbol} 失败: 无期权数据")
+                return symbol, None, stock_price_data, False
+                
         except Exception as e:
-            result['error'] = str(e)
             with self.print_lock:
-                print(f"  ❌ 错误: {e}")
-        
-        return result
+                print(f"  ❌ {symbol} 错误: {e}")
+            return symbol, None, None, False
 
-    def scan_all_stocks(self, max_deviation=0.3, delay=1.0, max_stocks=None):
+    def scan_all_stocks(self, max_deviation=0.3, delay=1.0, max_stocks=None, max_workers=2):
         """
-        扫描所有股票（双线程版本）
+        扫描所有股票（多线程版本）
         
         Args:
             max_deviation: 最大偏差比例
             delay: 每个股票之间的延时（秒）
             max_stocks: 最大扫描股票数量（None表示扫描所有）
+            max_workers: 最大线程数（默认2）
         """
         symbols_to_scan = self.symbols[:max_stocks] if max_stocks else self.symbols
         print(f"开始扫描 {len(symbols_to_scan)} 个股票的期权数据...")
         print(f"最大偏差比例: {max_deviation*100:.0f}%")
         print(f"延时设置: {delay}秒")
-        print(f"线程数: 2")
+        print(f"使用 {max_workers} 个线程")
         print("=" * 60)
         
         all_options_data = []
@@ -316,35 +317,33 @@ class StockOptionsScanner:
         successful_scans = 0
         failed_scans = 0
         
-        # 使用线程池处理
-        with ThreadPoolExecutor(max_workers=2) as executor:
+        # 使用线程池进行多线程扫描
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
             # 提交所有任务
-            future_to_symbol = {}
-            for i, symbol in enumerate(symbols_to_scan, 1):
-                future = executor.submit(self._process_single_stock, symbol, max_deviation, i, len(symbols_to_scan))
-                future_to_symbol[future] = symbol
-                
-                # 延时避免请求过于频繁
-                if delay > 0:
-                    time.sleep(delay)
+            future_to_symbol = {
+                executor.submit(self._process_single_stock, symbol, max_deviation, delay): symbol 
+                for symbol in symbols_to_scan
+            }
             
             # 处理完成的任务
             for future in as_completed(future_to_symbol):
                 symbol = future_to_symbol[future]
                 try:
-                    result = future.result()
+                    symbol, options_data, stock_price_data, success = future.result()
                     
-                    if result['success']:
-                        all_options_data.append(result['options_df'])
+                    if success and options_data is not None:
+                        all_options_data.append(options_data)
                         successful_scans += 1
+                    else:
+                        failed_scans += 1
                     
-                    if result['stock_price_data']:
-                        all_stock_prices.append(result['stock_price_data'])
+                    if stock_price_data is not None:
+                        all_stock_prices.append(stock_price_data)
                         
                 except Exception as e:
-                    failed_scans += 1
                     with self.print_lock:
-                        print(f"处理 {symbol} 时出错: {e}")
+                        print(f"  ❌ {symbol} 处理异常: {e}")
+                    failed_scans += 1
         
         # 生成时间戳
         timestamp = datetime.now().strftime("%Y%m%d-%H%M")
@@ -399,8 +398,11 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description='批量扫描股票期权数据程序')
     
-    parser.add_argument('--symbol-file', '-f', type=str, default='data/stock_symbol/symbol_market.csv',
-                       help='股票代码文件路径 (默认: data/stock_symbol/symbol_market.csv)')
+    parser.add_argument('--folder', type=str, default='data',
+                       help='数据文件夹路径 (默认: data)')
+    
+    parser.add_argument('--symbol-file', '-f', type=str, default=None,
+                       help='股票代码文件路径 (默认: {folder}/stock_symbol/symbol_market.csv)')
     
     parser.add_argument('--max-deviation', '-m', type=float, default=0.3,
                        help='最大执行价格偏差比例 (默认: 0.3, 即30%%)')
@@ -411,6 +413,9 @@ def parse_arguments():
     parser.add_argument('--max-stocks', '-n', type=int, default=None,
                        help='最大扫描股票数量 (默认: 扫描所有)')
     
+    parser.add_argument('--max-workers', '-w', type=int, default=2,
+                       help='最大线程数 (默认: 2)')
+    
     return parser.parse_args()
 
 def main():
@@ -419,22 +424,29 @@ def main():
     """
     args = parse_arguments()
     
+    # 设置默认的symbol_file路径
+    if args.symbol_file is None:
+        args.symbol_file = f"{args.folder}/stock_symbol/symbol_market.csv"
+    
     print("=" * 60)
     print("批量股票期权数据扫描程序")
     print("=" * 60)
+    print(f"数据文件夹: {args.folder}")
     print(f"股票代码文件: {args.symbol_file}")
     print(f"最大偏差比例: {args.max_deviation*100:.0f}%")
     print(f"延时设置: {args.delay}秒")
+    print(f"线程数: {args.max_workers}")
     print()
     
     # 创建扫描器实例
-    scanner = StockOptionsScanner(symbol_file=args.symbol_file)
+    scanner = StockOptionsScanner(symbol_file=args.symbol_file, data_folder=args.folder)
     
     # 开始扫描
     options_file, options_df, stock_price_file = scanner.scan_all_stocks(
         max_deviation=args.max_deviation,
         delay=args.delay,
-        max_stocks=args.max_stocks
+        max_stocks=args.max_stocks,
+        max_workers=args.max_workers
     )
     
     if options_file or stock_price_file:
