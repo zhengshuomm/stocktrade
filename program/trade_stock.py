@@ -395,12 +395,13 @@ class StockTrader:
                     
                     if bullish > 0 and bearish > 0:
                         # 同时包含看涨和看跌
-                        if bullish > bearish:
-                            # 看涨数量 > 看跌数量，继续持有
-                            logger.info(f"{symbol}: 看涨 {bullish} > 看跌 {bearish}, 继续持有")
-                        elif bearish >= 3:
+                        if bearish >= 3:
+                            # 看跌数量 >= 3，直接卖出 (最高优先级)
                             should_sell = True
                             logger.info(f"{symbol}: 看跌数量 {bearish} >= 3, 决定卖出")
+                        elif bullish > bearish:
+                            # 看涨数量 > 看跌数量，继续持有
+                            logger.info(f"{symbol}: 看涨 {bullish} > 看跌 {bearish}, 继续持有")
                         else:
                             # 看涨数量 <= 看跌数量 且 看跌数量 < 3，卖出
                             should_sell = True
