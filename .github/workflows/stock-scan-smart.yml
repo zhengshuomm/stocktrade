@@ -1,12 +1,18 @@
 name: 完整股票分析流程 (扫描+异常检测)
 
+concurrency:
+  # 防止因同时配置了 PDT/PST 两条 cron 而在同一分钟触发两次
+  # 同一时间仅保留一个运行中的工作流，新的会自动取消旧的
+  group: stock-scan-smart
+  cancel-in-progress: true
+
 on:
   schedule:
     # 使用更精确的时间配置，考虑夏令时
     # 美国西部时间 (PST/PDT) 周一到周五
     # 5:30, 6:30, 7:30, 8:30, 9:30, 10:30, 11:30, 13:30
-    - cron: '30 12,13,14,15,16,17,18,20 * * 1-5'  # 覆盖夏季时间
-    - cron: '30 13,14,15,16,17,18,19,21 * * 1-5'  # 覆盖冬季时间
+    - cron: '30 12,13,14,15,16,17,18,20 * * 1-5'  # 覆盖夏季时间 (PDT)
+    - cron: '30 13,14,15,16,17,18,19,21 * * 1-5'  # 覆盖冬季时间 (PST)
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -112,22 +118,57 @@ jobs:
         echo "当前成交量异常数据文件："
         ls -la data/volume_outlier/ || echo "成交量异常数据目录为空"
         
-    - name: 运行股票期权扫描
+    - name: 运行股票期权扫描 (智能跳过重复触发)
       run: |
         echo "开始扫描股票期权数据..."
-        python program/scan_stock_30min.py --delay 0.5
+        # 如果当前不在夏令时期间，则仅当当前 UTC 小时匹配冬令时配置时才执行；反之亦然。
+        python - <<'PY'
+import datetime
+
+now_utc = datetime.datetime.utcnow()
+utc_hour = now_utc.hour
+
+# PDT 触发的 UTC 小时：12,13,14,15,16,17,18,20
+pdt_hours = {12,13,14,15,16,17,18,20}
+# PST 触发的 UTC 小时：13,14,15,16,17,18,19,21
+pst_hours = {13,14,15,16,17,18,19,21}
+
+# 简单判断是否在美国洛杉矶 DST（仅用于跳过重复执行，不追求绝对精确）
+year = now_utc.year
+dst_start = datetime.datetime(year, 3, 8)  # 近似：3月第二周开始
+dst_end = datetime.datetime(year, 11, 7)   # 近似：11月第一周结束
+in_dst = dst_start <= now_utc <= dst_end
+
+should_run = (utc_hour in (pdt_hours if in_dst else pst_hours))
+print(f"UTC hour={utc_hour}, in_dst={in_dst}, should_run={should_run}")
+open('should_run.flag','w').write('1' if should_run else '0')
+PY
+
+        if [ "$(cat should_run.flag)" = "1" ]; then
+          python program/scan_stock_30min.py --delay 0.5
+        else
+          echo "检测到重复触发场景，本次跳过扫描执行。"
+        fi
         echo "扫描完成"
         
-    - name: 运行持仓量异常检测
+    - name: 运行持仓量异常检测 (与扫描一致的跳过策略)
       run: |
         echo "开始持仓量异常检测..."
-        python program/find_outliers_by_oi.py -d
+        if [ "$(cat should_run.flag)" = "1" ]; then
+          python program/find_outliers_by_oi.py -d
+        else
+          echo "跳过 OI 异常检测。"
+        fi
         echo "持仓量异常检测完成"
         
-    - name: 运行成交量异常检测
+    - name: 运行成交量异常检测 (与扫描一致的跳过策略)
       run: |
         echo "开始成交量异常检测..."
-        python program/find_outliers_by_volume.py -d --market-cap-ratio 0.000001
+        if [ "$(cat should_run.flag)" = "1" ]; then
+          python program/find_outliers_by_volume.py -d --market-cap-ratio 0.000001
+        else
+          echo "跳过 Volume 异常检测。"
+        fi
         echo "成交量异常检测完成"
         
     - name: 上传数据文件到 Artifacts
