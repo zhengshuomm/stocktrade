@@ -270,26 +270,96 @@ class DiscordOutlierSender:
                     if "symbol" in outliers_df.columns and "signal_type" in outliers_df.columns:
                         st = outliers_df["signal_type"].astype(str)
                         outliers_df_copy = outliers_df.copy()
-                        outliers_df_copy["is_bullish"] = st.str.contains("看涨", na=False)
-                        outliers_df_copy["is_bearish"] = st.str.contains("看跌", na=False)
-                        outliers_df_copy["is_call"] = outliers_df_copy["option_type"].str.contains("Call", case=False, na=False)
-                        outliers_df_copy["is_put"] = outliers_df_copy["option_type"].str.contains("Put", case=False, na=False)
+                        
+                        # 精确分类逻辑
+                        def classify_signal(row):
+                            signal_type = str(row["signal_type"])
+                            option_type = str(row["option_type"]).upper()
+                            
+                            # 不统计的信号类型
+                            exclude_signals = [
+                                "空头平仓Put，回补，看跌信号减弱",
+                                "买Call平仓/做波动率交易", 
+                                "买Put平仓/做波动率交易"
+                            ]
+                            
+                            if signal_type in exclude_signals:
+                                return {
+                                    "is_bullish": False,
+                                    "is_bearish": False,
+                                    "is_call": False,
+                                    "is_put": False,
+                                    "should_count": False
+                                }
+                            
+                            # 看涨Call
+                            bullish_call_signals = [
+                                "多头买 Call，看涨",
+                                "空头平仓 Call，回补信号，看涨",
+                                "买 Call，看涨"
+                            ]
+                            
+                            # 看跌Call  
+                            bearish_call_signals = [
+                                "空头卖 Call，看跌/看不涨",
+                                "多头平仓 Call，减仓，看涨减弱",
+                                "卖 Call，看空/价差对冲",
+                                "卖 Call，看跌"
+                            ]
+                            
+                            # 看涨Put
+                            bullish_put_signals = [
+                                "空头卖 Put，看涨/看不跌",
+                                "多头平仓 Put，减仓，看跌减弱", 
+                                "卖 Put，看涨/对冲",
+                                "卖 Put，看涨"
+                            ]
+                            
+                            # 看跌Put
+                            bearish_put_signals = [
+                                "多头买 Put，看跌",
+                                "买 Put，看跌"
+                            ]
+                            
+                            is_call = "CALL" in option_type
+                            is_put = "PUT" in option_type
+                            
+                            if signal_type in bullish_call_signals and is_call:
+                                return {"is_bullish": True, "is_bearish": False, "is_call": True, "is_put": False, "should_count": True}
+                            elif signal_type in bearish_call_signals and is_call:
+                                return {"is_bullish": False, "is_bearish": True, "is_call": True, "is_put": False, "should_count": True}
+                            elif signal_type in bullish_put_signals and is_put:
+                                return {"is_bullish": True, "is_bearish": False, "is_call": False, "is_put": True, "should_count": True}
+                            elif signal_type in bearish_put_signals and is_put:
+                                return {"is_bullish": False, "is_bearish": True, "is_call": False, "is_put": True, "should_count": True}
+                            else:
+                                return {"is_bullish": False, "is_bearish": False, "is_call": False, "is_put": False, "should_count": False}
+                        
+                        # 应用分类
+                        classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
+                        outliers_df_copy["is_bullish"] = classification[0]
+                        outliers_df_copy["is_bearish"] = classification[1] 
+                        outliers_df_copy["is_call"] = classification[2]
+                        outliers_df_copy["is_put"] = classification[3]
+                        outliers_df_copy["should_count"] = classification[4]
                         
                         # 计算金额 (使用amount_threshold的绝对值)
                         outliers_df_copy["amount"] = outliers_df_copy["amount_threshold"].abs()
                         
                         # 按股票分组统计
                         def calculate_amounts(group):
-                            bullish_call = group[(group["is_bullish"]) & (group["is_call"])]["amount"].sum()
-                            bearish_call = group[(group["is_bearish"]) & (group["is_call"])]["amount"].sum()
-                            bullish_put = group[(group["is_bullish"]) & (group["is_put"])]["amount"].sum()
-                            bearish_put = group[(group["is_bearish"]) & (group["is_put"])]["amount"].sum()
+                            # 只统计should_count=True的记录
+                            countable_group = group[group["should_count"]]
+                            bullish_call = countable_group[(countable_group["is_bullish"]) & (countable_group["is_call"])]["amount"].sum()
+                            bearish_call = countable_group[(countable_group["is_bearish"]) & (countable_group["is_call"])]["amount"].sum()
+                            bullish_put = countable_group[(countable_group["is_bullish"]) & (countable_group["is_put"])]["amount"].sum()
+                            bearish_put = countable_group[(countable_group["is_bearish"]) & (countable_group["is_put"])]["amount"].sum()
                             return pd.Series({
                                 'bullish_call_amount': bullish_call,
                                 'bearish_call_amount': bearish_call,
                                 'bullish_put_amount': bullish_put,
                                 'bearish_put_amount': bearish_put,
-                                'total_count': len(group)
+                                'total_count': len(countable_group)
                             })
                         
                         grouped = outliers_df_copy.groupby("symbol").apply(calculate_amounts, include_groups=False).reset_index()
@@ -304,11 +374,15 @@ class DiscordOutlierSender:
                             bullish_count = 0
                             bearish_count = 0
                             
-                            # 从原始数据中计算看涨/看跌数量
+                            # 从原始数据中计算看涨/看跌数量（只统计should_count=True的）
                             symbol_data = outliers_df_copy[outliers_df_copy['symbol'] == sym]
-                            if not symbol_data.empty:
-                                bullish_count = int(symbol_data['is_bullish'].sum())
-                                bearish_count = int(symbol_data['is_bearish'].sum())
+                            countable_data = symbol_data[symbol_data['should_count']]
+                            if not countable_data.empty:
+                                bullish_count = int(countable_data['is_bullish'].sum())
+                                bearish_count = int(countable_data['is_bearish'].sum())
+                            else:
+                                bullish_count = 0
+                                bearish_count = 0
                             
                             # 格式化金额
                             bull_call = self._format_amount(row['bullish_call_amount'])
@@ -363,25 +437,95 @@ class DiscordOutlierSender:
                         if not max_records.empty:
                             st = outliers_df["signal_type"].astype(str)
                             outliers_df_copy = outliers_df.copy()
-                            outliers_df_copy["is_bullish"] = st.str.contains("看涨", na=False)
-                            outliers_df_copy["is_bearish"] = st.str.contains("看跌", na=False)
+                            
+                            # 使用相同的精确分类逻辑
+                            def classify_signal(row):
+                                signal_type = str(row["signal_type"])
+                                option_type = str(row["option_type"]).upper()
+                                
+                                # 不统计的信号类型
+                                exclude_signals = [
+                                    "空头平仓Put，回补，看跌信号减弱",
+                                    "买Call平仓/做波动率交易", 
+                                    "买Put平仓/做波动率交易"
+                                ]
+                                
+                                if signal_type in exclude_signals:
+                                    return {
+                                        "is_bullish": False,
+                                        "is_bearish": False,
+                                        "is_call": False,
+                                        "is_put": False,
+                                        "should_count": False
+                                    }
+                                
+                                # 看涨Call
+                                bullish_call_signals = [
+                                    "多头买 Call，看涨",
+                                    "空头平仓 Call，回补信号，看涨",
+                                    "买 Call，看涨"
+                                ]
+                                
+                                # 看跌Call  
+                                bearish_call_signals = [
+                                    "空头卖 Call，看跌/看不涨",
+                                    "多头平仓 Call，减仓，看涨减弱",
+                                    "卖 Call，看空/价差对冲",
+                                    "卖 Call，看跌"
+                                ]
+                                
+                                # 看涨Put
+                                bullish_put_signals = [
+                                    "空头卖 Put，看涨/看不跌",
+                                    "多头平仓 Put，减仓，看跌减弱", 
+                                    "卖 Put，看涨/对冲",
+                                    "卖 Put，看涨"
+                                ]
+                                
+                                # 看跌Put
+                                bearish_put_signals = [
+                                    "多头买 Put，看跌",
+                                    "买 Put，看跌"
+                                ]
+                                
+                                is_call = "CALL" in option_type
+                                is_put = "PUT" in option_type
+                                
+                                if signal_type in bullish_call_signals and is_call:
+                                    return {"is_bullish": True, "is_bearish": False, "is_call": True, "is_put": False, "should_count": True}
+                                elif signal_type in bearish_call_signals and is_call:
+                                    return {"is_bullish": False, "is_bearish": True, "is_call": True, "is_put": False, "should_count": True}
+                                elif signal_type in bullish_put_signals and is_put:
+                                    return {"is_bullish": True, "is_bearish": False, "is_call": False, "is_put": True, "should_count": True}
+                                elif signal_type in bearish_put_signals and is_put:
+                                    return {"is_bullish": False, "is_bearish": True, "is_call": False, "is_put": True, "should_count": True}
+                                else:
+                                    return {"is_bullish": False, "is_bearish": False, "is_call": False, "is_put": False, "should_count": False}
+                            
+                            # 应用分类
+                            classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
+                            outliers_df_copy["is_bullish"] = classification[0]
+                            outliers_df_copy["is_bearish"] = classification[1] 
+                            outliers_df_copy["is_call"] = classification[2]
+                            outliers_df_copy["is_put"] = classification[3]
+                            outliers_df_copy["should_count"] = classification[4]
                             
                             # 计算每个symbol的统计值（使用原始数据）
-                            outliers_df_copy["is_call"] = outliers_df_copy["option_type"].str.contains("Call", na=False)
-                            outliers_df_copy["is_put"] = outliers_df_copy["option_type"].str.contains("Put", na=False)
                             outliers_df_copy["amount"] = outliers_df_copy["amount_threshold"] * outliers_df_copy["lastPrice_new"] * 100
                             
                             def calculate_amounts(group):
-                                bullish_call = group[(group["is_bullish"]) & (group["is_call"])]["amount"].sum()
-                                bearish_call = group[(group["is_bearish"]) & (group["is_call"])]["amount"].sum()
-                                bullish_put = group[(group["is_bullish"]) & (group["is_put"])]["amount"].sum()
-                                bearish_put = group[(group["is_bearish"]) & (group["is_put"])]["amount"].sum()
+                                # 只统计should_count=True的记录
+                                countable_group = group[group["should_count"]]
+                                bullish_call = countable_group[(countable_group["is_bullish"]) & (countable_group["is_call"])]["amount"].sum()
+                                bearish_call = countable_group[(countable_group["is_bearish"]) & (countable_group["is_call"])]["amount"].sum()
+                                bullish_put = countable_group[(countable_group["is_bullish"]) & (countable_group["is_put"])]["amount"].sum()
+                                bearish_put = countable_group[(countable_group["is_bearish"]) & (countable_group["is_put"])]["amount"].sum()
                                 return pd.Series({
                                     'bullish_call_amount': bullish_call,
                                     'bearish_call_amount': bearish_call,
                                     'bullish_put_amount': bullish_put,
                                     'bearish_put_amount': bearish_put,
-                                    'total_count': len(group)
+                                    'total_count': len(countable_group)
                                 })
                             
                             symbol_stats = outliers_df_copy.groupby("symbol").apply(calculate_amounts).reset_index()
