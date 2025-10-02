@@ -344,8 +344,8 @@ class DiscordOutlierSender:
                         
                         stats_message += "\n📈 **按股票统计:**\n"
                         stats_message += "```\n"
-                        stats_message += f"{'股票':<8} {'看涨':>6} {'看跌':>6} {'看涨Call':>12} {'看跌Call':>12} {'看涨Put':>12} {'看跌Put':>12}\n"
-                        stats_message += "-" * 80 + "\n"
+                        stats_message += f"{'股票':<2} {'看涨':>3} {'看跌':>3} {'看涨C':>2} {'看跌C':>2} {'看涨P':>2} {'看跌P':>2}\n"
+                        stats_message += "-" * 35 + "\n"
                         
                         # 只显示前25个股票，避免消息过长
                         display_count = min(25, len(grouped))
@@ -376,7 +376,7 @@ class DiscordOutlierSender:
                             bull_put = self._format_amount(row['bullish_put_amount']).replace('$', '')
                             bear_put = self._format_amount(row['bearish_put_amount']).replace('$', '')
                             
-                            stats_message += f"{sym:<8} {bullish_count:>6} {bearish_count:>6} {bull_call:>12} {bear_call:>12} {bull_put:>12} {bear_put:>12}\n"
+                            stats_message += f"{sym:<4} {bullish_count:>3} {bearish_count:>3} {bull_call:>4} {bear_call:>4} {bull_put:>4} {bear_put:>4}\n"
                         
                         if len(grouped) > display_count:
                             stats_message += f"... 还有 {len(grouped) - display_count} 个股票\n"
