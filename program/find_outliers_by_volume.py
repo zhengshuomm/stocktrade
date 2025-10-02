@@ -352,7 +352,7 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             outlier_row["amount_to_market_cap"] = (amount_threshold / market_cap) if market_cap and market_cap > 0 else 0
             outlier_row["amount_to_market_cap_pct"] = outlier_row["amount_to_market_cap"] * 100
             # 添加最新持仓量
-            outlier_row["openInterest_new"] = row.get("openInterest", None)
+            outlier_row["openInterest_new"] = row.get("openInterest_new", None)
             
             # 添加股票价格字段
             if symbol in stock_prices:
