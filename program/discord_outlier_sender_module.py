@@ -2,6 +2,62 @@
 """
 Discord异常数据发送模块
 从find_outliers_by_*.py中抽取的Discord功能，提供统一的异常数据发送接口
+
+Discord表格列含义说明：
+==========================================
+股票统计表格中的各列含义和判断条件：
+
+【看涨】- 看涨信号数量
+判断条件：signal_type属于以下类型且should_count=True
+- 多头买 Call，看涨
+- 空头平仓 Call，回补信号，看涨  
+- 买 Call，看涨
+- 空头卖 Put，看涨/看不跌
+- 多头平仓 Put，减仓，看跌减弱
+- 卖 Put，看涨/对冲
+- 卖 Put，看涨
+
+【看跌】- 看跌信号数量  
+判断条件：signal_type属于以下类型且should_count=True
+- 空头卖 Call，看跌/看不涨
+- 多头平仓 Call，减仓，看涨减弱
+- 卖 Call，看空/价差对冲
+- 卖 Call，看跌
+- 多头买 Put，看跌
+- 买 Put，看跌
+
+【看涨C】- 看涨Call期权金额
+判断条件：signal_type属于看涨Call类型且option_type='CALL'且should_count=True
+- 多头买 Call，看涨
+- 空头平仓 Call，回补信号，看涨
+- 买 Call，看涨
+
+【看跌C】- 看跌Call期权金额
+判断条件：signal_type属于看跌Call类型且option_type='CALL'且should_count=True  
+- 空头卖 Call，看跌/看不涨
+- 多头平仓 Call，减仓，看涨减弱
+- 卖 Call，看空/价差对冲
+- 卖 Call，看跌
+
+【看涨P】- 看涨Put期权金额
+判断条件：signal_type属于看涨Put类型且option_type='PUT'且should_count=True
+- 空头卖 Put，看涨/看不跌
+- 多头平仓 Put，减仓，看跌减弱
+- 卖 Put，看涨/对冲
+- 卖 Put，看涨
+
+【看跌P】- 看跌Put期权金额
+判断条件：signal_type属于看跌Put类型且option_type='PUT'且should_count=True
+- 多头买 Put，看跌
+- 买 Put，看跌
+
+排除的信号类型（不参与统计）：
+- 空头平仓Put，回补，看跌信号减弱
+- 买Call平仓/做波动率交易
+- 买Put平仓/做波动率交易
+
+金额计算：使用amount_threshold的绝对值
+==========================================
 """
 
 import discord
