@@ -222,8 +222,9 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
         if col in prev_stock_df.columns:
             prev_stock_df[col] = pd.to_numeric(prev_stock_df[col], errors="coerce").fillna(0)
     
-    # 创建股票价格变化映射
+    # 创建股票价格变化映射和价格映射
     stock_price_changes = {}
+    stock_prices = {}  # 存储最新和之前的股票价格
     for _, row in latest_stock_df.iterrows():
         symbol = row['symbol']
         latest_close = row['Close']
@@ -232,6 +233,10 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
             prev_close = prev_row.iloc[0]['Close']
             price_change = (latest_close - prev_close) / prev_close if prev_close != 0 else 0
             stock_price_changes[symbol] = price_change
+            stock_prices[symbol] = {
+                'new': latest_close,
+                'old': prev_close
+            }
     
     # 合并期权数据
     prev_option_subset = prev_option_df[["contractSymbol", "openInterest", "lastPrice"]].copy()
@@ -336,6 +341,15 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
             # 添加金额/市值比值
             market_cap = row.get("market_cap", 0)
             outlier_row["amount_to_market_cap"] = (amount_threshold / market_cap) if market_cap and market_cap > 0 else 0
+            
+            # 添加股票价格字段
+            if symbol in stock_prices:
+                outlier_row["股票价格(new)"] = stock_prices[symbol]['new']
+                outlier_row["股票价格(old)"] = stock_prices[symbol]['old']
+            else:
+                outlier_row["股票价格(new)"] = None
+                outlier_row["股票价格(old)"] = None
+            
             outliers.append(outlier_row)
     
     # 添加统计信息
