@@ -257,19 +257,21 @@ class DiscordOutlierSender:
                     open_price = float(stock_price_open)  # 当前开盘价
                     old_open_price = float(stock_price_old_open)  # 昨天开盘价
 
-                    # 检查数据是否更新：如果今天open价格和昨天最后一个open价格一样，显示"数据未更新"
-                    # 使用相对误差来比较浮点数，避免精度问题
-                    if abs(open_price - old_open_price) < 0.01:
+                    # 计算趋势
+                    open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
+                    close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+                    
+                    # 检查是否为数据未更新（只有当开盘价完全相同且收盘价也几乎相同时）
+                    if (abs(open_price - old_open_price) < 0.01 and 
+                        abs(new_price - old_price) < 0.01):
                         trend_text = "数据未更新"
                     else:
                         # 第一个高低平：当前open与昨天close比较
-                        open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                         is_high_open = open_vs_old_pct > 0.01   # 高开：开盘价比昨收高超过1%
                         is_low_open = open_vs_old_pct < -0.01  # 低开：开盘价比昨收低超过1%
                         is_flat_open = abs(open_vs_old_pct) <= 0.01  # 平开：开盘价与昨收价差在1%以内
 
                         # 第二个高低平：当前close与当前open比较
-                        close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                         is_high_close = close_vs_open_pct > 0.01   # 高走：收盘价比开盘高超过1%
                         is_low_close = close_vs_open_pct < -0.01  # 低走：收盘价比开盘低超过1%
                         is_flat_close = abs(close_vs_open_pct) <= 0.01  # 平走：收盘价与开盘价差在1%以内
