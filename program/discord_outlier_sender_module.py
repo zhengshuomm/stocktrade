@@ -337,11 +337,11 @@ class DiscordOutlierSender:
                         
                         # 应用分类
                         classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
-                        outliers_df_copy["is_bullish"] = classification[0]
-                        outliers_df_copy["is_bearish"] = classification[1] 
-                        outliers_df_copy["is_call"] = classification[2]
-                        outliers_df_copy["is_put"] = classification[3]
-                        outliers_df_copy["should_count"] = classification[4]
+                        outliers_df_copy["is_bullish"] = classification['is_bullish']
+                        outliers_df_copy["is_bearish"] = classification['is_bearish'] 
+                        outliers_df_copy["is_call"] = classification['is_call']
+                        outliers_df_copy["is_put"] = classification['is_put']
+                        outliers_df_copy["should_count"] = classification['should_count']
                         
                         # 计算金额 (使用amount_threshold的绝对值)
                         outliers_df_copy["amount"] = outliers_df_copy["amount_threshold"].abs()
@@ -504,11 +504,11 @@ class DiscordOutlierSender:
                             
                             # 应用分类
                             classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
-                            outliers_df_copy["is_bullish"] = classification[0]
-                            outliers_df_copy["is_bearish"] = classification[1] 
-                            outliers_df_copy["is_call"] = classification[2]
-                            outliers_df_copy["is_put"] = classification[3]
-                            outliers_df_copy["should_count"] = classification[4]
+                            outliers_df_copy["is_bullish"] = classification['is_bullish']
+                            outliers_df_copy["is_bearish"] = classification['is_bearish'] 
+                            outliers_df_copy["is_call"] = classification['is_call']
+                            outliers_df_copy["is_put"] = classification['is_put']
+                            outliers_df_copy["should_count"] = classification['should_count']
                             
                             # 计算每个symbol的统计值（使用原始数据）
                             outliers_df_copy["amount"] = outliers_df_copy["amount_threshold"] * outliers_df_copy["lastPrice_new"] * 100
