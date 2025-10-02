@@ -32,15 +32,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: 计算是否在本次时段执行
-      id: gate
-      shell: bash
-      run: |
-        should_run="1"
-
-
     - name: 检查当前时区
-      if: steps.gate.outputs.should_run == '1'
       run: |
         echo "当前 UTC 时间: $(date -u)"
         echo "当前本地时间: $(date)"
@@ -64,7 +56,6 @@ jobs:
         "
         
     - name: 下载历史数据文件
-      if: steps.gate.outputs.should_run == '1'
       uses: actions/download-artifact@v4
       with:
         name: priority-stock-data
@@ -72,7 +63,6 @@ jobs:
       continue-on-error: true
       
     - name: 准备历史数据
-      if: steps.gate.outputs.should_run == '1'
       run: |
         # 创建 priority_data 目录结构
         mkdir -p priority_data/option_data priority_data/stock_price priority_data/stock_symbol priority_data/outlier priority_data/volume_outlier
@@ -127,29 +117,25 @@ jobs:
         echo "当前成交量异常数据文件："
         ls -la priority_data/volume_outlier/ || echo "成交量异常数据目录为空"
         
-    - name: 运行股票期权扫描 (智能跳过重复触发)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
         python program/scan_stock_30min.py --folder priority_data --delay 0.5
         echo "扫描完成"
         
-    - name: 运行持仓量异常检测 (与扫描一致的跳过策略)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行持仓量异常检测
       run: |
         echo "开始持仓量异常检测..."
         python program/find_outliers_by_oi.py --folder priority_data -d
         echo "持仓量异常检测完成"
         
-    - name: 运行成交量异常检测 (与扫描一致的跳过策略)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行成交量异常检测
       run: |
         echo "开始成交量异常检测..."
         python program/find_outliers_by_volume.py --folder priority_data -d --market-cap-ratio 0.000001
         echo "成交量异常检测完成"
         
     - name: 上传数据文件到 Artifacts
-      if: steps.gate.outputs.should_run == '1'
       uses: actions/upload-artifact@v4
       with:
         name: priority-stock-data
@@ -157,7 +143,6 @@ jobs:
         retention-days: 30
         
     - name: 提交所有数据文件
-      if: steps.gate.outputs.should_run == '1'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"

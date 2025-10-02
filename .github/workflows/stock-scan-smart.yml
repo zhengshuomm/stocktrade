@@ -120,29 +120,19 @@ jobs:
         echo "当前成交量异常数据文件："
         ls -la data/volume_outlier/ || echo "成交量异常数据目录为空"
         
-    - name: 计算是否在本次时段执行
-      id: gate
-      shell: bash
-      run: |
-        should_run="1"
-
-
-    - name: 运行股票期权扫描 (智能跳过重复触发)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行股票期权扫描
       run: |
         echo "开始扫描股票期权数据..."
         python program/scan_stock_30min.py --delay 0.5
         echo "扫描完成"
         
-    - name: 运行持仓量异常检测 (与扫描一致的跳过策略)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行持仓量异常检测
       run: |
         echo "开始持仓量异常检测..."
         python program/find_outliers_by_oi.py -d
         echo "持仓量异常检测完成"
         
-    - name: 运行成交量异常检测 (与扫描一致的跳过策略)
-      if: steps.gate.outputs.should_run == '1'
+    - name: 运行成交量异常检测
       run: |
         echo "开始成交量异常检测..."
         python program/find_outliers_by_volume.py -d --market-cap-ratio 0.000001
