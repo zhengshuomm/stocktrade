@@ -66,7 +66,6 @@ def create_volume_outlier_table(cursor):
         expiry_date VARCHAR(20),
         lastPrice_new DECIMAL(10,4),
         lastPrice_old DECIMAL(10,4),
-        volume DECIMAL(15,2),
         symbol VARCHAR(20),
         stock_price_new DECIMAL(10,4),
         stock_price_old DECIMAL(10,4),

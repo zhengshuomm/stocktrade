@@ -160,7 +160,6 @@ class DatabaseInserter:
                     'expiry_date': str(row.get('expiry_date', '')),
                     'lastPrice_new': self.format_float_precision(row.get('lastPrice_new')),
                     'lastPrice_old': self.format_float_precision(row.get('lastPrice_old')),
-                    'volume': self.format_float_precision(row.get('volume')),
                     'symbol': str(row.get('symbol', '')),
                     'stock_price_new': self.format_float_precision(row.get('股票价格(new)')),
                     'stock_price_old': self.format_float_precision(row.get('股票价格(old)')),
@@ -228,7 +227,7 @@ class DatabaseInserter:
                 'contractSymbol', 'strike', 'signal_type', 'folder_name', 'option_type',
                 'volume_old', 'volume_new', 'amount_threshold', 'amount_to_market_cap',
                 'openInterest_new', 'expiry_date', 'lastPrice_new', 'lastPrice_old',
-                'volume', 'symbol',                 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
+                'symbol', 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
                 'stock_price_new_high', 'stock_price_new_low', 'create_time'
             ]
             
@@ -253,7 +252,6 @@ class DatabaseInserter:
                 expiry_date = EXCLUDED.expiry_date,
                 lastPrice_new = EXCLUDED.lastPrice_new,
                 lastPrice_old = EXCLUDED.lastPrice_old,
-                volume = EXCLUDED.volume,
                 symbol = EXCLUDED.symbol,
                 stock_price_new = EXCLUDED.stock_price_new,
                 stock_price_old = EXCLUDED.stock_price_old,
