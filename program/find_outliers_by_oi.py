@@ -254,9 +254,11 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
             prev_close = prev_row.iloc[0]['Close']
             price_change = (latest_close - prev_close) / prev_close if prev_close != 0 else 0
             stock_price_changes[symbol] = price_change
+            prev_open = prev_row.iloc[0]['Open']
             stock_prices[symbol] = {
                 'new': latest_close,
-                'old': prev_close
+                'old': prev_close,
+                'old_open': prev_open
             }
     
     # 合并期权数据
@@ -522,9 +524,11 @@ def main():
                         prev_row = prev_stock_df[prev_stock_df['symbol'] == symbol]
                         if not prev_row.empty:
                             prev_close = prev_row.iloc[0]['Close']
+                            prev_open = prev_row.iloc[0]['Open']
                             stock_prices[symbol] = {
                                 'new': latest_close,
                                 'old': prev_close,
+                                'old_open': prev_open,
                                 'new_open': latest_open,
                                 'new_high': latest_high,
                                 'new_low': latest_low
