@@ -282,7 +282,10 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             stock_prices[symbol] = {
                 'new': latest_close,
                 'old': prev_close,
-                'old_open': prev_open
+                'old_open': prev_open,
+                'new_open': row['Open'],
+                'new_high': row['High'],
+                'new_low': row['Low']
             }
     
     # 合并期权数据
@@ -417,9 +420,15 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             if symbol in stock_prices:
                 outlier_row["股票价格(new)"] = stock_prices[symbol]['new']
                 outlier_row["股票价格(old)"] = stock_prices[symbol]['old']
+                outlier_row["股票价格(new open)"] = stock_prices[symbol].get('new_open', None)
+                outlier_row["股票价格(new high)"] = stock_prices[symbol].get('new_high', None)
+                outlier_row["股票价格(new low)"] = stock_prices[symbol].get('new_low', None)
             else:
                 outlier_row["股票价格(new)"] = None
                 outlier_row["股票价格(old)"] = None
+                outlier_row["股票价格(new open)"] = None
+                outlier_row["股票价格(new high)"] = None
+                outlier_row["股票价格(new low)"] = None
             
             outliers.append(outlier_row)
     
@@ -461,7 +470,8 @@ def save_volume_outliers(df: pd.DataFrame, out_dir: str) -> str:
     priority_columns = [
         "contractSymbol", "strike", "lastPrice_new", "signal_type", "stock_price_change_pct",
         "option_type", "volume_change_abs", "volume_new", "amount_threshold", 
-        "amount_to_market_cap_pct", "openInterest_new", "amount_tier", "expiry_date"
+        "amount_to_market_cap_pct", "openInterest_new", "amount_tier", "expiry_date",
+        "股票价格(new)", "股票价格(old)", "股票价格(new open)", "股票价格(new high)", "股票价格(new low)"
     ]
     
     # 重新排列列顺序
