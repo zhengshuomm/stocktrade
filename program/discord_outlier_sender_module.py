@@ -280,17 +280,17 @@ class DiscordOutlierSender:
                         elif is_high_open and is_low_close:
                             trend_text = "🟢高开低走"  # 绿色
                         elif is_high_open and is_flat_close:
-                            trend_text = "高开平走"
+                            trend_text = "🔴高开平走"  # 红色
                         elif is_low_open and is_high_close:
                             trend_text = "🔴低开高走"  # 红色
                         elif is_low_open and is_low_close:
                             trend_text = "🟢低开低走"  # 绿色
                         elif is_low_open and is_flat_close:
-                            trend_text = "低开平走"
+                            trend_text = "🟢低开平走"  # 绿色
                         elif is_flat_open and is_high_close:
-                            trend_text = "平开高走"
+                            trend_text = "🔴平开高走"  # 红色
                         elif is_flat_open and is_low_close:
-                            trend_text = "平开低走"
+                            trend_text = "🟢平开低走"  # 绿色
                         elif is_flat_open and is_flat_close:
                             trend_text = "平开平走"
                         else:
@@ -530,17 +530,17 @@ class DiscordOutlierSender:
                                             elif is_high_open and is_low_close:
                                                 trend_text = "🟢高开低走"
                                             elif is_high_open and is_flat_close:
-                                                trend_text = "高开平走"
+                                                trend_text = "🔴高开平走"
                                             elif is_low_open and is_high_close:
                                                 trend_text = "🔴低开高走"
                                             elif is_low_open and is_low_close:
                                                 trend_text = "🟢低开低走"
                                             elif is_low_open and is_flat_close:
-                                                trend_text = "低开平走"
+                                                trend_text = "🟢低开平走"
                                             elif is_flat_open and is_high_close:
-                                                trend_text = "平开高走"
+                                                trend_text = "🔴平开高走"
                                             elif is_flat_open and is_low_close:
-                                                trend_text = "平开低走"
+                                                trend_text = "🟢平开低走"
                                             elif is_flat_open and is_flat_close:
                                                 trend_text = "平开平走"
                                             else:
@@ -549,8 +549,8 @@ class DiscordOutlierSender:
                                         trend_text = "N/A"
                             
                             # 根据趋势过滤数据
-                            bullish_trends = ["🔴高开高走", "🔴低开高走", "平开高走", "高开平走"]
-                            bearish_trends = ["🟢高开低走", "🟢低开低走", "平开低走", "低开平走"]
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走"]
                             
                             # 过滤看涨信号
                             bullish_filtered = countable_group[
@@ -645,17 +645,17 @@ class DiscordOutlierSender:
                                             elif is_high_open and is_low_close:
                                                 trend_text = "🟢高开低走"
                                             elif is_high_open and is_flat_close:
-                                                trend_text = "高开平走"
+                                                trend_text = "🔴高开平走"
                                             elif is_low_open and is_high_close:
                                                 trend_text = "🔴低开高走"
                                             elif is_low_open and is_low_close:
                                                 trend_text = "🟢低开低走"
                                             elif is_low_open and is_flat_close:
-                                                trend_text = "低开平走"
+                                                trend_text = "🟢低开平走"
                                             elif is_flat_open and is_high_close:
-                                                trend_text = "平开高走"
+                                                trend_text = "🔴平开高走"
                                             elif is_flat_open and is_low_close:
-                                                trend_text = "平开低走"
+                                                trend_text = "🟢平开低走"
                                             elif is_flat_open and is_flat_close:
                                                 trend_text = "平开平走"
                                             else:
@@ -664,8 +664,8 @@ class DiscordOutlierSender:
                                         trend_text = "N/A"
                             
                             # 根据趋势过滤
-                            bullish_trends = ["🔴高开高走", "🔴低开高走", "平开高走", "高开平走"]
-                            bearish_trends = ["🟢高开低走", "🟢低开低走", "平开低走", "低开平走"]
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走"]
                             
                             bullish_count = 0
                             bearish_count = 0
