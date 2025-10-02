@@ -395,7 +395,16 @@ class DiscordOutlierSender:
                             stats_message += f"\n📁 **数据文件:** {github_url}\n"
                         
                         stats_message += "\n📈 **按股票统计:**\n"
-                        for _, row in grouped.iterrows():
+                        stats_message += "```\n"
+                        stats_message += f"{'股票':<8} {'看涨':>6} {'看跌':>6} {'看涨Call':>12} {'看跌Call':>12} {'看涨Put':>12} {'看跌Put':>12}\n"
+                        stats_message += "-" * 80 + "\n"
+                        
+                        # 只显示前12个股票，避免消息过长
+                        display_count = min(12, len(grouped))
+                        for i, (_, row) in enumerate(grouped.iterrows()):
+                            if i >= display_count:
+                                break
+                                
                             sym = row["symbol"]
                             total_count = int(row['total_count'])
                             
@@ -413,13 +422,18 @@ class DiscordOutlierSender:
                                 bullish_count = 0
                                 bearish_count = 0
                             
-                            # 格式化金额
-                            bull_call = self._format_amount(row['bullish_call_amount'])
-                            bear_call = self._format_amount(row['bearish_call_amount'])
-                            bull_put = self._format_amount(row['bullish_put_amount'])
-                            bear_put = self._format_amount(row['bearish_put_amount'])
+                            # 格式化金额（更紧凑的格式）
+                            bull_call = self._format_amount(row['bullish_call_amount']).replace('$', '')
+                            bear_call = self._format_amount(row['bearish_call_amount']).replace('$', '')
+                            bull_put = self._format_amount(row['bullish_put_amount']).replace('$', '')
+                            bear_put = self._format_amount(row['bearish_put_amount']).replace('$', '')
                             
-                            stats_message += f"• {sym}: 看涨 {bullish_count} 个, 看跌 {bearish_count} 个, 看涨Call {bull_call}, 看跌Call {bear_call}, 看涨Put {bull_put}, 看跌Put {bear_put}\n"
+                            stats_message += f"{sym:<8} {bullish_count:>6} {bearish_count:>6} {bull_call:>12} {bear_call:>12} {bull_put:>12} {bear_put:>12}\n"
+                        
+                        if len(grouped) > display_count:
+                            stats_message += f"... 还有 {len(grouped) - display_count} 个股票\n"
+                        
+                        stats_message += "```"
                     
                     # 添加大于500万但不满足异常条件的统计
                     if high_amount_but_not_outlier_df is not None and not high_amount_but_not_outlier_df.empty:
