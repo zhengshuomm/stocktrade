@@ -396,6 +396,41 @@ class DatabaseInserter:
             logger.error(f"❌ 记录处理文件失败: {e}")
             self.conn.rollback()
     
+    def cleanup_old_data(self, days=7):
+        """清理超过指定天数的旧数据"""
+        try:
+            logger.info(f"🧹 开始清理超过{days}天的旧数据...")
+            
+            # 清理volume_outlier表
+            volume_query = "DELETE FROM volume_outlier WHERE create_time < NOW() - INTERVAL '%s days'"
+            self.cursor.execute(volume_query, (days,))
+            volume_deleted = self.cursor.rowcount
+            
+            # 清理oi_outlier表
+            oi_query = "DELETE FROM oi_outlier WHERE create_time < NOW() - INTERVAL '%s days'"
+            self.cursor.execute(oi_query, (days,))
+            oi_deleted = self.cursor.rowcount
+            
+            # 清理processed_files表
+            processed_query = "DELETE FROM processed_files WHERE processed_time < NOW() - INTERVAL '%s days'"
+            self.cursor.execute(processed_query, (days,))
+            processed_deleted = self.cursor.rowcount
+            
+            # 提交清理操作
+            self.conn.commit()
+            
+            logger.info(f"✅ 数据清理完成:")
+            logger.info(f"  volume_outlier: 删除 {volume_deleted} 条记录")
+            logger.info(f"  oi_outlier: 删除 {oi_deleted} 条记录")
+            logger.info(f"  processed_files: 删除 {processed_deleted} 条记录")
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ 清理旧数据失败: {e}")
+            self.conn.rollback()
+            return False
+    
     def process_volume_outlier(self):
         """处理volume_outlier文件"""
         logger.info("🔄 开始处理volume_outlier文件...")
@@ -472,7 +507,7 @@ class DatabaseInserter:
         
         return inserted_count > 0
     
-    def run(self):
+    def run(self, cleanup_days=7, no_cleanup=False):
         """运行主程序"""
         logger.info(f"🚀 开始处理文件夹: {self.folder_name}")
         
@@ -487,9 +522,14 @@ class DatabaseInserter:
             # 处理oi_outlier
             oi_success = self.process_oi_outlier()
             
-            # 总结
+            # 数据处理完成后清理旧数据
             if volume_success or oi_success:
                 logger.info("✅ 数据处理完成")
+                # 清理旧数据（如果未禁用）
+                if not no_cleanup:
+                    self.cleanup_old_data(days=cleanup_days)
+                else:
+                    logger.info("⏭️ 跳过数据清理步骤")
                 return True
             else:
                 logger.warning("⚠️ 没有数据被处理")
@@ -508,6 +548,10 @@ def main():
                        help='数据文件夹名称')
     parser.add_argument('--verbose', '-v', action='store_true',
                        help='显示详细日志')
+    parser.add_argument('--cleanup-days', type=int, default=7,
+                       help='清理超过指定天数的旧数据 (默认: 7天)')
+    parser.add_argument('--no-cleanup', action='store_true',
+                       help='跳过数据清理步骤')
     
     args = parser.parse_args()
     
@@ -521,7 +565,7 @@ def main():
     
     # 运行程序
     inserter = DatabaseInserter(args.folder)
-    success = inserter.run()
+    success = inserter.run(cleanup_days=args.cleanup_days, no_cleanup=args.no_cleanup)
     
     if success:
         logger.info("🎉 程序执行成功")
