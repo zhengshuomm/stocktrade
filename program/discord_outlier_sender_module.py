@@ -881,8 +881,15 @@ class DiscordOutlierSender:
                             (trend_filtered_grouped['bearish_count'] > 0)
                         ]
                         
-                        # 找到每个symbol的amount_threshold最大的记录
-                        max_records = outliers_df.loc[outliers_df.groupby("symbol")["amount_threshold"].idxmax()]
+                        # 找到每个symbol的amount_threshold最大的记录，但只考虑should_count=True的记录
+                        if 'should_count' in outliers_df.columns:
+                            countable_outliers = outliers_df[outliers_df['should_count'] == True]
+                        else:
+                            countable_outliers = outliers_df
+                        if not countable_outliers.empty:
+                            max_records = countable_outliers.loc[countable_outliers.groupby("symbol")["amount_threshold"].idxmax()]
+                        else:
+                            max_records = pd.DataFrame()
                         
                         # 按照过滤后的顺序重新排列max_records
                         if not filtered_grouped.empty and not max_records.empty:
@@ -891,23 +898,31 @@ class DiscordOutlierSender:
                             max_records = max_records[max_records['symbol'].isin(valid_symbols)]
                             
                             # 按照趋势过滤后的顺序重新排列
-                            max_records = max_records.set_index("symbol").loc[filtered_grouped["symbol"]].reset_index()
+                            if not max_records.empty:
+                                try:
+                                    max_records = max_records.set_index("symbol").loc[filtered_grouped["symbol"]].reset_index()
+                                except KeyError:
+                                    # 如果索引操作失败，保持原有顺序
+                                    pass
                         
                         success_count = 0
-                        for _, row in max_records.iterrows():
-                            try:
-                                embed = self.format_outlier_message(row, outlier_type)
-                                await channel.send(embed=embed)
-                                success_count += 1
-                                await asyncio.sleep(0.1)  # 避免发送过快
-                            except Exception as e:
-                                print(f"❌ 发送单个消息失败: {e}")
-                                continue
+                        if not max_records.empty:
+                            for _, row in max_records.iterrows():
+                                try:
+                                    embed = self.format_outlier_message(row, outlier_type)
+                                    await channel.send(embed=embed)
+                                    success_count += 1
+                                    await asyncio.sleep(0.1)  # 避免发送过快
+                                except Exception as e:
+                                    print(f"❌ 发送单个消息失败: {e}")
+                                    continue
                         
                         print(f"✅ 成功发送 {success_count} 个单个消息到 Discord")
                     
                 except Exception as e:
+                    import traceback
                     print(f"❌ Discord发送过程中出错: {e}")
+                    print(f"错误详情: {traceback.format_exc()}")
                 finally:
                     if client:
                         await client.close()
