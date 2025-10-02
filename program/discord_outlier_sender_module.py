@@ -225,7 +225,7 @@ class DiscordOutlierSender:
         
         return embed
         
-    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None, signal_type_stats=None):
+    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
         """
         发送异常数据到 Discord
         
@@ -364,6 +364,14 @@ class DiscordOutlierSender:
                         
                         grouped = outliers_df_copy.groupby("symbol").apply(calculate_amounts, include_groups=False).reset_index()
                         grouped = grouped.sort_values(by=["total_count"], ascending=[False])
+                        
+                        # 添加文件链接
+                        if csv_file_path:
+                            # 确定文件夹类型
+                            folder_type = "outlier" if outlier_type == "oi" else "volume_outlier"
+                            # 构建GitHub链接
+                            github_url = f"https://github.com/zhengshuomm/stocktrade/blob/main/{self.data_folder}/{folder_type}/{csv_file_path.split('/')[-1]}"
+                            stats_message += f"\n📁 **数据文件:** {github_url}\n"
                         
                         stats_message += "\n📈 **按股票统计:**\n"
                         for _, row in grouped.iterrows():
@@ -578,13 +586,13 @@ class DiscordOutlierSender:
 
 
 # 便捷函数
-async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None):
+async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
     """发送OI异常数据到Discord"""
     sender = DiscordOutlierSender("OI异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df, signal_type_stats)
+    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path)
 
 
-async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None):
+async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
     """发送Volume异常数据到Discord"""
     sender = DiscordOutlierSender("Volume异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df, signal_type_stats)
+    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path)

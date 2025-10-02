@@ -532,7 +532,7 @@ def main():
                 
                 # 使用新的模块化Discord发送器
                 import asyncio
-                asyncio.run(send_oi_outliers(out_df, args.folder, time_range, stock_prices, None, signal_type_stats))
+                asyncio.run(send_oi_outliers(out_df, args.folder, time_range, stock_prices, None, signal_type_stats, out_path))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
         
