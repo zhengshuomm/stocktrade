@@ -96,7 +96,7 @@ def parse_ts_from_filename(path: str) -> datetime:
     return datetime.strptime(ymd + hm, "%Y%m%d%H%M")
 
 
-def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_files: list = None):
+def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_files: list = None, compare_latest: bool = False):
     """查找最新的两份期权数据和对应的股票价格数据"""
     if specified_files and len(specified_files) >= 2:
         # 使用指定的文件，但按时间顺序排列
@@ -134,15 +134,36 @@ def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_fil
         if not os.path.exists(previous_stock):
             raise FileNotFoundError(f"未找到对应的股票价格文件: {previous_stock}")
     else:
-        # 自动查找最新的文件
+        # 自动查找文件
         option_pattern = os.path.join(option_dir, "all-*.csv")
         option_files = glob.glob(option_pattern)
         if not option_files or len(option_files) < 2:
             raise FileNotFoundError("未找到至少两份期权数据文件用于对比")
         
         option_files_sorted = sorted(option_files, key=lambda p: parse_ts_from_filename(p), reverse=True)
-        latest_option = option_files_sorted[0]
-        previous_option = option_files_sorted[1]
+        
+        if compare_latest:
+            # 比较最新的两个文件
+            latest_option = option_files_sorted[0]
+            previous_option = option_files_sorted[1]
+        else:
+            # 默认：比较最新文件和前一天最后文件
+            latest_option = option_files_sorted[0]
+            latest_ts = parse_ts_from_filename(latest_option)
+            latest_date = latest_ts.date()
+            
+            # 找到前一天最后文件
+            previous_option = None
+            for option_file in option_files_sorted[1:]:
+                file_ts = parse_ts_from_filename(option_file)
+                file_date = file_ts.date()
+                if file_date < latest_date:
+                    previous_option = option_file
+                    break
+            
+            if previous_option is None:
+                # 如果没找到前一天的文件，则使用第二新的文件
+                previous_option = option_files_sorted[1]
         
         # 提取时间戳
         latest_ts = parse_ts_from_filename(latest_option)
@@ -433,6 +454,8 @@ def main():
                        help='指定要对比的期权文件名，例如: --files all-20250930-0923.csv all-20250930-1150.csv')
     parser.add_argument('--discord', '-d', action='store_true',
                        help='发送结果到 Discord (默认: 不发送)')
+    parser.add_argument('--compare-latest', action='store_true',
+                       help='比较最新的两个文件 (默认: 比较最新文件和前一天最后文件)')
     
     args = parser.parse_args()
     
@@ -450,10 +473,13 @@ def main():
             print(f"  指定文件2: {args.files[1]}")
             print("  (将按时间顺序自动排列)")
         else:
-            print("自动查找最新的两个文件进行对比")
+            if args.compare_latest:
+                print("自动查找最新的两个文件进行对比")
+            else:
+                print("自动查找最新文件和前一天最后文件进行对比")
         
         latest_option, previous_option, latest_stock, previous_stock, latest_ts, previous_ts = find_latest_two_all_csv(
-            OPTION_DIR, STOCK_PRICE_DIR, args.files
+            OPTION_DIR, STOCK_PRICE_DIR, args.files, args.compare_latest
         )
         print(f"最新期权文件: {latest_option}")
         print(f"上一份期权文件: {previous_option}")
