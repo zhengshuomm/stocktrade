@@ -551,8 +551,8 @@ class DiscordOutlierSender:
                                         trend_text = "N/A"
                             
                             # 根据趋势过滤数据
-                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走"]
-                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走"]
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走", "数据未更新"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走", "数据未更新"]
                             
                             # 过滤看涨信号
                             bullish_filtered = countable_group[
@@ -600,11 +600,8 @@ class DiscordOutlierSender:
                         trend_filtered_grouped = pd.DataFrame(trend_filtered_results)
                         trend_filtered_grouped = trend_filtered_grouped.sort_values(by=["total_count"], ascending=[False])
                         
-                        # 过滤掉看涨和看跌都为0的股票
-                        filtered_trend_grouped = trend_filtered_grouped[
-                            (trend_filtered_grouped['bullish_count'] > 0) | 
-                            (trend_filtered_grouped['bearish_count'] > 0)
-                        ]
+                        # 不过滤任何股票，包括"数据未更新"的股票
+                        filtered_trend_grouped = trend_filtered_grouped
                         
                         # 只显示前25个股票
                         display_count = min(25, len(filtered_trend_grouped))
@@ -840,8 +837,8 @@ class DiscordOutlierSender:
                                         trend_text = "N/A"
                             
                             # 根据趋势过滤数据
-                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走"]
-                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走"]
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走", "数据未更新"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走", "数据未更新"]
                             
                             # 过滤看涨信号
                             bullish_filtered = countable_group[
