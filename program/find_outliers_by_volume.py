@@ -201,7 +201,8 @@ def load_market_cap_csv(path: str) -> pd.DataFrame:
 
 def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFrame, 
                            latest_stock_df: pd.DataFrame, prev_stock_df: pd.DataFrame, 
-                           market_cap_df: pd.DataFrame = None, market_cap_ratio: float = MIN_MARKET_CAP_RATIO) -> pd.DataFrame:
+                           market_cap_df: pd.DataFrame = None, market_cap_ratio: float = MIN_MARKET_CAP_RATIO, 
+                           is_cross_day: bool = False) -> pd.DataFrame:
     """
     根据成交量变化判断异常情况
     """
@@ -250,8 +251,21 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
         return pd.DataFrame()
     
     # 计算变化
-    merged["volume_change"] = merged["volume_new"] - merged["volume_old"]
-    merged["volume_change_pct"] = (merged["volume_change"] / merged["volume_old"] * 100).fillna(0)
+    if is_cross_day:
+        # 跨日数据：如果volume相同则认为变化为0，否则计算差值
+        merged["volume_change"] = merged.apply(
+            lambda row: 0 if row["volume_new"] == row["volume_old"] 
+            else row["volume_new"] - row["volume_old"], axis=1
+        )
+        # 跨日数据的百分比计算：如果volume_old为0，则设为100%，否则正常计算
+        merged["volume_change_pct"] = merged.apply(
+            lambda row: 100.0 if row["volume_old"] == 0 and row["volume_new"] > 0
+            else (row["volume_change"] / row["volume_old"] * 100 if row["volume_old"] > 0 else 0), axis=1
+        )
+    else:
+        # 同日数据：正常计算
+        merged["volume_change"] = merged["volume_new"] - merged["volume_old"]
+        merged["volume_change_pct"] = (merged["volume_change"] / merged["volume_old"] * 100).fillna(0)
     merged["option_price_change"] = (merged["lastPrice_new"] - merged["lastPrice_old"]) / merged["lastPrice_old"]
     merged["option_price_change"] = merged["option_price_change"].fillna(0)
     
@@ -463,12 +477,12 @@ def main():
         prev_stock_df = load_stock_csv(previous_stock)
         market_cap_df = load_market_cap_csv(MARKET_CAP_FILE)
 
-        # 跨日处理：如果最新两份文件的日期不同，将前一份的volume设为0
-        if latest_ts.strftime('%Y%m%d') != previous_ts.strftime('%Y%m%d'):
-            print("检测到跨日数据，将前一份快照的volume设为0")
-            prev_option_df['volume'] = 0
+        # 跨日处理：如果最新两份文件的日期不同，需要特殊处理volume变化计算
+        is_cross_day = latest_ts.strftime('%Y%m%d') != previous_ts.strftime('%Y%m%d')
+        if is_cross_day:
+            print("检测到跨日数据，将使用智能volume变化计算")
 
-        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df, args.market_cap_ratio)
+        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df, args.market_cap_ratio, is_cross_day)
         if out_df.empty:
             print("未发现符合异常条件的期权合约。")
             return
