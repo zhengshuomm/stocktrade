@@ -137,13 +137,13 @@ class DiscordOutlierSender:
             
             embed.add_field(
                 name="📈 变化数据",
-                value=f"**股票变化**: {stock_change_pct:.2f}%\n**期权变化**: {option_change_pct:.2f}%\n**OI变化**: {oi_change_abs:,.0f}\n**OI(new)**: {open_interest_new:,.0f}\n**OI(old)**: {open_interest_old:,.0f}",
+                value=f"**OI变化**: {oi_change_abs:,.0f}\n**OI(new)**: {open_interest_new:,.0f}\n**OI(old)**: {open_interest_old:,.0f}",
                 inline=True
             )
             
             embed.add_field(
                 name="🔢 数值",
-                value=f"**lastPrice(new)**: ${last_price_new}\n**lastPrice(old)**: ${last_price_old}",
+                value=f"**期权价格(new)**: ${last_price_new}\n**期权价格(old)**: ${last_price_old}\n**期权变化**: {option_change_pct:.2f}%",
                 inline=True
             )
         else:  # volume
@@ -154,13 +154,13 @@ class DiscordOutlierSender:
             
             embed.add_field(
                 name="📈 变化数据",
-                value=f"**股票变化**: {stock_change_pct:.2f}%\n**期权变化**: {option_change_pct:.2f}%\n**Volume变化**: {volume_change_abs:,.0f}\n**Volume(new)**: {volume_new_val:,.0f}",
+                value=f"**Volume变化**: {volume_change_abs:,.0f}\n**Volume(new)**: {volume_new_val:,.0f}",
                 inline=True
             )
             
             embed.add_field(
                 name="🔢 数值",
-                value=f"**期权价格(new)**: ${last_price_new}\n**期权价格(old)**: ${last_price_old}",
+                value=f"**期权价格(new)**: ${last_price_new}\n**期权价格(old)**: ${last_price_old}\n**期权变化**: {option_change_pct:.2f}%",
                 inline=True
             )
         
@@ -178,7 +178,7 @@ class DiscordOutlierSender:
             
             embed.add_field(
                 name="💰 股票价格",
-                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}",
+                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}\n**股票变化**: {stock_change_pct:.2f}%",
                 inline=True
             )
 
