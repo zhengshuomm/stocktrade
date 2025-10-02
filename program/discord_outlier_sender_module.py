@@ -169,16 +169,25 @@ class DiscordOutlierSender:
             stock_price_info = self.stock_prices[symbol]
             stock_price_new = stock_price_info.get('new', 'N/A')
             stock_price_old = stock_price_info.get('old', 'N/A')
+            stock_price_open = stock_price_info.get('new_open', 'N/A')
+            stock_price_high = stock_price_info.get('new_high', 'N/A')
+            stock_price_low = stock_price_info.get('new_low', 'N/A')
             
             # 格式化价格，保留2位小数
             if stock_price_new != 'N/A':
                 stock_price_new = f"{float(stock_price_new):.2f}"
             if stock_price_old != 'N/A':
                 stock_price_old = f"{float(stock_price_old):.2f}"
+            if stock_price_open != 'N/A':
+                stock_price_open = f"{float(stock_price_open):.2f}"
+            if stock_price_high != 'N/A':
+                stock_price_high = f"{float(stock_price_high):.2f}"
+            if stock_price_low != 'N/A':
+                stock_price_low = f"{float(stock_price_low):.2f}"
             
             embed.add_field(
                 name="💰 股票价格",
-                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}\n**股票变化**: {stock_change_pct:.2f}%",
+                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}\n**股票价格(new open)**: ${stock_price_open}\n**股票价格(new high)**: ${stock_price_high}\n**股票价格(new low)**: ${stock_price_low}\n**股票变化**: {stock_change_pct:.2f}%",
                 inline=True
             )
 

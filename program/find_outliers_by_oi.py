@@ -516,12 +516,18 @@ def main():
                     for _, row in latest_stock_df.iterrows():
                         symbol = row['symbol']
                         latest_close = row['Close']
+                        latest_open = row.get('Open', latest_close)  # 如果没有Open列，使用Close
+                        latest_high = row.get('High', latest_close)  # 如果没有High列，使用Close
+                        latest_low = row.get('Low', latest_close)    # 如果没有Low列，使用Close
                         prev_row = prev_stock_df[prev_stock_df['symbol'] == symbol]
                         if not prev_row.empty:
                             prev_close = prev_row.iloc[0]['Close']
                             stock_prices[symbol] = {
                                 'new': latest_close,
-                                'old': prev_close
+                                'old': prev_close,
+                                'new_open': latest_open,
+                                'new_high': latest_high,
+                                'new_low': latest_low
                             }
                 
                 # 准备异常类型统计
