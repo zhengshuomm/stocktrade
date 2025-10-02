@@ -232,6 +232,7 @@ class DiscordOutlierSender:
             stock_price_new = stock_price_info.get('new', 'N/A')
             stock_price_old = stock_price_info.get('old', 'N/A')
             stock_price_open = stock_price_info.get('new_open', 'N/A')
+            stock_price_old_open = stock_price_info.get('old_open', 'N/A')
             stock_price_high = stock_price_info.get('new_high', 'N/A')
             stock_price_low = stock_price_info.get('new_low', 'N/A')
             
@@ -249,14 +250,15 @@ class DiscordOutlierSender:
             
             # 计算股票趋势（第一个高低平：当前open与昨天close比较；第二个高低平：当前close与当前open比较）
             trend_text = "N/A"
-            if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and stock_price_open != 'N/A'):
+            if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and stock_price_open != 'N/A' and stock_price_old_open != 'N/A'):
                 try:
                     new_price = float(stock_price_new)  # 当前收盘价
                     old_price = float(stock_price_old)  # 昨天收盘价
                     open_price = float(stock_price_open)  # 当前开盘价
+                    old_open_price = float(stock_price_old_open)  # 昨天开盘价
 
-                    # 检查数据是否更新：如果今天open价格和昨天close价格一样，显示"数据未更新"
-                    if open_price == old_price:
+                    # 检查数据是否更新：如果今天open价格和昨天最后一个open价格一样，显示"数据未更新"
+                    if open_price == old_open_price:
                         trend_text = "数据未更新"
                     else:
                         # 第一个高低平：当前open与昨天close比较
