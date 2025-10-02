@@ -435,8 +435,8 @@ class DiscordOutlierSender:
                         stats_message += f"{'股票':<2} {'看涨':>3} {'看跌':>3} {'看涨C':>2} {'看跌C':>2} {'看涨P':>2} {'看跌P':>2}\n"
                         stats_message += "-" * 35 + "\n"
                         
-                        # 只显示前25个股票，避免消息过长
-                        display_count = min(25, len(grouped))
+                        # 只显示前15个股票，避免消息过长
+                        display_count = min(15, len(grouped))
                         for i, (_, row) in enumerate(grouped.iterrows()):
                             if i >= display_count:
                                 break
@@ -596,8 +596,8 @@ class DiscordOutlierSender:
                         trend_filtered_grouped = pd.DataFrame(trend_filtered_results)
                         trend_filtered_grouped = trend_filtered_grouped.sort_values(by=["total_count"], ascending=[False])
                         
-                        # 只显示前25个股票
-                        display_count = min(25, len(trend_filtered_grouped))
+                        # 只显示前15个股票
+                        display_count = min(15, len(trend_filtered_grouped))
                         for i, (_, row) in enumerate(trend_filtered_grouped.iterrows()):
                             if i >= display_count:
                                 break
@@ -697,7 +697,7 @@ class DiscordOutlierSender:
                             # 获取所有唯一的股票符号
                             unique_symbols = outliers_df['symbol'].unique()
                             
-                            for symbol in unique_symbols[:10]:  # 只显示前10个股票
+                            for symbol in unique_symbols[:5]:  # 只显示前5个股票，减少消息长度
                                 if symbol in self.stock_prices:
                                     stock_price_info = self.stock_prices[symbol]
                                     stock_price_new = stock_price_info.get('new', 'N/A')
