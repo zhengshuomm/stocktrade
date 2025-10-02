@@ -8,6 +8,12 @@ import discord
 import asyncio
 import gc
 from datetime import datetime
+import sys
+import os
+
+# 添加rules目录到Python路径
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'rules'))
+from signal_classification_rules import classify_signal
 from pytz import timezone
 import pandas as pd
 
@@ -292,72 +298,14 @@ class DiscordOutlierSender:
                         st = outliers_df["signal_type"].astype(str)
                         outliers_df_copy = outliers_df.copy()
                         
-                        # 精确分类逻辑
-                        def classify_signal(row):
+                        # 使用导入的分类函数
+                        def classify_signal_wrapper(row):
                             signal_type = str(row["signal_type"])
                             option_type = str(row["option_type"]).upper()
-                            
-                            # 不统计的信号类型
-                            exclude_signals = [
-                                "空头平仓Put，回补，看跌信号减弱",
-                                "买Call平仓/做波动率交易", 
-                                "买Put平仓/做波动率交易"
-                            ]
-                            
-                            if signal_type in exclude_signals:
-                                return {
-                                    "is_bullish": False,
-                                    "is_bearish": False,
-                                    "is_call": False,
-                                    "is_put": False,
-                                    "should_count": False
-                                }
-                            
-                            # 看涨Call
-                            bullish_call_signals = [
-                                "多头买 Call，看涨",
-                                "空头平仓 Call，回补信号，看涨",
-                                "买 Call，看涨"
-                            ]
-                            
-                            # 看跌Call  
-                            bearish_call_signals = [
-                                "空头卖 Call，看跌/看不涨",
-                                "多头平仓 Call，减仓，看涨减弱",
-                                "卖 Call，看空/价差对冲",
-                                "卖 Call，看跌"
-                            ]
-                            
-                            # 看涨Put
-                            bullish_put_signals = [
-                                "空头卖 Put，看涨/看不跌",
-                                "多头平仓 Put，减仓，看跌减弱", 
-                                "卖 Put，看涨/对冲",
-                                "卖 Put，看涨"
-                            ]
-                            
-                            # 看跌Put
-                            bearish_put_signals = [
-                                "多头买 Put，看跌",
-                                "买 Put，看跌"
-                            ]
-                            
-                            is_call = "CALL" in option_type
-                            is_put = "PUT" in option_type
-                            
-                            if signal_type in bullish_call_signals and is_call:
-                                return {"is_bullish": True, "is_bearish": False, "is_call": True, "is_put": False, "should_count": True}
-                            elif signal_type in bearish_call_signals and is_call:
-                                return {"is_bullish": False, "is_bearish": True, "is_call": True, "is_put": False, "should_count": True}
-                            elif signal_type in bullish_put_signals and is_put:
-                                return {"is_bullish": True, "is_bearish": False, "is_call": False, "is_put": True, "should_count": True}
-                            elif signal_type in bearish_put_signals and is_put:
-                                return {"is_bullish": False, "is_bearish": True, "is_call": False, "is_put": True, "should_count": True}
-                            else:
-                                return {"is_bullish": False, "is_bearish": False, "is_call": False, "is_put": False, "should_count": False}
+                            return classify_signal(signal_type, option_type)
                         
                         # 应用分类
-                        classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
+                        classification = outliers_df_copy.apply(classify_signal_wrapper, axis=1, result_type='expand')
                         outliers_df_copy["is_bullish"] = classification['is_bullish']
                         outliers_df_copy["is_bearish"] = classification['is_bearish'] 
                         outliers_df_copy["is_call"] = classification['is_call']
@@ -399,8 +347,8 @@ class DiscordOutlierSender:
                         stats_message += f"{'股票':<8} {'看涨':>6} {'看跌':>6} {'看涨Call':>12} {'看跌Call':>12} {'看涨Put':>12} {'看跌Put':>12}\n"
                         stats_message += "-" * 80 + "\n"
                         
-                        # 只显示前12个股票，避免消息过长
-                        display_count = min(12, len(grouped))
+                        # 只显示前25个股票，避免消息过长
+                        display_count = min(25, len(grouped))
                         for i, (_, row) in enumerate(grouped.iterrows()):
                             if i >= display_count:
                                 break
@@ -487,72 +435,14 @@ class DiscordOutlierSender:
                             st = outliers_df["signal_type"].astype(str)
                             outliers_df_copy = outliers_df.copy()
                             
-                            # 使用相同的精确分类逻辑
-                            def classify_signal(row):
+                            # 使用导入的分类函数
+                            def classify_signal_wrapper(row):
                                 signal_type = str(row["signal_type"])
                                 option_type = str(row["option_type"]).upper()
-                                
-                                # 不统计的信号类型
-                                exclude_signals = [
-                                    "空头平仓Put，回补，看跌信号减弱",
-                                    "买Call平仓/做波动率交易", 
-                                    "买Put平仓/做波动率交易"
-                                ]
-                                
-                                if signal_type in exclude_signals:
-                                    return {
-                                        "is_bullish": False,
-                                        "is_bearish": False,
-                                        "is_call": False,
-                                        "is_put": False,
-                                        "should_count": False
-                                    }
-                                
-                                # 看涨Call
-                                bullish_call_signals = [
-                                    "多头买 Call，看涨",
-                                    "空头平仓 Call，回补信号，看涨",
-                                    "买 Call，看涨"
-                                ]
-                                
-                                # 看跌Call  
-                                bearish_call_signals = [
-                                    "空头卖 Call，看跌/看不涨",
-                                    "多头平仓 Call，减仓，看涨减弱",
-                                    "卖 Call，看空/价差对冲",
-                                    "卖 Call，看跌"
-                                ]
-                                
-                                # 看涨Put
-                                bullish_put_signals = [
-                                    "空头卖 Put，看涨/看不跌",
-                                    "多头平仓 Put，减仓，看跌减弱", 
-                                    "卖 Put，看涨/对冲",
-                                    "卖 Put，看涨"
-                                ]
-                                
-                                # 看跌Put
-                                bearish_put_signals = [
-                                    "多头买 Put，看跌",
-                                    "买 Put，看跌"
-                                ]
-                                
-                                is_call = "CALL" in option_type
-                                is_put = "PUT" in option_type
-                                
-                                if signal_type in bullish_call_signals and is_call:
-                                    return {"is_bullish": True, "is_bearish": False, "is_call": True, "is_put": False, "should_count": True}
-                                elif signal_type in bearish_call_signals and is_call:
-                                    return {"is_bullish": False, "is_bearish": True, "is_call": True, "is_put": False, "should_count": True}
-                                elif signal_type in bullish_put_signals and is_put:
-                                    return {"is_bullish": True, "is_bearish": False, "is_call": False, "is_put": True, "should_count": True}
-                                elif signal_type in bearish_put_signals and is_put:
-                                    return {"is_bullish": False, "is_bearish": True, "is_call": False, "is_put": True, "should_count": True}
-                                else:
-                                    return {"is_bullish": False, "is_bearish": False, "is_call": False, "is_put": False, "should_count": False}
+                                return classify_signal(signal_type, option_type)
                             
                             # 应用分类
-                            classification = outliers_df_copy.apply(classify_signal, axis=1, result_type='expand')
+                            classification = outliers_df_copy.apply(classify_signal_wrapper, axis=1, result_type='expand')
                             outliers_df_copy["is_bullish"] = classification['is_bullish']
                             outliers_df_copy["is_bearish"] = classification['is_bearish'] 
                             outliers_df_copy["is_call"] = classification['is_call']
