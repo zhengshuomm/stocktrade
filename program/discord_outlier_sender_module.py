@@ -185,9 +185,28 @@ class DiscordOutlierSender:
             if stock_price_low != 'N/A':
                 stock_price_low = f"{float(stock_price_low):.2f}"
             
+            # 计算股票趋势
+            trend_text = "N/A"
+            if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and stock_price_open != 'N/A'):
+                try:
+                    new_price = float(stock_price_new)
+                    old_price = float(stock_price_old)
+                    open_price = float(stock_price_open)
+                    
+                    if old_price > new_price and new_price > open_price:
+                        trend_text = "🔴低开高走"
+                    elif old_price > new_price and new_price < open_price:
+                        trend_text = "🔴低开低走"
+                    elif old_price < new_price and new_price < open_price:
+                        trend_text = "🟢高开低走"
+                    elif old_price < new_price and new_price > open_price:
+                        trend_text = "🟢高开高走"
+                except (ValueError, TypeError):
+                    trend_text = "N/A"
+            
             embed.add_field(
                 name="💰 股票价格",
-                value=f"**股票价格(new)**: ${stock_price_new}\n**股票价格(old)**: ${stock_price_old}\n**股票价格(new open)**: ${stock_price_open}\n**股票价格(new high)**: ${stock_price_high}\n**股票价格(new low)**: ${stock_price_low}\n**股票变化**: {stock_change_pct:.2f}%",
+                value=f"**股票价格(old)**: ${stock_price_old}\n**股票价格(new close)**: ${stock_price_new}\n**股票价格(new open)**: ${stock_price_open}\n**股票价格(new high)**: ${stock_price_high}\n**股票价格(new low)**: ${stock_price_low}\n**股票变化**: {stock_change_pct:.2f}%\n**股票趋势**: {trend_text}",
                 inline=True
             )
 
