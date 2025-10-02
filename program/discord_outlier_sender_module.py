@@ -255,39 +255,43 @@ class DiscordOutlierSender:
                     old_price = float(stock_price_old)  # 昨天收盘价
                     open_price = float(stock_price_open)  # 当前开盘价
 
-                    # 第一个高低平：当前open与昨天close比较
-                    open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
-                    is_high_open = open_vs_old_pct > 0.01   # 高开：开盘价比昨收高超过1%
-                    is_low_open = open_vs_old_pct < -0.01  # 低开：开盘价比昨收低超过1%
-                    is_flat_open = abs(open_vs_old_pct) <= 0.01  # 平开：开盘价与昨收价差在1%以内
-
-                    # 第二个高低平：当前close与当前open比较
-                    close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
-                    is_high_close = close_vs_open_pct > 0.01   # 高走：收盘价比开盘高超过1%
-                    is_low_close = close_vs_open_pct < -0.01  # 低走：收盘价比开盘低超过1%
-                    is_flat_close = abs(close_vs_open_pct) <= 0.01  # 平走：收盘价与开盘价差在1%以内
-
-                    # 组合判定
-                    if is_high_open and is_high_close:
-                        trend_text = "🔴高开高走"  # 红色
-                    elif is_high_open and is_low_close:
-                        trend_text = "🟢高开低走"  # 绿色
-                    elif is_high_open and is_flat_close:
-                        trend_text = "高开平走"
-                    elif is_low_open and is_high_close:
-                        trend_text = "🔴低开高走"  # 红色
-                    elif is_low_open and is_low_close:
-                        trend_text = "🟢低开低走"  # 绿色
-                    elif is_low_open and is_flat_close:
-                        trend_text = "低开平走"
-                    elif is_flat_open and is_high_close:
-                        trend_text = "平开高走"
-                    elif is_flat_open and is_low_close:
-                        trend_text = "平开低走"
-                    elif is_flat_open and is_flat_close:
-                        trend_text = "平开平走"
+                    # 检查数据是否更新：如果今天open价格和昨天close价格一样，显示"数据未更新"
+                    if open_price == old_price:
+                        trend_text = "数据未更新"
                     else:
-                        trend_text = "平开平走"
+                        # 第一个高低平：当前open与昨天close比较
+                        open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
+                        is_high_open = open_vs_old_pct > 0.01   # 高开：开盘价比昨收高超过1%
+                        is_low_open = open_vs_old_pct < -0.01  # 低开：开盘价比昨收低超过1%
+                        is_flat_open = abs(open_vs_old_pct) <= 0.01  # 平开：开盘价与昨收价差在1%以内
+
+                        # 第二个高低平：当前close与当前open比较
+                        close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+                        is_high_close = close_vs_open_pct > 0.01   # 高走：收盘价比开盘高超过1%
+                        is_low_close = close_vs_open_pct < -0.01  # 低走：收盘价比开盘低超过1%
+                        is_flat_close = abs(close_vs_open_pct) <= 0.01  # 平走：收盘价与开盘价差在1%以内
+
+                        # 组合判定
+                        if is_high_open and is_high_close:
+                            trend_text = "🔴高开高走"  # 红色
+                        elif is_high_open and is_low_close:
+                            trend_text = "🟢高开低走"  # 绿色
+                        elif is_high_open and is_flat_close:
+                            trend_text = "高开平走"
+                        elif is_low_open and is_high_close:
+                            trend_text = "🔴低开高走"  # 红色
+                        elif is_low_open and is_low_close:
+                            trend_text = "🟢低开低走"  # 绿色
+                        elif is_low_open and is_flat_close:
+                            trend_text = "低开平走"
+                        elif is_flat_open and is_high_close:
+                            trend_text = "平开高走"
+                        elif is_flat_open and is_low_close:
+                            trend_text = "平开低走"
+                        elif is_flat_open and is_flat_close:
+                            trend_text = "平开平走"
+                        else:
+                            trend_text = "平开平走"
                 except (ValueError, TypeError):
                     trend_text = "N/A"
             
