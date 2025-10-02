@@ -470,6 +470,224 @@ class DiscordOutlierSender:
                             stats_message += f"... 还有 {len(grouped) - display_count} 个股票\n"
                         
                         stats_message += "```"
+                        
+                        # 添加按股票统计（考虑今日股票变化）
+                        stats_message += "\n📈 **按股票统计（考虑今日股票变化）:**\n"
+                        stats_message += "```\n"
+                        stats_message += f"{'股票':<2} {'看涨':>3} {'看跌':>3} {'看涨C':>2} {'看跌C':>2} {'看涨P':>2} {'看跌P':>2}\n"
+                        stats_message += "-" * 35 + "\n"
+                        
+                        # 计算考虑股票趋势的统计
+                        def calculate_trend_filtered_amounts(group):
+                            # 只统计should_count=True的记录
+                            countable_group = group[group["should_count"]]
+                            if countable_group.empty:
+                                return pd.Series({
+                                    'bullish_call_amount': 0,
+                                    'bearish_call_amount': 0,
+                                    'bullish_put_amount': 0,
+                                    'bearish_put_amount': 0,
+                                    'total_count': 0
+                                })
+                            
+                            # 获取股票趋势信息
+                            symbol = group.iloc[0]['symbol']
+                            trend_text = "N/A"
+                            if symbol in self.stock_prices:
+                                stock_price_info = self.stock_prices[symbol]
+                                stock_price_new = stock_price_info.get('new', 'N/A')
+                                stock_price_old = stock_price_info.get('old', 'N/A')
+                                stock_price_open = stock_price_info.get('new_open', 'N/A')
+                                stock_price_old_open = stock_price_info.get('old_open', 'N/A')
+                                
+                                if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and 
+                                    stock_price_open != 'N/A' and stock_price_old_open != 'N/A'):
+                                    try:
+                                        new_price = float(stock_price_new)
+                                        old_price = float(stock_price_old)
+                                        open_price = float(stock_price_open)
+                                        old_open_price = float(stock_price_old_open)
+                                        
+                                        # 检查数据是否更新
+                                        if abs(open_price - old_open_price) < 0.01:
+                                            trend_text = "数据未更新"
+                                        else:
+                                            # 计算趋势
+                                            open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
+                                            close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+                                            
+                                            is_high_open = open_vs_old_pct > 0.01
+                                            is_low_open = open_vs_old_pct < -0.01
+                                            is_flat_open = abs(open_vs_old_pct) <= 0.01
+                                            
+                                            is_high_close = close_vs_open_pct > 0.01
+                                            is_low_close = close_vs_open_pct < -0.01
+                                            is_flat_close = abs(close_vs_open_pct) <= 0.01
+                                            
+                                            # 组合判定
+                                            if is_high_open and is_high_close:
+                                                trend_text = "🔴高开高走"
+                                            elif is_high_open and is_low_close:
+                                                trend_text = "🟢高开低走"
+                                            elif is_high_open and is_flat_close:
+                                                trend_text = "高开平走"
+                                            elif is_low_open and is_high_close:
+                                                trend_text = "🔴低开高走"
+                                            elif is_low_open and is_low_close:
+                                                trend_text = "🟢低开低走"
+                                            elif is_low_open and is_flat_close:
+                                                trend_text = "低开平走"
+                                            elif is_flat_open and is_high_close:
+                                                trend_text = "平开高走"
+                                            elif is_flat_open and is_low_close:
+                                                trend_text = "平开低走"
+                                            elif is_flat_open and is_flat_close:
+                                                trend_text = "平开平走"
+                                            else:
+                                                trend_text = "平开平走"
+                                    except (ValueError, TypeError):
+                                        trend_text = "N/A"
+                            
+                            # 根据趋势过滤数据
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "平开高走", "高开平走"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "平开低走", "低开平走"]
+                            
+                            # 过滤看涨信号
+                            bullish_filtered = countable_group[
+                                (countable_group["is_bullish"]) & 
+                                (trend_text in bullish_trends)
+                            ]
+                            # 过滤看跌信号
+                            bearish_filtered = countable_group[
+                                (countable_group["is_bearish"]) & 
+                                (trend_text in bearish_trends)
+                            ]
+                            
+                            # 计算金额
+                            bullish_call = bullish_filtered[
+                                (bullish_filtered["is_call"])
+                            ]["amount"].sum()
+                            bearish_call = bearish_filtered[
+                                (bearish_filtered["is_call"])
+                            ]["amount"].sum()
+                            bullish_put = bullish_filtered[
+                                (bullish_filtered["is_put"])
+                            ]["amount"].sum()
+                            bearish_put = bearish_filtered[
+                                (bearish_filtered["is_put"])
+                            ]["amount"].sum()
+                            
+                            return pd.Series({
+                                'bullish_call_amount': bullish_call,
+                                'bearish_call_amount': bearish_call,
+                                'bullish_put_amount': bullish_put,
+                                'bearish_put_amount': bearish_put,
+                                'total_count': len(bullish_filtered) + len(bearish_filtered)
+                            })
+                        
+                        # 按股票分组计算趋势过滤后的统计
+                        trend_filtered_results = []
+                        for symbol in outliers_df_copy['symbol'].unique():
+                            symbol_data = outliers_df_copy[outliers_df_copy['symbol'] == symbol]
+                            result = calculate_trend_filtered_amounts(symbol_data)
+                            result['symbol'] = symbol
+                            trend_filtered_results.append(result)
+                        
+                        trend_filtered_grouped = pd.DataFrame(trend_filtered_results)
+                        trend_filtered_grouped = trend_filtered_grouped.sort_values(by=["total_count"], ascending=[False])
+                        
+                        # 只显示前25个股票
+                        display_count = min(25, len(trend_filtered_grouped))
+                        for i, (_, row) in enumerate(trend_filtered_grouped.iterrows()):
+                            if i >= display_count:
+                                break
+                                
+                            sym = row["symbol"]
+                            total_count = int(row['total_count'])
+                            
+                            # 计算看涨/看跌合约数量（趋势过滤后）
+                            symbol_data = outliers_df_copy[outliers_df_copy['symbol'] == sym]
+                            countable_data = symbol_data[symbol_data['should_count']]
+                            
+                            # 获取股票趋势
+                            trend_text = "N/A"
+                            if sym in self.stock_prices:
+                                stock_price_info = self.stock_prices[sym]
+                                stock_price_new = stock_price_info.get('new', 'N/A')
+                                stock_price_old = stock_price_info.get('old', 'N/A')
+                                stock_price_open = stock_price_info.get('new_open', 'N/A')
+                                stock_price_old_open = stock_price_info.get('old_open', 'N/A')
+                                
+                                if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and 
+                                    stock_price_open != 'N/A' and stock_price_old_open != 'N/A'):
+                                    try:
+                                        new_price = float(stock_price_new)
+                                        old_price = float(stock_price_old)
+                                        open_price = float(stock_price_open)
+                                        old_open_price = float(stock_price_old_open)
+                                        
+                                        if abs(open_price - old_open_price) < 0.01:
+                                            trend_text = "数据未更新"
+                                        else:
+                                            open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
+                                            close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+                                            
+                                            is_high_open = open_vs_old_pct > 0.01
+                                            is_low_open = open_vs_old_pct < -0.01
+                                            is_flat_open = abs(open_vs_old_pct) <= 0.01
+                                            
+                                            is_high_close = close_vs_open_pct > 0.01
+                                            is_low_close = close_vs_open_pct < -0.01
+                                            is_flat_close = abs(close_vs_open_pct) <= 0.01
+                                            
+                                            if is_high_open and is_high_close:
+                                                trend_text = "🔴高开高走"
+                                            elif is_high_open and is_low_close:
+                                                trend_text = "🟢高开低走"
+                                            elif is_high_open and is_flat_close:
+                                                trend_text = "高开平走"
+                                            elif is_low_open and is_high_close:
+                                                trend_text = "🔴低开高走"
+                                            elif is_low_open and is_low_close:
+                                                trend_text = "🟢低开低走"
+                                            elif is_low_open and is_flat_close:
+                                                trend_text = "低开平走"
+                                            elif is_flat_open and is_high_close:
+                                                trend_text = "平开高走"
+                                            elif is_flat_open and is_low_close:
+                                                trend_text = "平开低走"
+                                            elif is_flat_open and is_flat_close:
+                                                trend_text = "平开平走"
+                                            else:
+                                                trend_text = "平开平走"
+                                    except (ValueError, TypeError):
+                                        trend_text = "N/A"
+                            
+                            # 根据趋势过滤
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "平开高走", "高开平走"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "平开低走", "低开平走"]
+                            
+                            bullish_count = 0
+                            bearish_count = 0
+                            
+                            if not countable_data.empty:
+                                if trend_text in bullish_trends:
+                                    bullish_count = int(countable_data['is_bullish'].sum())
+                                if trend_text in bearish_trends:
+                                    bearish_count = int(countable_data['is_bearish'].sum())
+                            
+                            # 格式化金额（更紧凑的格式）
+                            bull_call = self._format_amount(row['bullish_call_amount']).replace('$', '')
+                            bear_call = self._format_amount(row['bearish_call_amount']).replace('$', '')
+                            bull_put = self._format_amount(row['bullish_put_amount']).replace('$', '')
+                            bear_put = self._format_amount(row['bearish_put_amount']).replace('$', '')
+                            
+                            stats_message += f"{sym:<4} {bullish_count:>3} {bearish_count:>3} {bull_call:>4} {bear_call:>4} {bull_put:>4} {bear_put:>4}\n"
+                        
+                        if len(trend_filtered_grouped) > display_count:
+                            stats_message += f"... 还有 {len(trend_filtered_grouped) - display_count} 个股票\n"
+                        
+                        stats_message += "```"
                     
                     # 添加大于500万但不满足异常条件的统计
                     if high_amount_but_not_outlier_df is not None and not high_amount_but_not_outlier_df.empty:
