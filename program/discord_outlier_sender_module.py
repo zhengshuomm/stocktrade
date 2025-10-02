@@ -732,54 +732,166 @@ class DiscordOutlierSender:
                     await channel.send(stats_message)
                     print(f"✅ 成功发送汇总统计到 Discord")
                     
-                    # 为每个股票symbol发送单个消息（只发送amount_threshold最大的记录）
+                    # 为每个股票symbol发送单个消息（按照"按股票统计（考虑今日股票变化）"的顺序）
                     if "symbol" in outliers_df.columns and "amount_threshold" in outliers_df.columns:
+                        # 使用与"按股票统计（考虑今日股票变化）"相同的逻辑和顺序
+                        st = outliers_df["signal_type"].astype(str)
+                        outliers_df_copy = outliers_df.copy()
+                        
+                        # 使用导入的分类函数
+                        def classify_signal_wrapper(row):
+                            signal_type = str(row["signal_type"])
+                            option_type = str(row["option_type"]).upper()
+                            return classify_signal(signal_type, option_type)
+                        
+                        # 应用分类
+                        classification = outliers_df_copy.apply(classify_signal_wrapper, axis=1, result_type='expand')
+                        outliers_df_copy["is_bullish"] = classification['is_bullish']
+                        outliers_df_copy["is_bearish"] = classification['is_bearish'] 
+                        outliers_df_copy["is_call"] = classification['is_call']
+                        outliers_df_copy["is_put"] = classification['is_put']
+                        outliers_df_copy["should_count"] = classification['should_count']
+                        
+                        # 计算每个symbol的趋势过滤后统计
+                        def calculate_trend_filtered_amounts_for_individual(group):
+                            # 只统计should_count=True的记录
+                            countable_group = group[group["should_count"]]
+                            if countable_group.empty:
+                                return pd.Series({
+                                    'bullish_call_amount': 0,
+                                    'bearish_call_amount': 0,
+                                    'bullish_put_amount': 0,
+                                    'bearish_put_amount': 0,
+                                    'total_count': 0,
+                                    'bullish_count': 0,
+                                    'bearish_count': 0
+                                })
+                            
+                            # 获取股票趋势信息
+                            symbol = group.iloc[0]['symbol']
+                            trend_text = "N/A"
+                            if symbol in self.stock_prices:
+                                stock_price_info = self.stock_prices[symbol]
+                                stock_price_new = stock_price_info.get('new', 'N/A')
+                                stock_price_old = stock_price_info.get('old', 'N/A')
+                                stock_price_open = stock_price_info.get('new_open', 'N/A')
+                                stock_price_old_open = stock_price_info.get('old_open', 'N/A')
+                                
+                                if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and 
+                                    stock_price_open != 'N/A' and stock_price_old_open != 'N/A'):
+                                    try:
+                                        new_price = float(stock_price_new)
+                                        old_price = float(stock_price_old)
+                                        open_price = float(stock_price_open)
+                                        old_open_price = float(stock_price_old_open)
+                                        
+                                        # 检查数据是否更新
+                                        if abs(open_price - old_open_price) < 0.01:
+                                            trend_text = "数据未更新"
+                                        else:
+                                            # 计算趋势
+                                            open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
+                                            close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+                                            
+                                            is_high_open = open_vs_old_pct > 0.01
+                                            is_low_open = open_vs_old_pct < -0.01
+                                            is_flat_open = abs(open_vs_old_pct) <= 0.01
+                                            
+                                            is_high_close = close_vs_open_pct > 0.01
+                                            is_low_close = close_vs_open_pct < -0.01
+                                            is_flat_close = abs(close_vs_open_pct) <= 0.01
+                                            
+                                            # 组合判定
+                                            if is_high_open and is_high_close:
+                                                trend_text = "🔴高开高走"
+                                            elif is_high_open and is_low_close:
+                                                trend_text = "🟢高开低走"
+                                            elif is_high_open and is_flat_close:
+                                                trend_text = "🔴高开平走"
+                                            elif is_low_open and is_high_close:
+                                                trend_text = "🔴低开高走"
+                                            elif is_low_open and is_low_close:
+                                                trend_text = "🟢低开低走"
+                                            elif is_low_open and is_flat_close:
+                                                trend_text = "🟢低开平走"
+                                            elif is_flat_open and is_high_close:
+                                                trend_text = "🔴平开高走"
+                                            elif is_flat_open and is_low_close:
+                                                trend_text = "🟢平开低走"
+                                            elif is_flat_open and is_flat_close:
+                                                trend_text = "平开平走"
+                                            else:
+                                                trend_text = "平开平走"
+                                    except (ValueError, TypeError):
+                                        trend_text = "N/A"
+                            
+                            # 根据趋势过滤数据
+                            bullish_trends = ["🔴高开高走", "🔴低开高走", "🔴平开高走", "🔴高开平走"]
+                            bearish_trends = ["🟢高开低走", "🟢低开低走", "🟢平开低走", "🟢低开平走"]
+                            
+                            # 过滤看涨信号
+                            bullish_filtered = countable_group[
+                                (countable_group["is_bullish"]) & 
+                                (trend_text in bullish_trends)
+                            ]
+                            # 过滤看跌信号
+                            bearish_filtered = countable_group[
+                                (countable_group["is_bearish"]) & 
+                                (trend_text in bearish_trends)
+                            ]
+                            
+                            # 计算金额
+                            bullish_call = bullish_filtered[
+                                (bullish_filtered["is_call"])
+                            ]["amount_threshold"].abs().sum()
+                            bearish_call = bearish_filtered[
+                                (bearish_filtered["is_call"])
+                            ]["amount_threshold"].abs().sum()
+                            bullish_put = bullish_filtered[
+                                (bullish_filtered["is_put"])
+                            ]["amount_threshold"].abs().sum()
+                            bearish_put = bearish_filtered[
+                                (bearish_filtered["is_put"])
+                            ]["amount_threshold"].abs().sum()
+                            
+                            return pd.Series({
+                                'bullish_call_amount': bullish_call,
+                                'bearish_call_amount': bearish_call,
+                                'bullish_put_amount': bullish_put,
+                                'bearish_put_amount': bearish_put,
+                                'total_count': len(bullish_filtered) + len(bearish_filtered),
+                                'bullish_count': len(bullish_filtered),
+                                'bearish_count': len(bearish_filtered)
+                            })
+                        
+                        # 计算趋势过滤后的统计
+                        trend_filtered_results = []
+                        for symbol in outliers_df_copy['symbol'].unique():
+                            symbol_data = outliers_df_copy[outliers_df_copy['symbol'] == symbol]
+                            result = calculate_trend_filtered_amounts_for_individual(symbol_data)
+                            result['symbol'] = symbol
+                            trend_filtered_results.append(result)
+                        
+                        trend_filtered_grouped = pd.DataFrame(trend_filtered_results)
+                        trend_filtered_grouped = trend_filtered_grouped.sort_values(by=["total_count"], ascending=[False])
+                        
+                        # 过滤掉看涨看跌都为0的股票
+                        filtered_grouped = trend_filtered_grouped[
+                            (trend_filtered_grouped['bullish_count'] > 0) | 
+                            (trend_filtered_grouped['bearish_count'] > 0)
+                        ]
+                        
                         # 找到每个symbol的amount_threshold最大的记录
                         max_records = outliers_df.loc[outliers_df.groupby("symbol")["amount_threshold"].idxmax()]
                         
-                        if not max_records.empty:
-                            st = outliers_df["signal_type"].astype(str)
-                            outliers_df_copy = outliers_df.copy()
+                        # 按照过滤后的顺序重新排列max_records
+                        if not filtered_grouped.empty and not max_records.empty:
+                            # 只保留有趋势过滤后数据的股票
+                            valid_symbols = filtered_grouped['symbol'].tolist()
+                            max_records = max_records[max_records['symbol'].isin(valid_symbols)]
                             
-                            # 使用导入的分类函数
-                            def classify_signal_wrapper(row):
-                                signal_type = str(row["signal_type"])
-                                option_type = str(row["option_type"]).upper()
-                                return classify_signal(signal_type, option_type)
-                            
-                            # 应用分类
-                            classification = outliers_df_copy.apply(classify_signal_wrapper, axis=1, result_type='expand')
-                            outliers_df_copy["is_bullish"] = classification['is_bullish']
-                            outliers_df_copy["is_bearish"] = classification['is_bearish'] 
-                            outliers_df_copy["is_call"] = classification['is_call']
-                            outliers_df_copy["is_put"] = classification['is_put']
-                            outliers_df_copy["should_count"] = classification['should_count']
-                            
-                            # 计算每个symbol的统计值（使用原始数据）
-                            outliers_df_copy["amount"] = outliers_df_copy["amount_threshold"] * outliers_df_copy["lastPrice_new"] * 100
-                            
-                            def calculate_amounts(group):
-                                # 只统计should_count=True的记录
-                                countable_group = group[group["should_count"]]
-                                bullish_call = countable_group[(countable_group["is_bullish"]) & (countable_group["is_call"])]["amount"].sum()
-                                bearish_call = countable_group[(countable_group["is_bearish"]) & (countable_group["is_call"])]["amount"].sum()
-                                bullish_put = countable_group[(countable_group["is_bullish"]) & (countable_group["is_put"])]["amount"].sum()
-                                bearish_put = countable_group[(countable_group["is_bearish"]) & (countable_group["is_put"])]["amount"].sum()
-                                return pd.Series({
-                                    'bullish_call_amount': bullish_call,
-                                    'bearish_call_amount': bearish_call,
-                                    'bullish_put_amount': bullish_put,
-                                    'bearish_put_amount': bearish_put,
-                                    'total_count': len(countable_group)
-                                })
-                            
-                            symbol_stats = outliers_df_copy.groupby("symbol").apply(calculate_amounts).reset_index()
-                            
-                            # 按total_count降序排列
-                            symbol_stats = symbol_stats.sort_values(by=["total_count"], ascending=[False])
-                            
-                            # 按统计值顺序重新排列max_records
-                            max_records = max_records.set_index("symbol").loc[symbol_stats["symbol"]].reset_index()
+                            # 按照趋势过滤后的顺序重新排列
+                            max_records = max_records.set_index("symbol").loc[filtered_grouped["symbol"]].reset_index()
                         
                         success_count = 0
                         for _, row in max_records.iterrows():
