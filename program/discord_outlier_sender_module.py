@@ -258,7 +258,8 @@ class DiscordOutlierSender:
                     old_open_price = float(stock_price_old_open)  # 昨天开盘价
 
                     # 检查数据是否更新：如果今天open价格和昨天最后一个open价格一样，显示"数据未更新"
-                    if open_price == old_open_price:
+                    # 使用相对误差来比较浮点数，避免精度问题
+                    if abs(open_price - old_open_price) < 0.01:
                         trend_text = "数据未更新"
                     else:
                         # 第一个高低平：当前open与昨天close比较
