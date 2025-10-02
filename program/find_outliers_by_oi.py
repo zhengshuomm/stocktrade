@@ -24,7 +24,7 @@
    - 持仓量变化：增加/减少 (OI变化 > 0 或 < 0)
    
    特殊处理：
-   - 当持仓量变化特别大时 (|OI变化| > 1000)，放宽期权价格变化要求
+   - 当持仓量变化特别大时 大于1000万
    - 期权价格不变或上涨 → option_up = True
    - 期权价格不变或下跌 → option_down = True
 
@@ -304,7 +304,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
         oi_down = oi_change < 0  # 持仓量减少
         
         # 对于持仓量变化特别大的情况，放宽期权价格变化的要求
-        oi_change_significant = abs(oi_change) > 1000  # 持仓量变化超过1000
+        oi_change_significant = abs(oi_change) * row["lastPrice_new"] * 100 >= THRESHOLD_10M  # 持仓量变化超过6000
         if oi_change_significant:
             option_up = option_change >= 0  # 期权价格不变或上涨
             option_down = option_change <= 0  # 期权价格不变或下跌
