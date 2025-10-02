@@ -261,8 +261,9 @@ class DiscordOutlierSender:
                     open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                     close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                     
-                    # 检查是否为数据未更新（当开盘价完全相同时）
-                    if abs(open_price - old_open_price) < 0.01:
+                    # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
+                    if (abs(open_price - old_open_price) < 0.01 and 
+                        abs(new_price - old_price) < 0.01):
                         trend_text = "数据未更新"
                     else:
                         # 第一个高低平：当前open与昨天close比较
@@ -513,8 +514,9 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同时）
-                                        if abs(open_price - old_open_price) < 0.01:
+                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
+                                        if (abs(open_price - old_open_price) < 0.01 and 
+                                            abs(new_price - old_price) < 0.01):
                                             trend_text = "数据未更新"
                                         else:
                                             
@@ -644,8 +646,9 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同时）
-                                        if abs(open_price - old_open_price) < 0.01:
+                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
+                                        if (abs(open_price - old_open_price) < 0.01 and 
+                                            abs(new_price - old_price) < 0.01):
                                             trend_text = "数据未更新"
                                         else:
                                             is_high_open = open_vs_old_pct > 0.01
@@ -806,8 +809,9 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同时）
-                                        if abs(open_price - old_open_price) < 0.01:
+                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
+                                        if (abs(open_price - old_open_price) < 0.01 and 
+                                            abs(new_price - old_price) < 0.01):
                                             trend_text = "数据未更新"
                                         else:
                                             
