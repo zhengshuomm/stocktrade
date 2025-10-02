@@ -4,9 +4,9 @@ on:
   schedule:
     # 使用更精确的时间配置，考虑夏令时
     # 美国西部时间 (PST/PDT) 周一到周五
-    # 6:00, 6:20, 6:30, 6:40
-    - cron: '30 13 * * 1-5'  # 覆盖夏季时间 (PDT: UTC-7)
-    - cron: '30 14 * * 1-5'  # 覆盖冬季时间 (PST: UTC-8)
+    # 6:00, 6:30, 6:40
+    - cron: '0,29 13 * * 1-5'  # 覆盖夏季时间 (PDT: UTC-7)
+    - cron: '0,29 14 * * 1-5'  # 覆盖冬季时间 (PST: UTC-8)
   workflow_dispatch:  # 允许手动触发
 
 # 并发控制：防止同一时间运行多个实例
@@ -36,19 +36,25 @@ jobs:
       id: gate
       shell: bash
       run: |
-        should_run=$(python - <<'PY'
-        import datetime
-        now = datetime.datetime.utcnow()
-        hour = now.hour
-        year = now.year
-        dst_start = datetime.datetime(year, 3, 8)
-        dst_end = datetime.datetime(year, 11, 7)
-        in_dst = dst_start <= now <= dst_end
-        pdt = {13}
-        pst = {14}
-        print('1' if hour in (pdt if in_dst else pst) else '0')
-        PY
-        )
+        # 如果是手动触发，直接设置为执行
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          should_run="1"
+          echo "手动触发，跳过时间检查"
+        else
+          should_run=$(python - <<'PY'
+          import datetime
+          now = datetime.datetime.utcnow()
+          hour = now.hour
+          year = now.year
+          dst_start = datetime.datetime(year, 3, 8)
+          dst_end = datetime.datetime(year, 11, 7)
+          in_dst = dst_start <= now <= dst_end
+          pdt = {13}
+          pst = {14}
+          print('1' if hour in (pdt if in_dst else pst) else '0')
+          PY
+          )
+        fi
         echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
 
     - name: 检查当前时区
