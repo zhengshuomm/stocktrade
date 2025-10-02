@@ -220,17 +220,10 @@ class DiscordOutlierSender:
                 except Exception:
                     amt_to_mc = None
         
-        if amt_to_mc is not None:
-            embed.add_field(
-                name="📐 占总市值",
-                value=self._format_sig2_percent(amt_to_mc),
-                inline=True
-            )
-        
         embed.add_field(
             name="🚨 异常信号",
-            value=f"**信号类型**: {colored_signal_type}\n**金额门槛**: ${amount_threshold:,.0f}\n**金额档位**: {amount_tier}",
-            inline=False
+            value=f"**信号类型**: {colored_signal_type}\n**金额门槛**: ${amount_threshold:,.0f}\n**金额档位**: {amount_tier}\n**占总市值**: {self._format_sig2_percent(amt_to_mc)}",
+            inline=True
         )
 
         # 添加Yahoo链接
