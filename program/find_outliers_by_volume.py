@@ -62,7 +62,7 @@
 import os
 import glob
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from pytz import timezone
 from discord_outlier_sender_module import send_volume_outliers
@@ -95,6 +95,39 @@ def parse_ts_from_filename(path: str) -> datetime:
         return datetime.fromtimestamp(os.path.getmtime(path))
     ymd, hm = m.groups()
     return datetime.strptime(ymd + hm, "%Y%m%d%H%M")
+
+
+def find_previous_day_last_file(option_dir: str, stock_price_dir: str, current_date: str):
+    """查找前一天最后一个文件"""
+    # 计算前一天日期
+    current_dt = datetime.strptime(current_date, '%Y%m%d')
+    prev_dt = current_dt - timedelta(days=1)
+    prev_date = prev_dt.strftime('%Y%m%d')
+    
+    # 查找前一天的所有文件
+    prev_files = []
+    for filename in os.listdir(option_dir):
+        if filename.startswith('all-') and filename.endswith('.csv'):
+            file_date = filename.split('-')[1][:8]  # 提取日期部分
+            if file_date == prev_date:
+                prev_files.append(filename)
+    
+    if not prev_files:
+        return None, None, None
+    
+    # 按时间排序，找到最后一个文件
+    prev_files.sort()
+    last_prev_file = prev_files[-1]
+    
+    # 构建完整路径
+    prev_option = os.path.join(option_dir, last_prev_file)
+    prev_stock = os.path.join(stock_price_dir, last_prev_file)
+    
+    if not os.path.exists(prev_stock):
+        return None, None, None
+    
+    prev_ts = parse_ts_from_filename(prev_option)
+    return prev_option, prev_stock, prev_ts
 
 
 def find_latest_two_all_csv(option_dir: str, stock_price_dir: str, specified_files: list = None):
@@ -202,7 +235,7 @@ def load_market_cap_csv(path: str) -> pd.DataFrame:
 def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFrame, 
                            latest_stock_df: pd.DataFrame, prev_stock_df: pd.DataFrame, 
                            market_cap_df: pd.DataFrame = None, market_cap_ratio: float = MIN_MARKET_CAP_RATIO, 
-                           is_cross_day: bool = False) -> pd.DataFrame:
+                           is_cross_day: bool = False, prev_day_stock_df: pd.DataFrame = None) -> pd.DataFrame:
     """
     根据成交量变化判断异常情况
     """
@@ -235,7 +268,17 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
             prev_close = prev_row.iloc[0]['Close']
             price_change = (latest_close - prev_close) / prev_close if prev_close != 0 else 0
             stock_price_changes[symbol] = price_change
-            prev_open = prev_row.iloc[0]['Open']
+            
+            # 在跨日情况下，使用前一天最后一个文件的open价格
+            if is_cross_day and prev_day_stock_df is not None:
+                prev_day_row = prev_day_stock_df[prev_day_stock_df['symbol'] == symbol]
+                if not prev_day_row.empty:
+                    prev_open = prev_day_row.iloc[0]['Open']
+                else:
+                    prev_open = prev_row.iloc[0]['Open']
+            else:
+                prev_open = prev_row.iloc[0]['Open']
+            
             stock_prices[symbol] = {
                 'new': latest_close,
                 'old': prev_close,
@@ -483,8 +526,21 @@ def main():
         is_cross_day = latest_ts.strftime('%Y%m%d') != previous_ts.strftime('%Y%m%d')
         if is_cross_day:
             print("检测到跨日数据，将使用智能volume变化计算")
+            # 查找前一天最后一个文件用于股票趋势判断
+            current_date = latest_ts.strftime('%Y%m%d')
+            prev_day_option, prev_day_stock, prev_day_ts = find_previous_day_last_file(OPTION_DIR, STOCK_PRICE_DIR, current_date)
+            if prev_day_option and prev_day_stock:
+                print(f"前一天最后一个期权文件: {prev_day_option}")
+                print(f"前一天最后一个股票价格文件: {prev_day_stock}")
+                # 使用前一天最后一个文件的数据来构建stock_prices
+                prev_day_stock_df = load_stock_csv(prev_day_stock)
+            else:
+                print("未找到前一天最后一个文件，使用当前previous文件")
+                prev_day_stock_df = prev_stock_df
+        else:
+            prev_day_stock_df = prev_stock_df
 
-        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df, args.market_cap_ratio, is_cross_day)
+        out_df = compute_volume_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df, args.market_cap_ratio, is_cross_day, prev_day_stock_df)
         if out_df.empty:
             print("未发现符合异常条件的期权合约。")
             return
@@ -591,7 +647,17 @@ def main():
                         prev_row = prev_stock_df[prev_stock_df['symbol'] == symbol]
                         if not prev_row.empty:
                             prev_close = prev_row.iloc[0]['Close']
-                            prev_open = prev_row.iloc[0]['Open']
+                            
+                            # 在跨日情况下，使用前一天最后一个文件的open价格
+                            if is_cross_day and prev_day_stock_df is not None:
+                                prev_day_row = prev_day_stock_df[prev_day_stock_df['symbol'] == symbol]
+                                if not prev_day_row.empty:
+                                    prev_open = prev_day_row.iloc[0]['Open']
+                                else:
+                                    prev_open = prev_row.iloc[0]['Open']
+                            else:
+                                prev_open = prev_row.iloc[0]['Open']
+                            
                             stock_prices[symbol] = {
                                 'new': latest_close,
                                 'old': prev_close,
