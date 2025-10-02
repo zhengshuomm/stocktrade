@@ -50,6 +50,7 @@ class DatabaseInserter:
         self.folder_name = folder_name
         self.conn = None
         self.cursor = None
+        self.signal_type_cache = {}  # 缓存信号类型ID
         
     def connect_db(self):
         """连接数据库"""
@@ -69,6 +70,43 @@ class DatabaseInserter:
         if self.conn:
             self.conn.close()
         logger.info("🔌 数据库连接已关闭")
+    
+    def get_signal_type_id(self, signal_type_name):
+        """获取信号类型ID，如果不存在则创建"""
+        if not signal_type_name or signal_type_name == '':
+            return None
+            
+        # 检查缓存
+        if signal_type_name in self.signal_type_cache:
+            return self.signal_type_cache[signal_type_name]
+        
+        try:
+            # 查询现有信号类型
+            query = "SELECT id FROM signal_types WHERE signal_name = %s"
+            self.cursor.execute(query, (signal_type_name,))
+            result = self.cursor.fetchone()
+            
+            if result:
+                signal_id = result[0]
+                self.signal_type_cache[signal_type_name] = signal_id
+                return signal_id
+            else:
+                # 创建新的信号类型
+                insert_query = """
+                INSERT INTO signal_types (signal_name, description) 
+                VALUES (%s, %s) 
+                RETURNING id
+                """
+                description = f"自动创建的信号类型: {signal_type_name}"
+                self.cursor.execute(insert_query, (signal_type_name, description))
+                signal_id = self.cursor.fetchone()[0]
+                self.signal_type_cache[signal_type_name] = signal_id
+                logger.info(f"✅ 创建新信号类型: {signal_type_name} (ID: {signal_id})")
+                return signal_id
+                
+        except Exception as e:
+            logger.error(f"❌ 获取信号类型ID失败: {signal_type_name} - {e}")
+            return None
     
     def check_file_processed(self, csv_filename, file_type):
         """检查文件是否已处理过"""
@@ -146,10 +184,13 @@ class DatabaseInserter:
         
         for _, row in df.iterrows():
             try:
+                signal_type_name = str(row.get('signal_type', ''))
+                signal_type_id = self.get_signal_type_id(signal_type_name)
+                
                 data = {
                     'contractSymbol': str(row.get('contractSymbol', '')),
                     'strike': self.format_float_precision(row.get('strike')),
-                    'signal_type': str(row.get('signal_type', '')),
+                    'signal_type_id': signal_type_id,
                     'folder_name': self.folder_name,
                     'option_type': str(row.get('option_type', '')),
                     'volume_old': self.format_float_precision(row.get('volume_old')),
@@ -185,11 +226,14 @@ class DatabaseInserter:
         
         for _, row in df.iterrows():
             try:
+                signal_type_name = str(row.get('signal_type', ''))
+                signal_type_id = self.get_signal_type_id(signal_type_name)
+                
                 data = {
                     'contractSymbol': str(row.get('contractSymbol', '')),
                     'strike': self.format_float_precision(row.get('strike')),
                     'oi_change': self.format_float_precision(row.get('oi_change')),
-                    'signal_type': str(row.get('signal_type', '')),
+                    'signal_type_id': signal_type_id,
                     'folder_name': self.folder_name,
                     'option_type': str(row.get('option_type', '')),
                     'openInterest_new': self.format_float_precision(row.get('openInterest_new')),
@@ -224,7 +268,7 @@ class DatabaseInserter:
         try:
             # 准备插入数据
             columns = [
-                'contractSymbol', 'strike', 'signal_type', 'folder_name', 'option_type',
+                'contractSymbol', 'strike', 'signal_type_id', 'folder_name', 'option_type',
                 'volume_old', 'volume_new', 'amount_threshold', 'amount_to_market_cap',
                 'openInterest_new', 'expiry_date', 'lastPrice_new', 'lastPrice_old',
                 'symbol', 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
@@ -242,7 +286,7 @@ class DatabaseInserter:
             ON CONFLICT (contractSymbol, folder_name, create_time) 
             DO UPDATE SET
                 strike = EXCLUDED.strike,
-                signal_type = EXCLUDED.signal_type,
+                signal_type_id = EXCLUDED.signal_type_id,
                 option_type = EXCLUDED.option_type,
                 volume_old = EXCLUDED.volume_old,
                 volume_new = EXCLUDED.volume_new,
@@ -280,10 +324,10 @@ class DatabaseInserter:
         try:
             # 准备插入数据
             columns = [
-                'contractSymbol', 'strike', 'oi_change', 'signal_type', 'folder_name',
+                'contractSymbol', 'strike', 'oi_change', 'signal_type_id', 'folder_name',
                 'option_type', 'openInterest_new', 'openInterest_old', 'amount_threshold',
                 'amount_to_market_cap', 'expiry_date', 'lastPrice_new', 'lastPrice_old',
-                'volume', 'symbol',                 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
+                'volume', 'symbol', 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
                 'stock_price_new_high', 'stock_price_new_low', 'create_time'
             ]
             

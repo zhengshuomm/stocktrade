@@ -24,6 +24,25 @@ DB_CONFIG = {
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+def create_signal_types_table(cursor):
+    """创建signal_types表"""
+    create_table_sql = """
+    CREATE TABLE IF NOT EXISTS signal_types (
+        id SERIAL PRIMARY KEY,
+        signal_name VARCHAR(100) NOT NULL UNIQUE,
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """
+    
+    try:
+        cursor.execute(create_table_sql)
+        logger.info("✅ signal_types表创建成功")
+        return True
+    except Exception as e:
+        logger.error(f"❌ 创建signal_types表失败: {e}")
+        return False
+
 def create_processed_files_table(cursor):
     """创建processed_files表"""
     create_table_sql = """
@@ -55,7 +74,7 @@ def create_volume_outlier_table(cursor):
         id SERIAL PRIMARY KEY,
         contractSymbol VARCHAR(100) NOT NULL,
         strike DECIMAL(10,2),
-        signal_type VARCHAR(100),
+        signal_type_id INTEGER REFERENCES signal_types(id),
         folder_name VARCHAR(50) NOT NULL,
         option_type VARCHAR(10),
         volume_old DECIMAL(15,2),
@@ -93,7 +112,7 @@ def create_oi_outlier_table(cursor):
         contractSymbol VARCHAR(100) NOT NULL,
         strike DECIMAL(10,2),
         oi_change DECIMAL(15,2),
-        signal_type VARCHAR(100),
+        signal_type_id INTEGER REFERENCES signal_types(id),
         folder_name VARCHAR(50) NOT NULL,
         option_type VARCHAR(10),
         openInterest_new DECIMAL(15,2),
@@ -162,6 +181,8 @@ def main():
         
         # 创建表
         tables_created = 0
+        if create_signal_types_table(cursor):
+            tables_created += 1
         if create_processed_files_table(cursor):
             tables_created += 1
         if create_volume_outlier_table(cursor):
@@ -175,7 +196,7 @@ def main():
         # 提交事务
         conn.commit()
         
-        logger.info(f"🎉 数据库初始化完成，成功创建 {tables_created}/3 个表")
+        logger.info(f"🎉 数据库初始化完成，成功创建 {tables_created}/4 个表")
         return True
         
     except Exception as e:
