@@ -541,27 +541,101 @@ def main():
         try:
             if "symbol" in out_df.columns and "signal_type" in out_df.columns and not out_df.empty:
                 print("\n按股票统计（最终结果集）：")
-                # 定义情绪判断
-                st = out_df["signal_type"].astype(str)
-                out_df = out_df.copy()
-                out_df["is_bullish"] = st.str.contains("看涨", na=False)
-                out_df["is_bearish"] = st.str.contains("看跌", na=False)
+                
+                # 使用与Discord发送模块相同的精确分类逻辑
+                def classify_signal(row):
+                    signal_type = str(row["signal_type"])
+                    option_type = str(row["option_type"]).upper()
+                    
+                    # 不统计的信号类型
+                    exclude_signals = [
+                        "空头平仓 Put，回补，看跌信号减弱",
+                        "买 Call平仓/做波动率交易", 
+                        "买 Put平仓/做波动率交易"
+                    ]
+                    
+                    if signal_type in exclude_signals:
+                        return {
+                            "is_bullish": False,
+                            "is_bearish": False,
+                            "is_call": False,
+                            "is_put": False,
+                            "should_count": False
+                        }
+                    
+                    # 看涨Call
+                    bullish_call_signals = [
+                        "多头买 Call，看涨",
+                        "空头平仓 Call，回补信号，看涨",
+                        "买 Call，看涨"
+                    ]
+                    
+                    # 看跌Call  
+                    bearish_call_signals = [
+                        "空头卖 Call，看跌/看不涨",
+                        "多头平仓 Call，减仓，看涨减弱",
+                        "卖 Call，看空/价差对冲",
+                        "卖 Call，看跌"
+                    ]
+                    
+                    # 看涨Put
+                    bullish_put_signals = [
+                        "空头卖 Put，看涨/看不跌",
+                        "多头平仓 Put，减仓，看跌减弱", 
+                        "卖 Put，看涨/对冲",
+                        "卖 Put，看涨"
+                    ]
+                    
+                    # 看跌Put
+                    bearish_put_signals = [
+                        "多头买 Put，看跌",
+                        "买 Put，看跌"
+                    ]
+                    
+                    is_call = "CALL" in option_type
+                    is_put = "PUT" in option_type
+                    
+                    if signal_type in bullish_call_signals and is_call:
+                        return {"is_bullish": True, "is_bearish": False, "is_call": True, "is_put": False, "should_count": True}
+                    elif signal_type in bearish_call_signals and is_call:
+                        return {"is_bullish": False, "is_bearish": True, "is_call": True, "is_put": False, "should_count": True}
+                    elif signal_type in bullish_put_signals and is_put:
+                        return {"is_bullish": True, "is_bearish": False, "is_call": False, "is_put": True, "should_count": True}
+                    elif signal_type in bearish_put_signals and is_put:
+                        return {"is_bullish": False, "is_bearish": True, "is_call": False, "is_put": True, "should_count": True}
+                    else:
+                        return {"is_bullish": False, "is_bearish": False, "is_call": False, "is_put": False, "should_count": False}
+                
+                # 应用分类
+                out_df_copy = out_df.copy()
+                classification = out_df_copy.apply(classify_signal, axis=1, result_type='expand')
+                out_df_copy["is_bullish"] = classification['is_bullish']
+                out_df_copy["is_bearish"] = classification['is_bearish'] 
+                out_df_copy["is_call"] = classification['is_call']
+                out_df_copy["is_put"] = classification['is_put']
+                out_df_copy["should_count"] = classification['should_count']
+                
+                # 只统计should_count=True的记录
+                countable_df = out_df_copy[out_df_copy['should_count']]
+                
+                if not countable_df.empty:
+                    grouped = countable_df.groupby("symbol").agg(
+                        bullish_count=("is_bullish", "sum"),
+                        bearish_count=("is_bearish", "sum"),
+                        total=("symbol", "count")
+                    ).reset_index()
 
-                grouped = out_df.groupby("symbol").agg(
-                    bullish_count=("is_bullish", "sum"),
-                    bearish_count=("is_bearish", "sum"),
-                    total=("symbol", "count")
-                ).reset_index()
+                    # 按总数与bullish优先显示
+                    grouped = grouped.sort_values(by=["total", "bullish_count"], ascending=[False, False])
 
-                # 按总数与bullish优先显示
-                grouped = grouped.sort_values(by=["total", "bullish_count"], ascending=[False, False])
-
-                for _, row in grouped.iterrows():
-                    sym = row["symbol"]
-                    bull = int(row["bullish_count"])  
-                    bear = int(row["bearish_count"])  
-                    tot = int(row["total"])  
-                    print(f"  {sym}: 看涨 {bull} 个, 看跌 {bear} 个, 合计 {tot}")
+                    for _, row in grouped.iterrows():
+                        sym = row["symbol"]
+                        bull = int(row["bullish_count"])  
+                        bear = int(row["bearish_count"])  
+                        tot = int(row["total"])
+                        print(f"  {sym}: 看涨 {bull} 个, 看跌 {bear} 个, 合计 {tot}")
+                else:
+                    print("  没有可统计的记录")
         except Exception as e:
             print(f"按symbol统计打印失败: {e}")
         
