@@ -247,22 +247,31 @@ class DiscordOutlierSender:
             if stock_price_low != 'N/A':
                 stock_price_low = f"{float(stock_price_low):.2f}"
             
-            # 计算股票趋势
+            # 计算股票趋势（以开盘价为基准，当前价格相对开盘价波动超过1%才判定趋势，否则为“平开平走”）
             trend_text = "N/A"
             if (stock_price_new != 'N/A' and stock_price_old != 'N/A' and stock_price_open != 'N/A'):
                 try:
                     new_price = float(stock_price_new)
                     old_price = float(stock_price_old)
                     open_price = float(stock_price_open)
-                    
-                    if old_price > new_price and new_price > open_price:
-                        trend_text = "🔴低开高走"  # 红色
-                    elif old_price > new_price and new_price < open_price:
-                        trend_text = "🟢低开低走"  # 绿色
-                    elif old_price < new_price and new_price < open_price:
-                        trend_text = "🟢高开低走"  # 绿色
-                    elif old_price < new_price and new_price > open_price:
-                        trend_text = "🔴高开高走"  # 红色
+
+                    # 与开盘价的相对波动
+                    change_from_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
+
+                    if abs(change_from_open_pct) < 0.01:
+                        trend_text = "平开平走"
+                    else:
+                        opened_higher = open_price > old_price  # 高开/低开判定
+                        if opened_higher and new_price < open_price:
+                            trend_text = "🟢高开低走"  # 绿色
+                        elif opened_higher and new_price > open_price:
+                            trend_text = "🔴高开高走"  # 红色
+                        elif not opened_higher and new_price > open_price:
+                            trend_text = "🔴低开高走"  # 红色
+                        elif not opened_higher and new_price < open_price:
+                            trend_text = "🟢低开低走"  # 绿色
+                        else:
+                            trend_text = "平开平走"
                 except (ValueError, TypeError):
                     trend_text = "N/A"
             
