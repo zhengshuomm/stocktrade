@@ -107,7 +107,7 @@ class DiscordOutlierSender:
         
         # 创建Discord嵌入消息
         embed = discord.Embed(
-            title=f"{color_emoji} {prefix}{self.message_title} --- {symbol}",
+            title=f"{color_emoji} {prefix}{self.message_title} **** {symbol} ****",
             color=0xff0000 if amount_tier == ">50M" else (0xff8c00 if amount_tier == "10M-50M" else 0xffffff),
             timestamp=datetime.now()
         )
@@ -194,13 +194,13 @@ class DiscordOutlierSender:
                     open_price = float(stock_price_open)
                     
                     if old_price > new_price and new_price > open_price:
-                        trend_text = "🔴低开高走"
+                        trend_text = "🔴低开高走"  # 红色
                     elif old_price > new_price and new_price < open_price:
-                        trend_text = "🔴低开低走"
+                        trend_text = "🟢低开低走"  # 绿色
                     elif old_price < new_price and new_price < open_price:
-                        trend_text = "🟢高开低走"
+                        trend_text = "🟢高开低走"  # 绿色
                     elif old_price < new_price and new_price > open_price:
-                        trend_text = "🟢高开高走"
+                        trend_text = "🔴高开高走"  # 红色
                 except (ValueError, TypeError):
                     trend_text = "N/A"
             
