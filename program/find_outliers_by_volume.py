@@ -685,7 +685,17 @@ def main():
                 
                 # 使用新的模块化Discord发送器
                 import asyncio
-                asyncio.run(send_volume_outliers(out_df_copy, args.folder, time_range, stock_prices, None, signal_type_stats, out_path))
+                # 判断是否为跨日比较
+                is_cross_day = False
+                if args.files:
+                    # 从文件名提取日期
+                    import re
+                    file1_date = re.search(r'all-(\d{8})-\d{4}\.csv', args.files[0])
+                    file2_date = re.search(r'all-(\d{8})-\d{4}\.csv', args.files[1])
+                    if file1_date and file2_date:
+                        is_cross_day = file1_date.group(1) != file2_date.group(1)
+                
+                asyncio.run(send_volume_outliers(out_df_copy, args.folder, time_range, stock_prices, None, signal_type_stats, out_path, is_cross_day))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
         

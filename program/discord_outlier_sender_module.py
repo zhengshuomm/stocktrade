@@ -261,11 +261,19 @@ class DiscordOutlierSender:
                     open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                     close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                     
-                    # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
-                    if (abs(open_price - old_open_price) < 0.01 and 
-                        abs(new_price - old_price) < 0.01):
-                        trend_text = "数据未更新"
+                    # 检查是否为数据未更新
+                    if self.is_cross_day:
+                        # 不同天的文件比较：如果两个文件的股票open价格一致，就是"数据未更新"
+                        if abs(open_price - old_open_price) < 0.01:
+                            trend_text = "数据未更新"
+                        else:
+                            # 进行正常趋势判断
+                            pass
                     else:
+                        # 同一天的文件比较：无需查看是否"数据未更新"，直接进行趋势判断
+                        pass
+                    
+                    if trend_text != "数据未更新":
                         # 第一个高低平：当前open与昨天close比较
                         is_high_open = open_vs_old_pct > 0.01   # 高开：开盘价比昨收高超过1%
                         is_low_open = open_vs_old_pct < -0.01  # 低开：开盘价比昨收低超过1%
@@ -342,7 +350,7 @@ class DiscordOutlierSender:
         
         return embed
         
-    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
+    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None, is_cross_day=False):
         """
         发送异常数据到 Discord
         
@@ -351,6 +359,9 @@ class DiscordOutlierSender:
             outlier_type (str): 异常类型，"oi" 或 "volume"
             high_amount_but_not_outlier_df: 大于500万但不满足异常条件的数据（可选）
         """
+        # 存储is_cross_day参数供内部函数使用
+        self.is_cross_day = is_cross_day
+        
         if outliers_df.empty:
             print("没有异常数据需要发送到 Discord")
             return
@@ -514,11 +525,16 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
-                                        if (abs(open_price - old_open_price) < 0.01 and 
-                                            abs(new_price - old_price) < 0.01):
-                                            trend_text = "数据未更新"
+                                        # 检查是否为数据未更新
+                                        if self.is_cross_day:
+                                            # 不同天的文件比较：如果两个文件的股票open价格一致，就是"数据未更新"
+                                            if abs(open_price - old_open_price) < 0.01:
+                                                trend_text = "数据未更新"
                                         else:
+                                            # 同一天的文件比较：无需查看是否"数据未更新"，直接进行趋势判断
+                                            pass
+                                        
+                                        if trend_text != "数据未更新":
                                             
                                             is_high_open = open_vs_old_pct > 0.01
                                             is_low_open = open_vs_old_pct < -0.01
@@ -646,11 +662,16 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
-                                        if (abs(open_price - old_open_price) < 0.01 and 
-                                            abs(new_price - old_price) < 0.01):
-                                            trend_text = "数据未更新"
+                                        # 检查是否为数据未更新
+                                        if self.is_cross_day:
+                                            # 不同天的文件比较：如果两个文件的股票open价格一致，就是"数据未更新"
+                                            if abs(open_price - old_open_price) < 0.01:
+                                                trend_text = "数据未更新"
                                         else:
+                                            # 同一天的文件比较：无需查看是否"数据未更新"，直接进行趋势判断
+                                            pass
+                                        
+                                        if trend_text != "数据未更新":
                                             is_high_open = open_vs_old_pct > 0.01
                                             is_low_open = open_vs_old_pct < -0.01
                                             is_flat_open = abs(open_vs_old_pct) <= 0.01
@@ -809,11 +830,16 @@ class DiscordOutlierSender:
                                         open_vs_old_pct = (open_price - old_price) / old_price if old_price != 0 else 0.0
                                         close_vs_open_pct = (new_price - open_price) / open_price if open_price != 0 else 0.0
                                         
-                                        # 检查是否为数据未更新（当开盘价完全相同且收盘价也几乎相同时）
-                                        if (abs(open_price - old_open_price) < 0.01 and 
-                                            abs(new_price - old_price) < 0.01):
-                                            trend_text = "数据未更新"
+                                        # 检查是否为数据未更新
+                                        if self.is_cross_day:
+                                            # 不同天的文件比较：如果两个文件的股票open价格一致，就是"数据未更新"
+                                            if abs(open_price - old_open_price) < 0.01:
+                                                trend_text = "数据未更新"
                                         else:
+                                            # 同一天的文件比较：无需查看是否"数据未更新"，直接进行趋势判断
+                                            pass
+                                        
+                                        if trend_text != "数据未更新":
                                             
                                             is_high_open = open_vs_old_pct > 0.01
                                             is_low_open = open_vs_old_pct < -0.01
@@ -966,13 +992,13 @@ class DiscordOutlierSender:
 
 
 # 便捷函数
-async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
+async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None, is_cross_day=False):
     """发送OI异常数据到Discord"""
     sender = DiscordOutlierSender("OI异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path)
+    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path, is_cross_day)
 
 
-async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None):
+async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None, csv_file_path=None, is_cross_day=False):
     """发送Volume异常数据到Discord"""
     sender = DiscordOutlierSender("Volume异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path)
+    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df, signal_type_stats, csv_file_path, is_cross_day)
