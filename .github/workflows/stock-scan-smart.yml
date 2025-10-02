@@ -124,26 +124,8 @@ jobs:
       id: gate
       shell: bash
       run: |
-        # 如果是手动触发，直接设置为执行
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          should_run="1"
-          echo "手动触发，跳过时间检查"
-        else
-          should_run=$(python - <<'PY'
-          import datetime
-          now = datetime.datetime.utcnow()
-          hour = now.hour
-          year = now.year
-          dst_start = datetime.datetime(year, 3, 8)
-          dst_end = datetime.datetime(year, 11, 7)
-          in_dst = dst_start <= now <= dst_end
-          pdt = {12,13,14,15,16,17,18,20}
-          pst = {13,14,15,16,17,18,19,21}
-          print('1' if hour in (pdt if in_dst else pst) else '0')
-          PY
-          )
-        fi
-        echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
+        should_run="1"
+
 
     - name: 运行股票期权扫描 (智能跳过重复触发)
       if: steps.gate.outputs.should_run == '1'
