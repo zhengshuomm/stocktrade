@@ -13,6 +13,7 @@ import argparse
 import os
 import time
 import sys
+from pytz import timezone
 
 class StockOptionsScanner:
     def __init__(self, symbol_file="data/stock_symbol/symbol_market.csv", data_folder="data"):
@@ -302,8 +303,8 @@ class StockOptionsScanner:
             if i < len(symbols_to_scan):
                 time.sleep(delay)
         
-        # 生成时间戳
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M")
+        # 生成时间戳 (使用PST时间)
+        timestamp = datetime.now().astimezone(timezone('US/Pacific')).strftime("%Y%m%d-%H%M")
         
         # 检查 openInterest 为 0 的比例
         should_save_data = True
