@@ -500,9 +500,15 @@ def main():
                                 'old': prev_close
                             }
                 
+                # 准备异常类型统计
+                signal_type_stats = None
+                if "signal_type" in out_df.columns:
+                    signal_counts = out_df["signal_type"].value_counts()
+                    signal_type_stats = signal_counts.to_dict()
+                
                 # 使用新的模块化Discord发送器
                 import asyncio
-                asyncio.run(send_volume_outliers(out_df, args.folder, time_range, stock_prices))
+                asyncio.run(send_volume_outliers(out_df, args.folder, time_range, stock_prices, None, signal_type_stats))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
         

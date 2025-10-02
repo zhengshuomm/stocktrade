@@ -225,7 +225,7 @@ class DiscordOutlierSender:
         
         return embed
         
-    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None):
+    async def send_outliers(self, outliers_df, outlier_type="oi", high_amount_but_not_outlier_df=None, signal_type_stats=None):
         """
         发送异常数据到 Discord
         
@@ -424,6 +424,12 @@ class DiscordOutlierSender:
                             stock_price_str = f"${stock_price:.2f}" if stock_price != "N/A" else "N/A"
                             stats_message += f"• {sym}: 当前价格 {stock_price_str}, Call {call_amount}, Put {put_amount}\n"
                     
+                    # 添加异常类型统计
+                    if signal_type_stats:
+                        stats_message += "\n📊 **异常类型统计:**\n"
+                        for signal_type, count in signal_type_stats.items():
+                            stats_message += f"  {signal_type}: {count} 个\n"
+                    
                     stats_message += "\n\n"
                     
                     await channel.send(stats_message)
@@ -572,13 +578,13 @@ class DiscordOutlierSender:
 
 
 # 便捷函数
-async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None):
+async def send_oi_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None):
     """发送OI异常数据到Discord"""
     sender = DiscordOutlierSender("OI异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df)
+    await sender.send_outliers(outliers_df, "oi", high_amount_but_not_outlier_df, signal_type_stats)
 
 
-async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None):
+async def send_volume_outliers(outliers_df, data_folder="data", time_range=None, stock_prices=None, high_amount_but_not_outlier_df=None, signal_type_stats=None):
     """发送Volume异常数据到Discord"""
     sender = DiscordOutlierSender("Volume异常", data_folder, time_range, stock_prices)
-    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df)
+    await sender.send_outliers(outliers_df, "volume", high_amount_but_not_outlier_df, signal_type_stats)
