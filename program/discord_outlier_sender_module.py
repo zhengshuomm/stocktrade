@@ -600,8 +600,15 @@ class DiscordOutlierSender:
                         trend_filtered_grouped = pd.DataFrame(trend_filtered_results)
                         trend_filtered_grouped = trend_filtered_grouped.sort_values(by=["total_count"], ascending=[False])
                         
-                        # 不过滤任何股票，包括"数据未更新"的股票
-                        filtered_trend_grouped = trend_filtered_grouped
+                        # 过滤掉所有统计都为0的股票（看涨、看跌、看涨C、看跌C、看涨P、看跌P都为0）
+                        filtered_trend_grouped = trend_filtered_grouped[
+                            (trend_filtered_grouped['bullish_count'] > 0) | 
+                            (trend_filtered_grouped['bearish_count'] > 0) |
+                            (trend_filtered_grouped['bullish_call_amount'] > 0) |
+                            (trend_filtered_grouped['bearish_call_amount'] > 0) |
+                            (trend_filtered_grouped['bullish_put_amount'] > 0) |
+                            (trend_filtered_grouped['bearish_put_amount'] > 0)
+                        ]
                         
                         # 只显示前25个股票
                         display_count = min(25, len(filtered_trend_grouped))
