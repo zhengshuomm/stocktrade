@@ -21,6 +21,7 @@ from psycopg2.extras import execute_values
 import argparse
 import logging
 from datetime import datetime
+import pytz
 from pathlib import Path
 import hashlib
 
@@ -51,6 +52,7 @@ class DatabaseInserter:
         self.conn = None
         self.cursor = None
         self.signal_type_cache = {}  # 缓存信号类型ID
+        self.pst_tz = pytz.timezone('US/Pacific')  # PST时区
         
     def connect_db(self):
         """连接数据库"""
@@ -180,7 +182,8 @@ class DatabaseInserter:
             return []
         
         data_list = []
-        current_time = datetime.now()
+        # 使用PST时间，格式化为数据库可接受的格式
+        current_time = datetime.now(self.pst_tz).strftime('%Y-%m-%d %H:%M:%S')
         
         for _, row in df.iterrows():
             try:
@@ -222,7 +225,8 @@ class DatabaseInserter:
             return []
         
         data_list = []
-        current_time = datetime.now()
+        # 使用PST时间，格式化为数据库可接受的格式
+        current_time = datetime.now(self.pst_tz).strftime('%Y-%m-%d %H:%M:%S')
         
         for _, row in df.iterrows():
             try:
@@ -277,9 +281,13 @@ class DatabaseInserter:
             
             values = []
             for data in data_list:
-                values.append(tuple(data.get(col) for col in columns))
+                # 将create_time转换为PST时区的timestamp
+                create_time_pst = f"{data['create_time']} PST"
+                data_copy = data.copy()
+                data_copy['create_time'] = create_time_pst
+                values.append(tuple(data_copy.get(col) for col in columns))
             
-            # 批量插入
+            # 批量插入，使用PST时区
             insert_query = f"""
             INSERT INTO volume_outlier ({', '.join(columns)})
             VALUES %s
@@ -333,9 +341,13 @@ class DatabaseInserter:
             
             values = []
             for data in data_list:
-                values.append(tuple(data.get(col) for col in columns))
+                # 将create_time转换为PST时区的timestamp
+                create_time_pst = f"{data['create_time']} PST"
+                data_copy = data.copy()
+                data_copy['create_time'] = create_time_pst
+                values.append(tuple(data_copy.get(col) for col in columns))
             
-            # 批量插入
+            # 批量插入，使用PST时区
             insert_query = f"""
             INSERT INTO oi_outlier ({', '.join(columns)})
             VALUES %s
