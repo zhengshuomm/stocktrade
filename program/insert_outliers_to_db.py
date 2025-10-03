@@ -343,7 +343,7 @@ class DatabaseInserter:
             DO UPDATE SET
                 strike = EXCLUDED.strike,
                 oi_change = EXCLUDED.oi_change,
-                signal_type = EXCLUDED.signal_type,
+                signal_type_id = EXCLUDED.signal_type_id,
                 option_type = EXCLUDED.option_type,
                 openInterest_new = EXCLUDED.openInterest_new,
                 openInterest_old = EXCLUDED.openInterest_old,
