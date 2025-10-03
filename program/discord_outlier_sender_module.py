@@ -432,7 +432,7 @@ class DiscordOutlierSender:
                                 'total_count': len(countable_group)
                             })
                         
-                        grouped = outliers_df_copy.groupby("symbol").apply(calculate_amounts, include_groups=False).reset_index()
+                        grouped = outliers_df_copy.groupby("symbol").apply(calculate_amounts).reset_index()
                         grouped = grouped.sort_values(by=["total_count"], ascending=[False])
                         
                         # 添加文件链接
@@ -750,7 +750,7 @@ class DiscordOutlierSender:
                                 'total_count': len(group)
                             })
                         
-                        high_amount_grouped = high_amount_copy.groupby("symbol").apply(calculate_high_amount_stats, include_groups=False).reset_index()
+                        high_amount_grouped = high_amount_copy.groupby("symbol").apply(calculate_high_amount_stats).reset_index()
                         high_amount_grouped = high_amount_grouped.sort_values(by=["total_count"], ascending=[False])
                         
                         for _, row in high_amount_grouped.iterrows():
