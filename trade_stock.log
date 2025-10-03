@@ -264,3 +264,88 @@
 2025-10-03 14:17:26,217 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
 2025-10-03 14:17:26,218 - INFO - 交易周期完成
 2025-10-03 14:17:26,218 - INFO - 数据库连接已关闭
+2025-10-03 14:21:53,138 - INFO - 使用数据文件夹: data
+2025-10-03 14:21:53,138 - INFO - Outlier目录: data/outlier
+2025-10-03 14:21:53,138 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:21:53,455 - INFO - 数据库连接成功
+2025-10-03 14:21:53,672 - INFO - 数据库表创建/检查完成
+2025-10-03 14:21:53,673 - INFO - 开始交易周期
+2025-10-03 14:21:53,844 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:53,906 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:53,908 - WARNING - CRWV: 历史数据为空
+2025-10-03 14:21:53,976 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:54,041 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:54,044 - WARNING - HOOD: 历史数据为空
+2025-10-03 14:21:54,126 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:54,198 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:54,202 - WARNING - FCX: 历史数据为空
+2025-10-03 14:21:54,288 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:54,365 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:54,369 - WARNING - NVDA: 历史数据为空
+2025-10-03 14:21:54,447 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:54,533 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:54,537 - WARNING - BE: 历史数据为空
+2025-10-03 14:21:54,572 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:21:54,577 - INFO - 找到最新outlier文件: data/outlier/20251003-1256.csv
+2025-10-03 14:21:54,577 - INFO - 找到最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv
+2025-10-03 14:21:54,584 - INFO - 加载文件 data/outlier/20251003-1256.csv: 28 行数据
+2025-10-03 14:21:54,587 - INFO - 加载文件 data/volume_outlier/volume_outlier_20251003-1257.csv: 5 行数据
+2025-10-03 14:21:54,589 - INFO - 分析信号完成: 9 个股票
+2025-10-03 14:21:54,701 - INFO - CRWV: 只有看跌信号, 决定卖出
+2025-10-03 14:21:54,791 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:54,862 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:54,864 - WARNING - CRWV: 历史数据为空
+2025-10-03 14:21:57,966 - WARNING - 备用方法也遇到速率限制 CRWV: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/CRWV?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:21:57,969 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 14:21:57,969 - INFO - HOOD: 持有时间 62.0 小时 > 24 小时, 决定卖出
+2025-10-03 14:21:58,134 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:21:58,525 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:21:58,529 - WARNING - HOOD: 历史数据为空
+2025-10-03 14:22:01,629 - WARNING - 备用方法也遇到速率限制 HOOD: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/HOOD?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:01,632 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 14:22:01,632 - INFO - FCX: 持有时间 62.0 小时 > 24 小时, 决定卖出
+2025-10-03 14:22:01,719 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:01,790 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:01,792 - WARNING - FCX: 历史数据为空
+2025-10-03 14:22:04,896 - WARNING - 备用方法也遇到速率限制 FCX: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/FCX?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:04,900 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 14:22:04,900 - INFO - NVDA: 持有时间 62.0 小时 > 24 小时, 决定卖出
+2025-10-03 14:22:04,979 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:05,059 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:05,061 - WARNING - NVDA: 历史数据为空
+2025-10-03 14:22:08,214 - WARNING - 备用方法也遇到速率限制 NVDA: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/NVDA?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:08,216 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 14:22:08,216 - INFO - BE: 持有时间 62.0 小时 > 24 小时, 决定卖出
+2025-10-03 14:22:08,290 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:08,364 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:08,366 - WARNING - BE: 历史数据为空
+2025-10-03 14:22:11,463 - WARNING - 备用方法也遇到速率限制 BE: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/BE?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:11,466 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 14:22:11,466 - INFO - COIN: 看涨 8 个, 看跌 0 个, 决定买入
+2025-10-03 14:22:11,542 - ERROR - Failed to get ticker 'COIN' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:11,617 - ERROR - COIN: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:11,619 - WARNING - COIN: 历史数据为空
+2025-10-03 14:22:14,718 - WARNING - 备用方法也遇到速率限制 COIN: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/COIN?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:14,721 - ERROR - 无法获取 COIN 的当前价格
+2025-10-03 14:22:14,721 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:22:14,819 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:14,906 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:14,909 - WARNING - RGTI: 历史数据为空
+2025-10-03 14:22:18,009 - WARNING - 备用方法也遇到速率限制 RGTI: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/RGTI?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:18,012 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 14:22:18,012 - INFO - MU: 看涨 5 个, 看跌 0 个, 决定买入
+2025-10-03 14:22:18,095 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:18,187 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:18,190 - WARNING - MU: 历史数据为空
+2025-10-03 14:22:21,272 - WARNING - 备用方法也遇到速率限制 MU: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/MU?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:21,276 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 14:22:21,276 - INFO - RKLB: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:22:21,362 - ERROR - Failed to get ticker 'RKLB' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:22:21,443 - ERROR - RKLB: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:22:21,446 - WARNING - RKLB: 历史数据为空
+2025-10-03 14:22:24,543 - WARNING - 备用方法也遇到速率限制 RKLB: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/RKLB?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:22:24,547 - ERROR - 无法获取 RKLB 的当前价格
+2025-10-03 14:22:24,623 - INFO - 更新用户股票总价值
+2025-10-03 14:22:24,700 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 14:22:24,701 - INFO - 交易周期完成
+2025-10-03 14:22:24,702 - INFO - 数据库连接已关闭
