@@ -298,13 +298,19 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
     if merged.empty:
         return pd.DataFrame()
     
+    # 跨日数据特殊处理：如果volume完全一样，则跳过该行
+    if is_cross_day:
+        # 过滤掉volume完全相同的行
+        merged = merged[merged["volume_new"] != merged["volume_old"]].copy()
+        
+        if merged.empty:
+            print("跨日数据：所有合约的volume都相同，跳过处理")
+            return pd.DataFrame()
+    
     # 计算变化
     if is_cross_day:
-        # 跨日数据：如果volume相同则认为变化为0，否则计算差值
-        merged["volume_change"] = merged.apply(
-            lambda row: 0 if row["volume_new"] == row["volume_old"] 
-            else row["volume_new"] - row["volume_old"], axis=1
-        )
+        # 跨日数据：计算差值
+        merged["volume_change"] = merged["volume_new"] - merged["volume_old"]
         # 跨日数据的百分比计算：如果volume_old为0，则设为100%，否则正常计算
         merged["volume_change_pct"] = merged.apply(
             lambda row: 100.0 if row["volume_old"] == 0 and row["volume_new"] > 0
