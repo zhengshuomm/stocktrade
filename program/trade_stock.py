@@ -275,14 +275,62 @@ class StockTrader:
     
     def get_current_price(self, symbol: str) -> Optional[float]:
         """获取股票当前价格"""
+        import time
+        
+        for attempt in range(3):  # 重试3次
+            try:
+                ticker = yf.Ticker(symbol)
+                hist = ticker.history(period="1d")
+                if not hist.empty:
+                    price = float(hist['Close'].iloc[-1])
+                    logger.info(f"成功获取 {symbol} 价格: {price}")
+                    return price
+                else:
+                    logger.warning(f"{symbol}: 历史数据为空")
+                    return None
+            except Exception as e:
+                error_msg = str(e)
+                if "429" in error_msg or "Too Many Requests" in error_msg:
+                    # 速率限制，等待更长时间
+                    wait_time = (attempt + 1) * 5  # 5秒, 10秒, 15秒
+                    logger.warning(f"速率限制，等待 {wait_time} 秒后重试 {symbol}")
+                    time.sleep(wait_time)
+                else:
+                    logger.warning(f"获取 {symbol} 价格失败 (尝试 {attempt + 1}/3): {e}")
+                    if attempt < 2:  # 不是最后一次尝试
+                        time.sleep(2)  # 等待2秒后重试
+                    else:
+                        logger.error(f"获取 {symbol} 价格最终失败: {e}")
+                        return None
+        
+        return None
+    
+    def get_current_price_fallback(self, symbol: str) -> Optional[float]:
+        """备用价格获取方法"""
+        import time
+        
         try:
+            # 等待一段时间避免速率限制
+            time.sleep(3)
+            
+            # 尝试使用info()方法获取当前价格
             ticker = yf.Ticker(symbol)
-            hist = ticker.history(period="1d")
-            if not hist.empty:
-                return float(hist['Close'].iloc[-1])
+            info = ticker.info
+            if 'currentPrice' in info and info['currentPrice']:
+                price = float(info['currentPrice'])
+                logger.info(f"通过info获取 {symbol} 价格: {price}")
+                return price
+            elif 'regularMarketPrice' in info and info['regularMarketPrice']:
+                price = float(info['regularMarketPrice'])
+                logger.info(f"通过regularMarketPrice获取 {symbol} 价格: {price}")
+                return price
             return None
         except Exception as e:
-            logger.error(f"获取 {symbol} 价格失败: {e}")
+            error_msg = str(e)
+            if "429" in error_msg or "Too Many Requests" in error_msg:
+                logger.warning(f"备用方法也遇到速率限制 {symbol}: {e}")
+            else:
+                logger.warning(f"备用价格获取失败 {symbol}: {e}")
             return None
     
     def get_user_info(self) -> Dict:
@@ -315,8 +363,11 @@ class StockTrader:
         try:
             current_price = self.get_current_price(symbol)
             if not current_price:
-                logger.error(f"无法获取 {symbol} 的当前价格")
-                return False
+                # 尝试备用方法
+                current_price = self.get_current_price_fallback(symbol)
+                if not current_price:
+                    logger.error(f"无法获取 {symbol} 的当前价格")
+                    return False
             
             number_shares = int(buy_amount / current_price)
             if number_shares <= 0:
@@ -351,8 +402,11 @@ class StockTrader:
             # 获取当前价格
             current_price = self.get_current_price(symbol)
             if not current_price:
-                logger.error(f"无法获取 {symbol} 的当前价格")
-                return False
+                # 尝试备用方法
+                current_price = self.get_current_price_fallback(symbol)
+                if not current_price:
+                    logger.error(f"无法获取 {symbol} 的当前价格")
+                    return False
             
             # 更新交易记录
             self.cursor.execute("""
