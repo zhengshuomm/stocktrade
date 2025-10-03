@@ -10,12 +10,14 @@
 1. 成交量异常检测 (Volume Outlier)：
    - 看涨信号：买 Call，看涨 (signal_type = "买 Call，看涨")
    - 看跌信号：买 Put，看跌 (signal_type = "买 Put，看跌")
-   - 条件：异常金额 >= 阈值，且股票价格在合理范围内
+   - 条件：异常金额 >= 200万 (MIN_AMOUNT_THRESHOLD = 2,000,000)
+   - 金额分档：5M, 10M, 50M (500万, 1000万, 5000万)
 
 2. 持仓量异常检测 (OI Outlier)：
    - 看涨信号：买 Call，看涨 (signal_type = "买 Call，看涨")
    - 看跌信号：买 Put，看跌 (signal_type = "买 Put，看跌")
-   - 条件：OI变化显著，且异常金额 >= 阈值
+   - 条件：异常金额 >= 500万 (THRESHOLD_5M = 5,000,000)
+   - 金额分档：5M, 10M, 50M (500万, 1000万, 5000万)
 
 【卖出时机 (SELL SIGNALS)】
 1. 时间止损：
