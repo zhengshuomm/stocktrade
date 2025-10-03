@@ -41,7 +41,7 @@ ABR^D,Arbor Realty Trust 6.375% Series D Cumulative Redeemable Preferred Stock L
 ABR^E,Arbor Realty Trust 6.25% Series E Cumulative Redeemable Preferred Stock,$18.68,0.13,0.701%,,United States,,7744,,
 ABR^F,Arbor Realty Trust 6.25% Series F Fixed-to-Floating Rate Cumulative Redeemable Preferred Stock Liquidation Preference $25.00 per share,$22.76,-0.09,-0.394%,,United States,,5287,,
 ABSI,Absci Corporation Common Stock,$2.73,0.08,3.019%,408196826.00,United States,2021,4490206,Health Care,Biotechnology: Commercial Physical & Biological Resarch
-ABT,Abbott Laboratories Common Stock,$133.55,0.24,0.18%,232438301320.00,United States,,4182118,Health Care,Biotechnology: Pharmaceutical Preparations
+ABT,Abbott Laboratories CommonWO Stock,$133.55,0.24,0.18%,232438301320.00,United States,,4182118,Health Care,Biotechnology: Pharmaceutical Preparations
 ABTC,American Bitcoin Corp. Class A Common Stock,$6.58,-0.11,-1.644%,5978509961.00,United States,2018,2443962,Technology,EDP Services
 ABTS,Abits Group Inc Ordinary Shares,$8.39,-0.06,-0.71%,19885466.00,China,,27759,Technology,Computer Software: Programming Data Processing
 ABUS,Arbutus Biopharma Corporation Common Stock,$4.41,0.09,2.083%,845391245.00,Canada,,608887,Health Care,Biotechnology: Pharmaceutical Preparations
@@ -6876,7 +6876,7 @@ WNEB,Western New England Bancorp Inc. Common Stock,$12.22,-0.01,-0.082%,25041182
 WNS,WNS (Holdings) Limited Ordinary Shares,$76.17,0.03,0.039%,3267228820.00,India,2024,390095,Real Estate,Real Estate
 WNW,Meiwu Technology Company Limited Ordinary Shares,$1.84,-0.06,-3.158%,5829365.00,China,2020,20661,Consumer Discretionary,Catalog/Specialty Distribution
 WOK,WORK Medical Technology Group LTD Class A Ordinary Shares,$0.0834,-0.0046,-5.227%,1216968.00,China,2024,83455106,Health Care,Medical/Dental Instruments
-WOLF,Wolfspeed Inc. Common Stock,$1.21,-0.64,-34.595%,189331119.00,United States,,117193040,Technology,Semiconductors
+WOLF,Wolfspeed Inc. Common Stock,$1.21,-0.64,-34.595%,1456331119.00,United States,,117193040,Technology,Semiconductors
 WOOF,Petco Health and Wellness Company Inc. Class A Common Stock,$3.50,0.05,1.449%,1113169453.00,United States,2021,1384759,Consumer Discretionary,Other Specialty Stores
 WOR,Worthington Enterprises Inc. Common Shares,$54.40,1.61,3.05%,2710383331.00,United States,,833523,Industrials,Steel/Iron Ore
 WORX,SCWorx Corp. Common Stock,$0.2898,-0.0062,-2.095%,2283940.00,United States,2016,288396,Consumer Discretionary,Services-Misc. Amusement & Recreation

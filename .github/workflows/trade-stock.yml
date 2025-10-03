@@ -174,12 +174,12 @@ jobs:
         echo "当前成交量异常数据文件："
         ls -la priority_data/volume_outlier/ || echo "成交量异常数据目录为空"
 
-    - name: 模拟交易
-      run: |
-        echo "模拟交易..."
-        python program/insert_outliers_to_db.py --folder priority_data 
-        python program/insert_outliers_to_db.py --folder data 
-        echo "模拟交易测完成"
+    # - name: 模拟交易
+    #   run: |
+    #     echo "模拟交易..."
+    #     python program/insert_outliers_to_db.py --folder priority_data 
+    #     python program/insert_outliers_to_db.py --folder data 
+    #     echo "模拟交易测完成"
 
     - name: 模拟交易
       run: |

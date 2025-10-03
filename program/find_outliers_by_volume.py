@@ -304,7 +304,6 @@ def compute_volume_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.D
         merged = merged[merged["volume_new"] != merged["volume_old"]].copy()
         
         if merged.empty:
-            print("跨日数据：所有合约的volume都相同，跳过处理")
             return pd.DataFrame()
     
     # 计算变化
