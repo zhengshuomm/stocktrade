@@ -160,6 +160,8 @@ jobs:
         if git diff --staged --quiet; then
           echo "没有新的数据文件需要提交"
         else
+          # 先拉取远程更改并rebase
+          git pull --rebase origin main
           git commit -m "Auto-update: 完整股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
-          git push
+          git push origin main
         fi
