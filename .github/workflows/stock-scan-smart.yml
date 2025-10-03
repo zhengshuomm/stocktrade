@@ -149,7 +149,6 @@ jobs:
       run: |
         echo "开始成交量异常检测..."
         python program/insert_outliers_to_db.py --folder data --cleanup-days 10
-        python program/insert_outliers_to_db.py --folder priority_data --cleanup-days 10
         echo "成交量异常检测完成"
         
     - name: 提交所有数据文件
@@ -165,3 +164,9 @@ jobs:
           git commit -m "Auto-update: 完整股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
           git push origin main
         fi
+ 
+    - name: 模拟交易
+      run: |
+        echo "模拟交易..."
+        python program/trade_stock.py
+        echo "模拟交易测完成"

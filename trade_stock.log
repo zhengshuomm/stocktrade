@@ -1,0 +1,266 @@
+2025-10-03 14:15:12,030 - INFO - 使用数据文件夹: data
+2025-10-03 14:15:12,030 - INFO - Outlier目录: data/outlier
+2025-10-03 14:15:12,030 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:15:12,309 - INFO - 数据库连接成功
+2025-10-03 14:15:12,535 - INFO - 数据库表创建/检查完成
+2025-10-03 14:15:12,535 - INFO - 开始交易周期
+2025-10-03 14:15:12,686 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:12,764 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:12,831 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:12,896 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:12,970 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:13,040 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:13,114 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:13,184 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:13,252 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:13,313 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:13,346 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:15:13,347 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 14:15:13,347 - INFO - 数据库连接已关闭
+2025-10-03 14:15:36,733 - INFO - 使用数据文件夹: data
+2025-10-03 14:15:36,734 - INFO - Outlier目录: data/outlier
+2025-10-03 14:15:36,734 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:15:36,979 - INFO - 数据库连接成功
+2025-10-03 14:15:37,188 - INFO - 数据库表创建/检查完成
+2025-10-03 14:15:37,188 - INFO - 开始交易周期
+2025-10-03 14:15:37,372 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:37,446 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:37,523 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:37,590 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:37,664 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:37,739 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:37,819 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:37,894 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:37,967 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:38,048 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:38,085 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:15:38,087 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 14:15:38,087 - INFO - 数据库连接已关闭
+2025-10-03 14:15:55,360 - INFO - 使用数据文件夹: data
+2025-10-03 14:15:55,360 - INFO - Outlier目录: data/outlier
+2025-10-03 14:15:55,360 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:15:55,619 - INFO - 数据库连接成功
+2025-10-03 14:15:55,842 - INFO - 数据库表创建/检查完成
+2025-10-03 14:15:55,842 - INFO - 开始交易周期
+2025-10-03 14:15:56,001 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:56,083 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:56,171 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:56,241 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:56,310 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:56,378 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:56,449 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:56,537 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:56,619 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:15:56,685 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:15:56,721 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:15:56,722 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 14:15:56,723 - INFO - 数据库连接已关闭
+2025-10-03 14:16:05,582 - INFO - 使用数据文件夹: data
+2025-10-03 14:16:05,582 - INFO - Outlier目录: data/outlier
+2025-10-03 14:16:05,582 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:16:05,809 - INFO - 数据库连接成功
+2025-10-03 14:16:06,011 - INFO - 数据库表创建/检查完成
+2025-10-03 14:16:06,011 - INFO - 开始交易周期
+2025-10-03 14:16:06,169 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:06,247 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:06,315 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:06,400 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:06,469 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:06,534 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:06,606 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:06,679 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:06,762 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:06,835 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:06,871 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:16:06,873 - INFO - 找到最新outlier文件: data/outlier/20251003-1256.csv
+2025-10-03 14:16:06,873 - INFO - 找到最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv
+2025-10-03 14:16:06,877 - INFO - 加载文件 data/outlier/20251003-1256.csv: 28 行数据
+2025-10-03 14:16:06,878 - INFO - 加载文件 data/volume_outlier/volume_outlier_20251003-1257.csv: 5 行数据
+2025-10-03 14:16:06,880 - INFO - 分析信号完成: 9 个股票
+2025-10-03 14:16:06,983 - INFO - CRWV: 只有看跌信号, 决定卖出
+2025-10-03 14:16:07,050 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,134 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,136 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 14:16:07,136 - INFO - HOOD: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:07,216 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,320 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,321 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 14:16:07,322 - INFO - FCX: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:07,387 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,454 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,456 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 14:16:07,456 - INFO - NVDA: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:07,522 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,581 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,582 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 14:16:07,582 - INFO - BE: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:07,682 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,758 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,760 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 14:16:07,760 - INFO - COIN: 看涨 8 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:07,850 - ERROR - Failed to get ticker 'COIN' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:07,982 - ERROR - COIN: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:07,985 - ERROR - 无法获取 COIN 的当前价格
+2025-10-03 14:16:07,985 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:08,056 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:08,121 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:08,123 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 14:16:08,123 - INFO - MU: 看涨 5 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:08,207 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:08,279 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:08,281 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 14:16:08,281 - INFO - RKLB: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:08,348 - ERROR - Failed to get ticker 'RKLB' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:08,427 - ERROR - RKLB: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:08,429 - ERROR - 无法获取 RKLB 的当前价格
+2025-10-03 14:16:08,501 - INFO - 更新用户股票总价值
+2025-10-03 14:16:08,572 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 14:16:08,572 - INFO - 交易周期完成
+2025-10-03 14:16:08,573 - INFO - 数据库连接已关闭
+2025-10-03 14:16:22,907 - INFO - 使用数据文件夹: data
+2025-10-03 14:16:22,908 - INFO - Outlier目录: data/outlier
+2025-10-03 14:16:22,908 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:16:23,208 - INFO - 数据库连接成功
+2025-10-03 14:16:23,441 - INFO - 数据库表创建/检查完成
+2025-10-03 14:16:23,441 - INFO - 开始交易周期
+2025-10-03 14:16:23,592 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:23,655 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:23,719 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:23,791 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:23,860 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:23,929 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,003 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,087 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,165 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,231 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,269 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:16:24,272 - INFO - 找到最新outlier文件: data/outlier/20251003-1256.csv
+2025-10-03 14:16:24,272 - INFO - 找到最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv
+2025-10-03 14:16:24,277 - INFO - 加载文件 data/outlier/20251003-1256.csv: 28 行数据
+2025-10-03 14:16:24,279 - INFO - 加载文件 data/volume_outlier/volume_outlier_20251003-1257.csv: 5 行数据
+2025-10-03 14:16:24,281 - INFO - 分析信号完成: 9 个股票
+2025-10-03 14:16:24,386 - INFO - CRWV: 只有看跌信号, 决定卖出
+2025-10-03 14:16:24,466 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,538 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,541 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 14:16:24,541 - INFO - HOOD: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:24,618 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,689 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,692 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 14:16:24,692 - INFO - FCX: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:24,772 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,843 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,846 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 14:16:24,846 - INFO - NVDA: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:24,911 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:24,986 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:24,987 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 14:16:24,987 - INFO - BE: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:16:25,057 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:25,137 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:25,138 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 14:16:25,138 - INFO - COIN: 看涨 8 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:25,223 - ERROR - Failed to get ticker 'COIN' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:25,288 - ERROR - COIN: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:25,290 - ERROR - 无法获取 COIN 的当前价格
+2025-10-03 14:16:25,290 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:25,355 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:25,431 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:25,434 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 14:16:25,434 - INFO - MU: 看涨 5 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:25,522 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:25,598 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:25,601 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 14:16:25,601 - INFO - RKLB: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:16:25,702 - ERROR - Failed to get ticker 'RKLB' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:16:25,803 - ERROR - RKLB: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:16:25,806 - ERROR - 无法获取 RKLB 的当前价格
+2025-10-03 14:16:25,881 - INFO - 更新用户股票总价值
+2025-10-03 14:16:25,961 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 14:16:25,961 - INFO - 交易周期完成
+2025-10-03 14:16:25,962 - INFO - 数据库连接已关闭
+2025-10-03 14:17:22,402 - INFO - 使用数据文件夹: data
+2025-10-03 14:17:22,402 - INFO - Outlier目录: data/outlier
+2025-10-03 14:17:22,402 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 14:17:22,656 - INFO - 数据库连接成功
+2025-10-03 14:17:22,858 - INFO - 数据库表创建/检查完成
+2025-10-03 14:17:22,858 - INFO - 开始交易周期
+2025-10-03 14:17:23,021 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:23,093 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:23,094 - WARNING - CRWV: 历史数据为空
+2025-10-03 14:17:23,181 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:23,291 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:23,293 - WARNING - HOOD: 历史数据为空
+2025-10-03 14:17:23,372 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:23,434 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:23,436 - WARNING - FCX: 历史数据为空
+2025-10-03 14:17:23,507 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:23,590 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:23,592 - WARNING - NVDA: 历史数据为空
+2025-10-03 14:17:23,677 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:23,741 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:23,742 - WARNING - BE: 历史数据为空
+2025-10-03 14:17:23,774 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 14:17:23,776 - INFO - 找到最新outlier文件: data/outlier/20251003-1256.csv
+2025-10-03 14:17:23,776 - INFO - 找到最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv
+2025-10-03 14:17:23,780 - INFO - 加载文件 data/outlier/20251003-1256.csv: 28 行数据
+2025-10-03 14:17:23,781 - INFO - 加载文件 data/volume_outlier/volume_outlier_20251003-1257.csv: 5 行数据
+2025-10-03 14:17:23,782 - INFO - 分析信号完成: 9 个股票
+2025-10-03 14:17:23,886 - INFO - CRWV: 只有看跌信号, 决定卖出
+2025-10-03 14:17:23,968 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:24,032 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:24,033 - WARNING - CRWV: 历史数据为空
+2025-10-03 14:17:24,098 - WARNING - 备用价格获取失败 CRWV: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/CRWV?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:24,099 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 14:17:24,099 - INFO - HOOD: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:17:24,165 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:24,229 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:24,231 - WARNING - HOOD: 历史数据为空
+2025-10-03 14:17:24,301 - WARNING - 备用价格获取失败 HOOD: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/HOOD?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:24,303 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 14:17:24,303 - INFO - FCX: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:17:24,372 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:24,439 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:24,441 - WARNING - FCX: 历史数据为空
+2025-10-03 14:17:24,518 - WARNING - 备用价格获取失败 FCX: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/FCX?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:24,520 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 14:17:24,520 - INFO - NVDA: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:17:24,604 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:24,687 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:24,688 - WARNING - NVDA: 历史数据为空
+2025-10-03 14:17:24,770 - WARNING - 备用价格获取失败 NVDA: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/NVDA?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:24,771 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 14:17:24,771 - INFO - BE: 持有时间 61.9 小时 > 24 小时, 决定卖出
+2025-10-03 14:17:24,838 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:24,912 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:24,913 - WARNING - BE: 历史数据为空
+2025-10-03 14:17:24,977 - WARNING - 备用价格获取失败 BE: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/BE?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:24,978 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 14:17:24,979 - INFO - COIN: 看涨 8 个, 看跌 0 个, 决定买入
+2025-10-03 14:17:25,060 - ERROR - Failed to get ticker 'COIN' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:25,142 - ERROR - COIN: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:25,144 - WARNING - COIN: 历史数据为空
+2025-10-03 14:17:25,209 - WARNING - 备用价格获取失败 COIN: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/COIN?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:25,211 - ERROR - 无法获取 COIN 的当前价格
+2025-10-03 14:17:25,211 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:17:25,279 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:25,367 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:25,369 - WARNING - RGTI: 历史数据为空
+2025-10-03 14:17:25,438 - WARNING - 备用价格获取失败 RGTI: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/RGTI?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:25,440 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 14:17:25,440 - INFO - MU: 看涨 5 个, 看跌 0 个, 决定买入
+2025-10-03 14:17:25,519 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:25,600 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:25,602 - WARNING - MU: 历史数据为空
+2025-10-03 14:17:25,758 - WARNING - 备用价格获取失败 MU: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/MU?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:25,760 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 14:17:25,760 - INFO - RKLB: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 14:17:25,864 - ERROR - Failed to get ticker 'RKLB' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 14:17:25,939 - ERROR - RKLB: No price data found, symbol may be delisted (period=1d)
+2025-10-03 14:17:25,940 - WARNING - RKLB: 历史数据为空
+2025-10-03 14:17:26,014 - WARNING - 备用价格获取失败 RKLB: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/RKLB?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 14:17:26,015 - ERROR - 无法获取 RKLB 的当前价格
+2025-10-03 14:17:26,102 - INFO - 更新用户股票总价值
+2025-10-03 14:17:26,217 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 14:17:26,218 - INFO - 交易周期完成
+2025-10-03 14:17:26,218 - INFO - 数据库连接已关闭

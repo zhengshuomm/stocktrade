@@ -142,15 +142,29 @@ jobs:
         name: priority-stock-data
         path: priority_data/
         retention-days: 30
+    
+    - name: 插入异常数据到数据库
+      run: |
+        echo "开始成交量异常检测..."
+        python program/insert_outliers_to_db.py --folder priority_data --cleanup-days 10
+        echo "成交量异常检测完成"
         
     - name: 提交所有数据文件
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add priority_data/
+        git add data/
         if git diff --staged --quiet; then
           echo "没有新的数据文件需要提交"
         else
-          git commit -m "Auto-update: 优先级股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
-          git push
+          # 先拉取远程更改并rebase
+          git pull --rebase origin main
+          git commit -m "Auto-update: 完整股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
+          git push origin main
         fi
+
+    - name: 模拟交易
+      run: |
+        echo "模拟交易..."
+        python program/trade_stock.py --folder priority_data
+        echo "模拟交易测完成"
