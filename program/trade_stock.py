@@ -71,7 +71,7 @@ import argparse
 
 # 配置日志
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('trade_stock.log'),
@@ -94,7 +94,7 @@ VOLUME_OUTLIER_DIR = None
 INITIAL_CASH = 100000.0
 BUY_RATIO = 0.1  # 每次买入总资产的10%
 HOLD_HOURS_LIMIT = 24  # 持有时间限制（小时）
-FILE_TIMEOUT_MINUTES = 120  # 文件超时时间（分钟）
+FILE_TIMEOUT_MINUTES = 360  # 文件超时时间（分钟）
 
 
 class StockTrader:
@@ -192,28 +192,76 @@ class StockTrader:
             latest_outlier = None
             latest_volume_outlier = None
             
-            # 解析文件名中的时间戳
+            # 优先使用文件修改时间，如果文件修改时间太旧则尝试文件名时间戳
             def extract_timestamp(filename):
-                match = re.search(r'(\d{8}-\d{4})', os.path.basename(filename))
-                if match:
-                    return datetime.strptime(match.group(1), '%Y%m%d-%H%M')
-                return None
+                basename = os.path.basename(filename)
+                
+                # 首先尝试文件修改时间
+                try:
+                    file_mtime = os.path.getmtime(filename)
+                    file_timestamp = datetime.fromtimestamp(file_mtime)
+                    logger.debug(f"文件修改时间: {basename} -> {file_timestamp}")
+                    
+                    # 如果文件修改时间在合理范围内（今天），使用它
+                    now = datetime.now()
+                    if file_timestamp.date() == now.date():
+                        logger.debug(f"使用文件修改时间: {basename} -> {file_timestamp}")
+                        return file_timestamp
+                    
+                    # 如果文件修改时间太旧，尝试文件名时间戳
+                    logger.debug(f"文件修改时间太旧，尝试文件名解析: {basename}")
+                except OSError:
+                    logger.warning(f"无法获取文件修改时间: {filename}")
+                
+                # 尝试文件名时间戳解析
+                patterns = [
+                    r'(\d{8}-\d{4})',  # YYYYMMDD-HHMM
+                    r'volume_outlier_(\d{8}-\d{4})',  # volume_outlier_YYYYMMDD-HHMM
+                ]
+                
+                for pattern in patterns:
+                    match = re.search(pattern, basename)
+                    if match:
+                        try:
+                            timestamp = datetime.strptime(match.group(1), '%Y%m%d-%H%M')
+                            logger.debug(f"文件名解析成功: {basename} -> {timestamp}")
+                            return timestamp
+                        except ValueError:
+                            continue
+                
+                # 如果都失败了，返回文件修改时间（即使很旧）
+                try:
+                    file_mtime = os.path.getmtime(filename)
+                    timestamp = datetime.fromtimestamp(file_mtime)
+                    logger.debug(f"使用文件修改时间作为备选: {basename} -> {timestamp}")
+                    return timestamp
+                except OSError:
+                    logger.warning(f"无法获取文件修改时间: {filename}")
+                    return None
             
             # 找到最新的outlier文件
             if outlier_files:
+                logger.info(f"找到 {len(outlier_files)} 个outlier文件: {outlier_files}")
                 latest_outlier_file = max(outlier_files, key=extract_timestamp)
                 file_time = extract_timestamp(latest_outlier_file)
+                logger.info(f"最新outlier文件: {latest_outlier_file}, 时间戳: {file_time}")
                 if file_time and (datetime.now() - file_time).total_seconds() <= FILE_TIMEOUT_MINUTES * 60:
                     latest_outlier = latest_outlier_file
                     logger.info(f"找到最新outlier文件: {latest_outlier_file}")
+                else:
+                    logger.warning(f"outlier文件超时: {latest_outlier_file}, 时间差: {(datetime.now() - file_time).total_seconds()/60:.1f} 分钟")
             
             # 找到最新的volume_outlier文件
             if volume_outlier_files:
+                logger.info(f"找到 {len(volume_outlier_files)} 个volume_outlier文件: {volume_outlier_files}")
                 latest_volume_file = max(volume_outlier_files, key=extract_timestamp)
                 file_time = extract_timestamp(latest_volume_file)
+                logger.info(f"最新volume_outlier文件: {latest_volume_file}, 时间戳: {file_time}")
                 if file_time and (datetime.now() - file_time).total_seconds() <= FILE_TIMEOUT_MINUTES * 60:
                     latest_volume_outlier = latest_volume_file
                     logger.info(f"找到最新volume_outlier文件: {latest_volume_file}")
+                else:
+                    logger.warning(f"volume_outlier文件超时: {latest_volume_file}, 时间差: {(datetime.now() - file_time).total_seconds()/60:.1f} 分钟")
             
             return latest_outlier, latest_volume_outlier
             
@@ -305,33 +353,6 @@ class StockTrader:
         
         return None
     
-    def get_current_price_fallback(self, symbol: str) -> Optional[float]:
-        """备用价格获取方法"""
-        import time
-        
-        try:
-            # 等待一段时间避免速率限制
-            time.sleep(3)
-            
-            # 尝试使用info()方法获取当前价格
-            ticker = yf.Ticker(symbol)
-            info = ticker.info
-            if 'currentPrice' in info and info['currentPrice']:
-                price = float(info['currentPrice'])
-                logger.info(f"通过info获取 {symbol} 价格: {price}")
-                return price
-            elif 'regularMarketPrice' in info and info['regularMarketPrice']:
-                price = float(info['regularMarketPrice'])
-                logger.info(f"通过regularMarketPrice获取 {symbol} 价格: {price}")
-                return price
-            return None
-        except Exception as e:
-            error_msg = str(e)
-            if "429" in error_msg or "Too Many Requests" in error_msg:
-                logger.warning(f"备用方法也遇到速率限制 {symbol}: {e}")
-            else:
-                logger.warning(f"备用价格获取失败 {symbol}: {e}")
-            return None
     
     def get_user_info(self) -> Dict:
         """获取用户信息"""
@@ -363,11 +384,8 @@ class StockTrader:
         try:
             current_price = self.get_current_price(symbol)
             if not current_price:
-                # 尝试备用方法
-                current_price = self.get_current_price_fallback(symbol)
-                if not current_price:
-                    logger.error(f"无法获取 {symbol} 的当前价格")
-                    return False
+                logger.error(f"无法获取 {symbol} 的当前价格")
+                return False
             
             number_shares = int(buy_amount / current_price)
             if number_shares <= 0:
@@ -402,10 +420,16 @@ class StockTrader:
             # 获取当前价格
             current_price = self.get_current_price(symbol)
             if not current_price:
-                # 尝试备用方法
-                current_price = self.get_current_price_fallback(symbol)
-                if not current_price:
-                    logger.error(f"无法获取 {symbol} 的当前价格")
+                # 如果无法获取当前价格，使用买入价格作为卖出价格
+                self.cursor.execute("""
+                    SELECT buy_price FROM transaction_history WHERE transaction_id = %s
+                """, (transaction_id,))
+                result = self.cursor.fetchone()
+                if result:
+                    current_price = float(result['buy_price'])
+                    logger.warning(f"无法获取 {symbol} 的当前价格，使用买入价格 {current_price} 作为卖出价格")
+                else:
+                    logger.error(f"无法获取 {symbol} 的买入价格")
                     return False
             
             # 更新交易记录

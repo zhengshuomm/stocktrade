@@ -349,3 +349,1044 @@
 2025-10-03 14:22:24,700 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
 2025-10-03 14:22:24,701 - INFO - 交易周期完成
 2025-10-03 14:22:24,702 - INFO - 数据库连接已关闭
+2025-10-03 17:55:16,384 - INFO - 使用数据文件夹: data
+2025-10-03 17:55:16,384 - INFO - Outlier目录: data/outlier
+2025-10-03 17:55:16,384 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 17:55:16,767 - INFO - 数据库连接成功
+2025-10-03 17:55:17,035 - INFO - 数据库表创建/检查完成
+2025-10-03 17:55:17,036 - INFO - 开始交易周期
+2025-10-03 17:55:17,218 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 17:55:17,288 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 17:55:17,290 - WARNING - CRWV: 历史数据为空
+2025-10-03 17:55:17,362 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 17:55:17,437 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 17:55:17,440 - WARNING - HOOD: 历史数据为空
+2025-10-03 17:55:17,510 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 17:55:17,589 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 17:55:17,591 - WARNING - FCX: 历史数据为空
+2025-10-03 17:55:17,669 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 17:55:17,748 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 17:55:17,751 - WARNING - NVDA: 历史数据为空
+2025-10-03 17:55:17,839 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 17:55:17,925 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 17:55:17,928 - WARNING - BE: 历史数据为空
+2025-10-03 17:55:17,963 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 17:55:17,967 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 17:55:17,967 - INFO - 数据库连接已关闭
+2025-10-03 18:02:53,232 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:02:53,232 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:02:53,232 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:02:53,884 - INFO - 数据库连接成功
+2025-10-03 18:02:54,137 - INFO - 数据库表创建/检查完成
+2025-10-03 18:02:54,137 - INFO - 开始交易周期
+2025-10-03 18:02:54,329 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:02:54,450 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:02:54,452 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:02:54,518 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:02:54,597 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:02:54,599 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:02:54,673 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:02:54,747 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:02:54,749 - WARNING - FCX: 历史数据为空
+2025-10-03 18:02:54,818 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:02:54,884 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:02:54,886 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:02:54,950 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:02:55,044 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:02:55,046 - WARNING - BE: 历史数据为空
+2025-10-03 18:02:55,081 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:02:55,082 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:02:55,082 - INFO - 数据库连接已关闭
+2025-10-03 18:03:08,976 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:03:08,976 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:03:08,976 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:03:09,248 - INFO - 数据库连接成功
+2025-10-03 18:03:09,465 - INFO - 数据库表创建/检查完成
+2025-10-03 18:03:09,465 - INFO - 开始交易周期
+2025-10-03 18:03:09,613 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:09,682 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:09,684 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:03:09,761 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:09,834 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:09,835 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:03:09,910 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:09,977 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:09,978 - WARNING - FCX: 历史数据为空
+2025-10-03 18:03:10,048 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:10,117 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:10,118 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:03:10,200 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:10,290 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:10,291 - WARNING - BE: 历史数据为空
+2025-10-03 18:03:10,326 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:03:10,327 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:03:10,327 - INFO - 数据库连接已关闭
+2025-10-03 18:03:20,152 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:03:20,152 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:03:20,152 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:03:20,377 - INFO - 数据库连接成功
+2025-10-03 18:03:20,591 - INFO - 数据库表创建/检查完成
+2025-10-03 18:03:20,592 - INFO - 开始交易周期
+2025-10-03 18:03:20,752 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:20,840 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:20,842 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:03:20,920 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:21,004 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:21,005 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:03:21,082 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:21,155 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:21,156 - WARNING - FCX: 历史数据为空
+2025-10-03 18:03:21,222 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:21,297 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:21,299 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:03:21,365 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:21,439 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:21,441 - WARNING - BE: 历史数据为空
+2025-10-03 18:03:21,475 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:03:21,476 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:03:21,477 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 07:45:00
+2025-10-03 18:03:21,477 - WARNING - outlier文件超时: priority_data/outlier/20251003-0745.csv, 时间差: 618.4 分钟
+2025-10-03 18:03:21,477 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:03:21,477 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 07:46:00
+2025-10-03 18:03:21,477 - WARNING - volume_outlier文件超时: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间差: 617.4 分钟
+2025-10-03 18:03:21,477 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:03:21,477 - INFO - 数据库连接已关闭
+2025-10-03 18:03:37,589 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:03:37,589 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:03:37,590 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:03:37,859 - INFO - 数据库连接成功
+2025-10-03 18:03:38,077 - INFO - 数据库表创建/检查完成
+2025-10-03 18:03:38,077 - INFO - 开始交易周期
+2025-10-03 18:03:38,237 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:38,306 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:38,308 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:03:38,388 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:38,469 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:38,471 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:03:38,551 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:38,664 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:38,707 - WARNING - FCX: 历史数据为空
+2025-10-03 18:03:38,802 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:38,874 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:38,875 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:03:38,962 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:39,037 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:39,040 - WARNING - BE: 历史数据为空
+2025-10-03 18:03:39,075 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:03:39,077 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:03:39,079 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 07:45:00
+2025-10-03 18:03:39,079 - WARNING - outlier文件超时: priority_data/outlier/20251003-0745.csv, 时间差: 618.7 分钟
+2025-10-03 18:03:39,079 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:03:39,079 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 07:46:00
+2025-10-03 18:03:39,079 - WARNING - volume_outlier文件超时: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间差: 617.7 分钟
+2025-10-03 18:03:39,079 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:03:39,080 - INFO - 数据库连接已关闭
+2025-10-03 18:03:51,317 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:03:51,318 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:03:51,318 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:03:51,558 - INFO - 数据库连接成功
+2025-10-03 18:03:51,778 - INFO - 数据库表创建/检查完成
+2025-10-03 18:03:51,779 - INFO - 开始交易周期
+2025-10-03 18:03:51,853 - DEBUG - Entering history()
+2025-10-03 18:03:51,856 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:03:51,875 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:51,944 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:03:51,945 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:51,945 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:03:51,945 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:03:51,947 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,036 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:03:52,037 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:52,040 - DEBUG - Exiting history()
+2025-10-03 18:03:52,040 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:03:52,040 - DEBUG - Entering history()
+2025-10-03 18:03:52,040 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:03:52,043 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,122 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:03:52,123 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:52,123 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:03:52,123 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:03:52,125 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,196 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:03:52,197 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:52,199 - DEBUG - Exiting history()
+2025-10-03 18:03:52,199 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:03:52,199 - DEBUG - Entering history()
+2025-10-03 18:03:52,199 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:03:52,201 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,281 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:03:52,281 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:52,281 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:03:52,281 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:03:52,284 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,365 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:03:52,366 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:52,368 - DEBUG - Exiting history()
+2025-10-03 18:03:52,368 - WARNING - FCX: 历史数据为空
+2025-10-03 18:03:52,369 - DEBUG - Entering history()
+2025-10-03 18:03:52,369 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:03:52,371 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,443 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:03:52,443 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:52,444 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:03:52,444 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:03:52,447 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,514 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:03:52,515 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:52,517 - DEBUG - Exiting history()
+2025-10-03 18:03:52,517 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:03:52,517 - DEBUG - Entering history()
+2025-10-03 18:03:52,517 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:03:52,520 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,585 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:03:52,586 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:03:52,586 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:03:52,586 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:03:52,589 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:03:52,669 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:03:52,670 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:03:52,672 - DEBUG - Exiting history()
+2025-10-03 18:03:52,672 - WARNING - BE: 历史数据为空
+2025-10-03 18:03:52,706 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:03:52,707 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251003-0722.csv -> 2025-10-03 07:22:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251003-0647.csv -> 2025-10-03 06:47:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251003-0745.csv -> 2025-10-03 07:45:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20250930-2115.csv -> 2025-09-30 21:15:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251001-2257.csv -> 2025-10-01 22:57:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251002-1543.csv -> 2025-10-02 15:43:00
+2025-10-03 18:03:52,708 - DEBUG - 文件名解析成功: 20251003-0745.csv -> 2025-10-03 07:45:00
+2025-10-03 18:03:52,708 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 07:45:00
+2025-10-03 18:03:52,708 - WARNING - outlier文件超时: priority_data/outlier/20251003-0745.csv, 时间差: 618.9 分钟
+2025-10-03 18:03:52,709 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:03:52,709 - DEBUG - 文件名解析成功: volume_outlier_20251003-0746.csv -> 2025-10-03 07:46:00
+2025-10-03 18:03:52,709 - DEBUG - 文件名解析成功: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:00
+2025-10-03 18:03:52,709 - DEBUG - 文件名解析成功: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:00
+2025-10-03 18:03:52,709 - DEBUG - 文件名解析成功: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:00
+2025-10-03 18:03:52,709 - DEBUG - 文件名解析成功: volume_outlier_20251003-0746.csv -> 2025-10-03 07:46:00
+2025-10-03 18:03:52,709 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 07:46:00
+2025-10-03 18:03:52,709 - WARNING - volume_outlier文件超时: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间差: 617.9 分钟
+2025-10-03 18:03:52,709 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:03:52,709 - INFO - 数据库连接已关闭
+2025-10-03 18:04:05,192 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:04:05,192 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:04:05,192 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:04:05,432 - INFO - 数据库连接成功
+2025-10-03 18:04:05,642 - INFO - 数据库表创建/检查完成
+2025-10-03 18:04:05,642 - INFO - 开始交易周期
+2025-10-03 18:04:05,710 - DEBUG - Entering history()
+2025-10-03 18:04:05,714 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:05,722 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:05,791 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:05,792 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:05,792 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:05,792 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:05,794 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:05,871 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:05,872 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:05,874 - DEBUG - Exiting history()
+2025-10-03 18:04:05,874 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:04:05,874 - DEBUG - Entering history()
+2025-10-03 18:04:05,874 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:05,876 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:05,945 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:05,945 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:05,945 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:05,945 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:05,948 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,018 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:06,019 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:06,021 - DEBUG - Exiting history()
+2025-10-03 18:04:06,021 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:04:06,021 - DEBUG - Entering history()
+2025-10-03 18:04:06,021 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:06,023 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,085 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:06,086 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:06,086 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:06,086 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:06,088 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,154 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:06,155 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:06,157 - DEBUG - Exiting history()
+2025-10-03 18:04:06,157 - WARNING - FCX: 历史数据为空
+2025-10-03 18:04:06,157 - DEBUG - Entering history()
+2025-10-03 18:04:06,157 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:06,159 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,236 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:06,236 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:06,237 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:06,237 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:06,239 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,305 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:06,306 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:06,308 - DEBUG - Exiting history()
+2025-10-03 18:04:06,308 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:04:06,308 - DEBUG - Entering history()
+2025-10-03 18:04:06,308 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:06,311 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,382 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:06,382 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:06,383 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:06,383 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:06,385 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:06,447 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:06,449 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:06,451 - DEBUG - Exiting history()
+2025-10-03 18:04:06,451 - WARNING - BE: 历史数据为空
+2025-10-03 18:04:06,485 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:04:06,485 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:04:06,486 - DEBUG - 文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:04:06,486 - DEBUG - 使用文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:04:06,486 - DEBUG - 文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:04:06,486 - DEBUG - 使用文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:04:06,486 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:06,486 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:06,486 - DEBUG - 文件修改时间: 20250930-2115.csv -> 2025-09-30 21:15:16.094722
+2025-10-03 18:04:06,486 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20250930-2115.csv
+2025-10-03 18:04:06,487 - DEBUG - 文件名解析成功: 20250930-2115.csv -> 2025-09-30 21:15:00
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间: 20251001-2257.csv -> 2025-10-01 22:57:29.363509
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251001-2257.csv
+2025-10-03 18:04:06,487 - DEBUG - 文件名解析成功: 20251001-2257.csv -> 2025-10-01 22:57:00
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间: 20251002-1543.csv -> 2025-10-02 15:43:45.847900
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1543.csv
+2025-10-03 18:04:06,487 - DEBUG - 文件名解析成功: 20251002-1543.csv -> 2025-10-02 15:43:00
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:06,487 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:06,487 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 14:03:18.386019
+2025-10-03 18:04:06,487 - WARNING - outlier文件超时: priority_data/outlier/20251003-0745.csv, 时间差: 240.8 分钟
+2025-10-03 18:04:06,487 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:04:06,487 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:06,487 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:08.340636
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1515.csv
+2025-10-03 18:04:06,488 - DEBUG - 文件名解析成功: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:00
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:25.984278
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1502.csv
+2025-10-03 18:04:06,488 - DEBUG - 文件名解析成功: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:00
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:53.887806
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1852.csv
+2025-10-03 18:04:06,488 - DEBUG - 文件名解析成功: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:00
+2025-10-03 18:04:06,488 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:06,488 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:06,488 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 14:03:18.386634
+2025-10-03 18:04:06,488 - WARNING - volume_outlier文件超时: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间差: 240.8 分钟
+2025-10-03 18:04:06,488 - WARNING - 没有找到有效的异常检测文件
+2025-10-03 18:04:06,489 - INFO - 数据库连接已关闭
+2025-10-03 18:04:13,946 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:04:13,946 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:04:13,946 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:04:14,204 - INFO - 数据库连接成功
+2025-10-03 18:04:14,427 - INFO - 数据库表创建/检查完成
+2025-10-03 18:04:14,427 - INFO - 开始交易周期
+2025-10-03 18:04:14,499 - DEBUG - Entering history()
+2025-10-03 18:04:14,502 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:14,509 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,573 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:14,574 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:14,574 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:14,574 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:14,576 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,635 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:14,636 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:14,638 - DEBUG - Exiting history()
+2025-10-03 18:04:14,638 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:04:14,638 - DEBUG - Entering history()
+2025-10-03 18:04:14,638 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:14,640 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,695 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:14,696 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:14,696 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:14,696 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:14,698 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,777 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:14,778 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:14,779 - DEBUG - Exiting history()
+2025-10-03 18:04:14,779 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:04:14,779 - DEBUG - Entering history()
+2025-10-03 18:04:14,780 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:14,781 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,857 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:14,857 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:14,857 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:14,858 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:14,859 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,921 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:14,922 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:14,923 - DEBUG - Exiting history()
+2025-10-03 18:04:14,923 - WARNING - FCX: 历史数据为空
+2025-10-03 18:04:14,923 - DEBUG - Entering history()
+2025-10-03 18:04:14,923 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:14,925 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:14,984 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:14,984 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:14,985 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:14,985 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:14,986 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:15,091 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:15,092 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:15,093 - DEBUG - Exiting history()
+2025-10-03 18:04:15,094 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:04:15,094 - DEBUG - Entering history()
+2025-10-03 18:04:15,094 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:15,096 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:15,160 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:15,161 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:15,161 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:15,161 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:15,163 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:15,261 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:15,262 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:15,263 - DEBUG - Exiting history()
+2025-10-03 18:04:15,263 - WARNING - BE: 历史数据为空
+2025-10-03 18:04:15,298 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:04:15,298 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:04:15,298 - DEBUG - 文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:04:15,298 - DEBUG - 使用文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:04:15,298 - DEBUG - 文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:04:15,298 - DEBUG - 使用文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:04:15,298 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:15,298 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:15,298 - DEBUG - 文件修改时间: 20250930-2115.csv -> 2025-09-30 21:15:16.094722
+2025-10-03 18:04:15,298 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20250930-2115.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: 20250930-2115.csv -> 2025-09-30 21:15:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: 20251001-2257.csv -> 2025-10-01 22:57:29.363509
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251001-2257.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: 20251001-2257.csv -> 2025-10-01 22:57:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: 20251002-1543.csv -> 2025-10-02 15:43:45.847900
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1543.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: 20251002-1543.csv -> 2025-10-02 15:43:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:15,299 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:04:15,299 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 14:03:18.386019
+2025-10-03 18:04:15,299 - INFO - 找到最新outlier文件: priority_data/outlier/20251003-0745.csv
+2025-10-03 18:04:15,299 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:15,299 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:08.340636
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1515.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:25.984278
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1502.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:53.887806
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1852.csv
+2025-10-03 18:04:15,299 - DEBUG - 文件名解析成功: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:00
+2025-10-03 18:04:15,299 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:15,299 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:04:15,299 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 14:03:18.386634
+2025-10-03 18:04:15,299 - INFO - 找到最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv
+2025-10-03 18:04:15,305 - INFO - 加载文件 priority_data/outlier/20251003-0745.csv: 10 行数据
+2025-10-03 18:04:15,306 - INFO - 加载文件 priority_data/volume_outlier/volume_outlier_20251003-0746.csv: 23 行数据
+2025-10-03 18:04:15,309 - INFO - 分析信号完成: 6 个股票
+2025-10-03 18:04:15,418 - INFO - CRWV: 持有时间 65.7 小时 > 24 小时, 决定卖出
+2025-10-03 18:04:15,418 - DEBUG - Entering history()
+2025-10-03 18:04:15,418 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:15,421 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:15,503 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:15,504 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:15,504 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:15,504 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:15,507 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:15,567 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:15,568 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:15,570 - DEBUG - Exiting history()
+2025-10-03 18:04:15,570 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:04:18,574 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:18,642 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/CRWV?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:18,642 - WARNING - 备用方法也遇到速率限制 CRWV: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/CRWV?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:18,644 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 18:04:18,644 - INFO - HOOD: 持有时间 65.7 小时 > 24 小时, 决定卖出
+2025-10-03 18:04:18,644 - DEBUG - Entering history()
+2025-10-03 18:04:18,644 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:18,647 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:18,736 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:18,737 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:18,737 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:18,737 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:18,739 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:18,807 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:18,808 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:18,809 - DEBUG - Exiting history()
+2025-10-03 18:04:18,809 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:04:21,819 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:21,892 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/HOOD?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:21,893 - WARNING - 备用方法也遇到速率限制 HOOD: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/HOOD?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:21,894 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 18:04:21,894 - INFO - FCX: 持有时间 65.7 小时 > 24 小时, 决定卖出
+2025-10-03 18:04:21,895 - DEBUG - Entering history()
+2025-10-03 18:04:21,895 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:21,897 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:21,963 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:21,963 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:21,963 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:21,963 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:21,965 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:22,050 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:22,051 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:22,053 - DEBUG - Exiting history()
+2025-10-03 18:04:22,053 - WARNING - FCX: 历史数据为空
+2025-10-03 18:04:25,060 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:25,143 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/FCX?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:25,144 - WARNING - 备用方法也遇到速率限制 FCX: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/FCX?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:25,146 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 18:04:25,146 - INFO - NVDA: 持有时间 65.7 小时 > 24 小时, 决定卖出
+2025-10-03 18:04:25,146 - DEBUG - Entering history()
+2025-10-03 18:04:25,146 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:25,149 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:25,220 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:25,220 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:25,220 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:25,220 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:25,222 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:25,297 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:25,298 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:25,299 - DEBUG - Exiting history()
+2025-10-03 18:04:25,299 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:04:28,308 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:28,393 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/NVDA?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:28,394 - WARNING - 备用方法也遇到速率限制 NVDA: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/NVDA?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:28,396 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 18:04:28,396 - INFO - BE: 持有时间 65.7 小时 > 24 小时, 决定卖出
+2025-10-03 18:04:28,396 - DEBUG - Entering history()
+2025-10-03 18:04:28,396 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:28,399 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:28,473 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:28,473 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:28,474 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:28,474 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:28,475 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:28,548 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:28,549 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:28,550 - DEBUG - Exiting history()
+2025-10-03 18:04:28,551 - WARNING - BE: 历史数据为空
+2025-10-03 18:04:31,559 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:31,636 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/BE?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:31,636 - WARNING - 备用方法也遇到速率限制 BE: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/BE?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:31,638 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 18:04:31,638 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 18:04:31,638 - DEBUG - Entering history()
+2025-10-03 18:04:31,638 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:31,640 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:31,719 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:31,720 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:31,720 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:31,720 - DEBUG - RGTI: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:31,722 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:31,801 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:31,802 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:31,803 - DEBUG - Exiting history()
+2025-10-03 18:04:31,803 - WARNING - RGTI: 历史数据为空
+2025-10-03 18:04:34,812 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:34,889 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/RGTI?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:34,889 - WARNING - 备用方法也遇到速率限制 RGTI: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/RGTI?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:34,890 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 18:04:34,890 - INFO - MU: 看涨 4 个, 看跌 0 个, 决定买入
+2025-10-03 18:04:34,891 - DEBUG - Entering history()
+2025-10-03 18:04:34,891 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:04:34,892 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:34,970 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:04:34,972 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:04:34,972 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:04:34,973 - DEBUG - MU: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:04:34,974 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:35,039 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:04:35,040 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:04:35,041 - DEBUG - Exiting history()
+2025-10-03 18:04:35,041 - WARNING - MU: 历史数据为空
+2025-10-03 18:04:38,049 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:04:38,125 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v6/finance/quoteSummary/MU?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true HTTP/1.1" 429 23
+2025-10-03 18:04:38,126 - WARNING - 备用方法也遇到速率限制 MU: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/MU?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true
+2025-10-03 18:04:38,127 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 18:04:38,215 - INFO - 更新用户股票总价值
+2025-10-03 18:04:38,288 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 18:04:38,288 - INFO - 交易周期完成
+2025-10-03 18:04:38,288 - INFO - 数据库连接已关闭
+2025-10-03 18:06:32,902 - INFO - 使用数据文件夹: data
+2025-10-03 18:06:32,902 - INFO - Outlier目录: data/outlier
+2025-10-03 18:06:32,902 - INFO - Volume Outlier目录: data/volume_outlier
+2025-10-03 18:06:33,194 - INFO - 数据库连接成功
+2025-10-03 18:06:33,419 - INFO - 数据库表创建/检查完成
+2025-10-03 18:06:33,419 - INFO - 开始交易周期
+2025-10-03 18:06:33,490 - DEBUG - Entering history()
+2025-10-03 18:06:33,495 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:33,516 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:33,603 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:33,603 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:33,603 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:33,603 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:33,605 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:33,678 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:33,679 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:33,681 - DEBUG - Exiting history()
+2025-10-03 18:06:33,681 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:06:33,681 - DEBUG - Entering history()
+2025-10-03 18:06:33,681 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:33,683 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:33,762 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:33,763 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:33,763 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:33,763 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:33,765 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:33,851 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:33,854 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:33,856 - DEBUG - Exiting history()
+2025-10-03 18:06:33,856 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:06:33,857 - DEBUG - Entering history()
+2025-10-03 18:06:33,857 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:33,859 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:33,947 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:33,949 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:33,949 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:33,949 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:33,953 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,053 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,054 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:34,057 - DEBUG - Exiting history()
+2025-10-03 18:06:34,057 - WARNING - FCX: 历史数据为空
+2025-10-03 18:06:34,057 - DEBUG - Entering history()
+2025-10-03 18:06:34,057 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:34,060 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,125 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:34,126 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:34,126 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:34,126 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:34,128 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,207 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,208 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:34,210 - DEBUG - Exiting history()
+2025-10-03 18:06:34,211 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:06:34,211 - DEBUG - Entering history()
+2025-10-03 18:06:34,211 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:34,213 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,282 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:34,282 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:34,283 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:34,283 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:34,285 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,370 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,372 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:34,374 - DEBUG - Exiting history()
+2025-10-03 18:06:34,374 - WARNING - BE: 历史数据为空
+2025-10-03 18:06:34,410 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:06:34,410 - INFO - 找到 13 个outlier文件: ['data/outlier/20251003-1005.csv', 'data/outlier/20251003-1207.csv', 'data/outlier/20251003-0904.csv', 'data/outlier/20251002-1006.csv', 'data/outlier/20251002-1210.csv', 'data/outlier/20251002-0902.csv', 'data/outlier/20251003-0032.csv', 'data/outlier/20251002-1517.csv', 'data/outlier/20250930-1611.csv', 'data/outlier/20251003-1103.csv', 'data/outlier/20251002-1300.csv', 'data/outlier/20251002-0038.csv', 'data/outlier/20251003-1256.csv']
+2025-10-03 18:06:34,411 - DEBUG - 文件修改时间: 20251003-1005.csv -> 2025-10-03 14:03:18.323778
+2025-10-03 18:06:34,411 - DEBUG - 使用文件修改时间: 20251003-1005.csv -> 2025-10-03 14:03:18.323778
+2025-10-03 18:06:34,411 - DEBUG - 文件修改时间: 20251003-1207.csv -> 2025-10-03 14:03:18.324243
+2025-10-03 18:06:34,411 - DEBUG - 使用文件修改时间: 20251003-1207.csv -> 2025-10-03 14:03:18.324243
+2025-10-03 18:06:34,411 - DEBUG - 文件修改时间: 20251003-0904.csv -> 2025-10-03 14:03:18.320968
+2025-10-03 18:06:34,411 - DEBUG - 使用文件修改时间: 20251003-0904.csv -> 2025-10-03 14:03:18.320968
+2025-10-03 18:06:34,411 - DEBUG - 文件修改时间: 20251002-1006.csv -> 2025-10-02 10:24:09.261673
+2025-10-03 18:06:34,411 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1006.csv
+2025-10-03 18:06:34,412 - DEBUG - 文件名解析成功: 20251002-1006.csv -> 2025-10-02 10:06:00
+2025-10-03 18:06:34,412 - DEBUG - 文件修改时间: 20251002-1210.csv -> 2025-10-02 13:11:45.540722
+2025-10-03 18:06:34,412 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1210.csv
+2025-10-03 18:06:34,412 - DEBUG - 文件名解析成功: 20251002-1210.csv -> 2025-10-02 12:10:00
+2025-10-03 18:06:34,412 - DEBUG - 文件修改时间: 20251002-0902.csv -> 2025-10-02 10:24:09.261518
+2025-10-03 18:06:34,412 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-0902.csv
+2025-10-03 18:06:34,412 - DEBUG - 文件名解析成功: 20251002-0902.csv -> 2025-10-02 09:02:00
+2025-10-03 18:06:34,412 - DEBUG - 文件修改时间: 20251003-0032.csv -> 2025-10-03 00:32:46.537811
+2025-10-03 18:06:34,413 - DEBUG - 使用文件修改时间: 20251003-0032.csv -> 2025-10-03 00:32:46.537811
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20251002-1517.csv -> 2025-10-02 15:17:12.100142
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1517.csv
+2025-10-03 18:06:34,413 - DEBUG - 文件名解析成功: 20251002-1517.csv -> 2025-10-02 15:17:00
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20250930-1611.csv -> 2025-09-30 16:11:17.680072
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20250930-1611.csv
+2025-10-03 18:06:34,413 - DEBUG - 文件名解析成功: 20250930-1611.csv -> 2025-09-30 16:11:00
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20251003-1103.csv -> 2025-10-03 14:03:18.324056
+2025-10-03 18:06:34,413 - DEBUG - 使用文件修改时间: 20251003-1103.csv -> 2025-10-03 14:03:18.324056
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20251002-1300.csv -> 2025-10-02 13:11:45.541110
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1300.csv
+2025-10-03 18:06:34,413 - DEBUG - 文件名解析成功: 20251002-1300.csv -> 2025-10-02 13:00:00
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20251002-0038.csv -> 2025-10-02 00:38:05.993229
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-0038.csv
+2025-10-03 18:06:34,413 - DEBUG - 文件名解析成功: 20251002-0038.csv -> 2025-10-02 00:38:00
+2025-10-03 18:06:34,413 - DEBUG - 文件修改时间: 20251003-1256.csv -> 2025-10-03 14:03:18.324403
+2025-10-03 18:06:34,414 - DEBUG - 使用文件修改时间: 20251003-1256.csv -> 2025-10-03 14:03:18.324403
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: 20251003-1256.csv -> 2025-10-03 14:03:18.324403
+2025-10-03 18:06:34,414 - DEBUG - 使用文件修改时间: 20251003-1256.csv -> 2025-10-03 14:03:18.324403
+2025-10-03 18:06:34,414 - INFO - 最新outlier文件: data/outlier/20251003-1256.csv, 时间戳: 2025-10-03 14:03:18.324403
+2025-10-03 18:06:34,414 - INFO - 找到最新outlier文件: data/outlier/20251003-1256.csv
+2025-10-03 18:06:34,414 - INFO - 找到 13 个volume_outlier文件: ['data/volume_outlier/volume_outlier_20251002-1543.csv', 'data/volume_outlier/volume_outlier_20251001-1401.csv', 'data/volume_outlier/volume_outlier_20251003-1257.csv', 'data/volume_outlier/volume_outlier_20251003-1103.csv', 'data/volume_outlier/volume_outlier_20251001-2300.csv', 'data/volume_outlier/volume_outlier_20251001-2259.csv', 'data/volume_outlier/volume_outlier_20251001-1208.csv', 'data/volume_outlier/volume_outlier_20251003-0030.csv', 'data/volume_outlier/volume_outlier_20251003-0032.csv', 'data/volume_outlier/volume_outlier_20250930-2225.csv', 'data/volume_outlier/volume_outlier_20251003-1006.csv', 'data/volume_outlier/volume_outlier_20251003-1207.csv', 'data/volume_outlier/volume_outlier_20251003-0904.csv']
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: volume_outlier_20251002-1543.csv -> 2025-10-02 15:43:32.461507
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1543.csv
+2025-10-03 18:06:34,414 - DEBUG - 文件名解析成功: volume_outlier_20251002-1543.csv -> 2025-10-02 15:43:00
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: volume_outlier_20251001-1401.csv -> 2025-10-01 18:49:58.801309
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251001-1401.csv
+2025-10-03 18:06:34,414 - DEBUG - 文件名解析成功: volume_outlier_20251001-1401.csv -> 2025-10-01 14:01:00
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: volume_outlier_20251003-1257.csv -> 2025-10-03 14:03:18.329195
+2025-10-03 18:06:34,414 - DEBUG - 使用文件修改时间: volume_outlier_20251003-1257.csv -> 2025-10-03 14:03:18.329195
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: volume_outlier_20251003-1103.csv -> 2025-10-03 14:03:18.328943
+2025-10-03 18:06:34,414 - DEBUG - 使用文件修改时间: volume_outlier_20251003-1103.csv -> 2025-10-03 14:03:18.328943
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间: volume_outlier_20251001-2300.csv -> 2025-10-01 23:00:31.404409
+2025-10-03 18:06:34,414 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251001-2300.csv
+2025-10-03 18:06:34,415 - DEBUG - 文件名解析成功: volume_outlier_20251001-2300.csv -> 2025-10-01 23:00:00
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间: volume_outlier_20251001-2259.csv -> 2025-10-01 22:59:29.879430
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251001-2259.csv
+2025-10-03 18:06:34,415 - DEBUG - 文件名解析成功: volume_outlier_20251001-2259.csv -> 2025-10-01 22:59:00
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间: volume_outlier_20251001-1208.csv -> 2025-10-01 18:49:58.801175
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251001-1208.csv
+2025-10-03 18:06:34,415 - DEBUG - 文件名解析成功: volume_outlier_20251001-1208.csv -> 2025-10-01 12:08:00
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间: volume_outlier_20251003-0030.csv -> 2025-10-03 00:30:06.155906
+2025-10-03 18:06:34,415 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0030.csv -> 2025-10-03 00:30:06.155906
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间: volume_outlier_20251003-0032.csv -> 2025-10-03 00:32:08.934591
+2025-10-03 18:06:34,415 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0032.csv -> 2025-10-03 00:32:08.934591
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间: volume_outlier_20250930-2225.csv -> 2025-09-30 22:25:10.158047
+2025-10-03 18:06:34,415 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20250930-2225.csv
+2025-10-03 18:06:34,416 - DEBUG - 文件名解析成功: volume_outlier_20250930-2225.csv -> 2025-09-30 22:25:00
+2025-10-03 18:06:34,416 - DEBUG - 文件修改时间: volume_outlier_20251003-1006.csv -> 2025-10-03 14:03:18.328815
+2025-10-03 18:06:34,416 - DEBUG - 使用文件修改时间: volume_outlier_20251003-1006.csv -> 2025-10-03 14:03:18.328815
+2025-10-03 18:06:34,418 - DEBUG - 文件修改时间: volume_outlier_20251003-1207.csv -> 2025-10-03 14:03:18.329068
+2025-10-03 18:06:34,418 - DEBUG - 使用文件修改时间: volume_outlier_20251003-1207.csv -> 2025-10-03 14:03:18.329068
+2025-10-03 18:06:34,418 - DEBUG - 文件修改时间: volume_outlier_20251003-0904.csv -> 2025-10-03 14:03:18.328653
+2025-10-03 18:06:34,418 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0904.csv -> 2025-10-03 14:03:18.328653
+2025-10-03 18:06:34,418 - DEBUG - 文件修改时间: volume_outlier_20251003-1257.csv -> 2025-10-03 14:03:18.329195
+2025-10-03 18:06:34,418 - DEBUG - 使用文件修改时间: volume_outlier_20251003-1257.csv -> 2025-10-03 14:03:18.329195
+2025-10-03 18:06:34,418 - INFO - 最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv, 时间戳: 2025-10-03 14:03:18.329195
+2025-10-03 18:06:34,419 - INFO - 找到最新volume_outlier文件: data/volume_outlier/volume_outlier_20251003-1257.csv
+2025-10-03 18:06:34,422 - INFO - 加载文件 data/outlier/20251003-1256.csv: 28 行数据
+2025-10-03 18:06:34,424 - INFO - 加载文件 data/volume_outlier/volume_outlier_20251003-1257.csv: 5 行数据
+2025-10-03 18:06:34,426 - INFO - 分析信号完成: 9 个股票
+2025-10-03 18:06:34,534 - INFO - CRWV: 只有看跌信号, 决定卖出
+2025-10-03 18:06:34,534 - DEBUG - Entering history()
+2025-10-03 18:06:34,534 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:34,537 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,612 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:34,613 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:34,614 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:34,614 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:34,618 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,692 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,694 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:34,697 - DEBUG - Exiting history()
+2025-10-03 18:06:34,697 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:06:34,698 - ERROR - 无法获取 CRWV 的当前价格
+2025-10-03 18:06:34,698 - INFO - HOOD: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:06:34,698 - DEBUG - Entering history()
+2025-10-03 18:06:34,698 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:34,701 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,769 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:34,769 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:34,769 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:34,769 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:34,772 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,844 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,846 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:34,848 - DEBUG - Exiting history()
+2025-10-03 18:06:34,848 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:06:34,848 - ERROR - 无法获取 HOOD 的当前价格
+2025-10-03 18:06:34,848 - INFO - FCX: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:06:34,849 - DEBUG - Entering history()
+2025-10-03 18:06:34,849 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:34,852 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,920 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:34,921 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:34,921 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:34,921 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:34,924 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:34,997 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:34,999 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,001 - DEBUG - Exiting history()
+2025-10-03 18:06:35,002 - WARNING - FCX: 历史数据为空
+2025-10-03 18:06:35,002 - ERROR - 无法获取 FCX 的当前价格
+2025-10-03 18:06:35,002 - INFO - NVDA: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:06:35,002 - DEBUG - Entering history()
+2025-10-03 18:06:35,002 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,004 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,078 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,079 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,079 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,080 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,088 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,165 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:35,168 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,172 - DEBUG - Exiting history()
+2025-10-03 18:06:35,172 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:06:35,172 - ERROR - 无法获取 NVDA 的当前价格
+2025-10-03 18:06:35,172 - INFO - BE: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:06:35,172 - DEBUG - Entering history()
+2025-10-03 18:06:35,173 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,177 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,252 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,254 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,254 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,254 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,258 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,344 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:35,346 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,349 - DEBUG - Exiting history()
+2025-10-03 18:06:35,349 - WARNING - BE: 历史数据为空
+2025-10-03 18:06:35,349 - ERROR - 无法获取 BE 的当前价格
+2025-10-03 18:06:35,350 - INFO - COIN: 看涨 8 个, 看跌 0 个, 决定买入
+2025-10-03 18:06:35,350 - DEBUG - Entering history()
+2025-10-03 18:06:35,350 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,354 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,429 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/COIN?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,430 - ERROR - Failed to get ticker 'COIN' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,431 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,431 - DEBUG - COIN: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,434 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,500 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/COIN?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:35,502 - ERROR - COIN: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,505 - DEBUG - Exiting history()
+2025-10-03 18:06:35,505 - WARNING - COIN: 历史数据为空
+2025-10-03 18:06:35,506 - ERROR - 无法获取 COIN 的当前价格
+2025-10-03 18:06:35,506 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 18:06:35,506 - DEBUG - Entering history()
+2025-10-03 18:06:35,506 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,509 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,586 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,587 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,588 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,588 - DEBUG - RGTI: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,591 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,673 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:35,675 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,678 - DEBUG - Exiting history()
+2025-10-03 18:06:35,678 - WARNING - RGTI: 历史数据为空
+2025-10-03 18:06:35,678 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 18:06:35,679 - INFO - MU: 看涨 5 个, 看跌 0 个, 决定买入
+2025-10-03 18:06:35,679 - DEBUG - Entering history()
+2025-10-03 18:06:35,679 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,682 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,761 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,763 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,763 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,763 - DEBUG - MU: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,767 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,854 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:35,856 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:35,860 - DEBUG - Exiting history()
+2025-10-03 18:06:35,860 - WARNING - MU: 历史数据为空
+2025-10-03 18:06:35,860 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 18:06:35,860 - INFO - RKLB: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 18:06:35,861 - DEBUG - Entering history()
+2025-10-03 18:06:35,861 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:06:35,865 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:35,936 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RKLB?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:06:35,937 - ERROR - Failed to get ticker 'RKLB' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:06:35,937 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:06:35,937 - DEBUG - RKLB: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:06:35,941 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:06:36,019 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RKLB?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:06:36,020 - ERROR - RKLB: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:06:36,022 - DEBUG - Exiting history()
+2025-10-03 18:06:36,022 - WARNING - RKLB: 历史数据为空
+2025-10-03 18:06:36,022 - ERROR - 无法获取 RKLB 的当前价格
+2025-10-03 18:06:36,103 - INFO - 更新用户股票总价值
+2025-10-03 18:06:36,170 - INFO - 当前状态 - 现金: 50000.00, 股票: 50772.16, 总资产: 100772.16
+2025-10-03 18:06:36,170 - INFO - 交易周期完成
+2025-10-03 18:06:36,170 - INFO - 数据库连接已关闭
+2025-10-03 18:08:21,121 - INFO - 使用数据文件夹: priority_data
+2025-10-03 18:08:21,122 - INFO - Outlier目录: priority_data/outlier
+2025-10-03 18:08:21,122 - INFO - Volume Outlier目录: priority_data/volume_outlier
+2025-10-03 18:08:21,400 - INFO - 数据库连接成功
+2025-10-03 18:08:21,624 - INFO - 数据库表创建/检查完成
+2025-10-03 18:08:21,625 - INFO - 开始交易周期
+2025-10-03 18:08:21,690 - DEBUG - Entering history()
+2025-10-03 18:08:21,694 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:21,707 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:21,788 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:21,789 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:21,789 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:21,789 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:21,791 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:21,844 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:21,845 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:21,847 - DEBUG - Exiting history()
+2025-10-03 18:08:21,847 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:08:21,847 - DEBUG - Entering history()
+2025-10-03 18:08:21,847 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:21,850 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:21,911 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:21,913 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:21,913 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:21,913 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:21,915 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:21,981 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:21,981 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:21,983 - DEBUG - Exiting history()
+2025-10-03 18:08:21,983 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:08:21,983 - DEBUG - Entering history()
+2025-10-03 18:08:21,983 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:21,985 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,062 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:22,062 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:22,062 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:22,062 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:22,065 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,139 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:22,140 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:22,141 - DEBUG - Exiting history()
+2025-10-03 18:08:22,141 - WARNING - FCX: 历史数据为空
+2025-10-03 18:08:22,141 - DEBUG - Entering history()
+2025-10-03 18:08:22,142 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:22,144 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,201 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:22,202 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:22,202 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:22,202 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:22,204 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,268 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:22,269 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:22,271 - DEBUG - Exiting history()
+2025-10-03 18:08:22,271 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:08:22,271 - DEBUG - Entering history()
+2025-10-03 18:08:22,271 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:22,273 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,340 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:22,341 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:22,341 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:22,341 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:22,344 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,412 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:22,413 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:22,415 - DEBUG - Exiting history()
+2025-10-03 18:08:22,415 - WARNING - BE: 历史数据为空
+2025-10-03 18:08:22,451 - INFO - 更新了 5 只持有股票的价格
+2025-10-03 18:08:22,451 - INFO - 找到 6 个outlier文件: ['priority_data/outlier/20251003-0722.csv', 'priority_data/outlier/20251003-0647.csv', 'priority_data/outlier/20251003-0745.csv', 'priority_data/outlier/20250930-2115.csv', 'priority_data/outlier/20251001-2257.csv', 'priority_data/outlier/20251002-1543.csv']
+2025-10-03 18:08:22,452 - DEBUG - 文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:08:22,452 - DEBUG - 使用文件修改时间: 20251003-0722.csv -> 2025-10-03 14:03:18.385871
+2025-10-03 18:08:22,452 - DEBUG - 文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:08:22,452 - DEBUG - 使用文件修改时间: 20251003-0647.csv -> 2025-10-03 14:03:18.385686
+2025-10-03 18:08:22,452 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:08:22,452 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:08:22,452 - DEBUG - 文件修改时间: 20250930-2115.csv -> 2025-09-30 21:15:16.094722
+2025-10-03 18:08:22,452 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20250930-2115.csv
+2025-10-03 18:08:22,453 - DEBUG - 文件名解析成功: 20250930-2115.csv -> 2025-09-30 21:15:00
+2025-10-03 18:08:22,453 - DEBUG - 文件修改时间: 20251001-2257.csv -> 2025-10-01 22:57:29.363509
+2025-10-03 18:08:22,453 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251001-2257.csv
+2025-10-03 18:08:22,453 - DEBUG - 文件名解析成功: 20251001-2257.csv -> 2025-10-01 22:57:00
+2025-10-03 18:08:22,453 - DEBUG - 文件修改时间: 20251002-1543.csv -> 2025-10-02 15:43:45.847900
+2025-10-03 18:08:22,453 - DEBUG - 文件修改时间太旧，尝试文件名解析: 20251002-1543.csv
+2025-10-03 18:08:22,453 - DEBUG - 文件名解析成功: 20251002-1543.csv -> 2025-10-02 15:43:00
+2025-10-03 18:08:22,453 - DEBUG - 文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:08:22,453 - DEBUG - 使用文件修改时间: 20251003-0745.csv -> 2025-10-03 14:03:18.386019
+2025-10-03 18:08:22,453 - INFO - 最新outlier文件: priority_data/outlier/20251003-0745.csv, 时间戳: 2025-10-03 14:03:18.386019
+2025-10-03 18:08:22,453 - INFO - 找到最新outlier文件: priority_data/outlier/20251003-0745.csv
+2025-10-03 18:08:22,453 - INFO - 找到 4 个volume_outlier文件: ['priority_data/volume_outlier/volume_outlier_20251003-0746.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1515.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1502.csv', 'priority_data/volume_outlier/volume_outlier_20251002-1852.csv']
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:08:22,454 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:08.340636
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1515.csv
+2025-10-03 18:08:22,454 - DEBUG - 文件名解析成功: volume_outlier_20251002-1515.csv -> 2025-10-02 15:15:00
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:25.984278
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1502.csv
+2025-10-03 18:08:22,454 - DEBUG - 文件名解析成功: volume_outlier_20251002-1502.csv -> 2025-10-02 15:02:00
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:53.887806
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间太旧，尝试文件名解析: volume_outlier_20251002-1852.csv
+2025-10-03 18:08:22,454 - DEBUG - 文件名解析成功: volume_outlier_20251002-1852.csv -> 2025-10-02 18:52:00
+2025-10-03 18:08:22,454 - DEBUG - 文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:08:22,454 - DEBUG - 使用文件修改时间: volume_outlier_20251003-0746.csv -> 2025-10-03 14:03:18.386634
+2025-10-03 18:08:22,454 - INFO - 最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv, 时间戳: 2025-10-03 14:03:18.386634
+2025-10-03 18:08:22,454 - INFO - 找到最新volume_outlier文件: priority_data/volume_outlier/volume_outlier_20251003-0746.csv
+2025-10-03 18:08:22,459 - INFO - 加载文件 priority_data/outlier/20251003-0745.csv: 10 行数据
+2025-10-03 18:08:22,460 - INFO - 加载文件 priority_data/volume_outlier/volume_outlier_20251003-0746.csv: 23 行数据
+2025-10-03 18:08:22,462 - INFO - 分析信号完成: 6 个股票
+2025-10-03 18:08:22,569 - INFO - CRWV: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:08:22,569 - DEBUG - Entering history()
+2025-10-03 18:08:22,570 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:22,573 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,654 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:22,654 - ERROR - Failed to get ticker 'CRWV' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:22,655 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:22,655 - DEBUG - CRWV: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:22,657 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:22,722 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/CRWV?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:22,723 - ERROR - CRWV: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:22,724 - DEBUG - Exiting history()
+2025-10-03 18:08:22,725 - WARNING - CRWV: 历史数据为空
+2025-10-03 18:08:22,761 - WARNING - 无法获取 CRWV 的当前价格，使用买入价格 136.85 作为卖出价格
+2025-10-03 18:08:22,926 - INFO - 卖出 CRWV: 价格 136.85, 金额 9990.05
+2025-10-03 18:08:22,926 - INFO - HOOD: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:08:22,927 - DEBUG - Entering history()
+2025-10-03 18:08:22,927 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:22,930 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,026 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:23,027 - ERROR - Failed to get ticker 'HOOD' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:23,027 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:23,028 - DEBUG - HOOD: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:23,032 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,110 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/HOOD?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:23,112 - ERROR - HOOD: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:23,113 - DEBUG - Exiting history()
+2025-10-03 18:08:23,113 - WARNING - HOOD: 历史数据为空
+2025-10-03 18:08:23,184 - WARNING - 无法获取 HOOD 的当前价格，使用买入价格 143.18 作为卖出价格
+2025-10-03 18:08:23,331 - INFO - 卖出 HOOD: 价格 143.18, 金额 9879.42
+2025-10-03 18:08:23,331 - INFO - FCX: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:08:23,332 - DEBUG - Entering history()
+2025-10-03 18:08:23,332 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:23,335 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,418 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:23,418 - ERROR - Failed to get ticker 'FCX' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:23,418 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:23,418 - DEBUG - FCX: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:23,421 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,514 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/FCX?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:23,515 - ERROR - FCX: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:23,517 - DEBUG - Exiting history()
+2025-10-03 18:08:23,517 - WARNING - FCX: 历史数据为空
+2025-10-03 18:08:23,582 - WARNING - 无法获取 FCX 的当前价格，使用买入价格 39.22 作为卖出价格
+2025-10-03 18:08:23,726 - INFO - 卖出 FCX: 价格 39.22, 金额 9961.88
+2025-10-03 18:08:23,726 - INFO - NVDA: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:08:23,726 - DEBUG - Entering history()
+2025-10-03 18:08:23,727 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:23,730 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,795 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:23,795 - ERROR - Failed to get ticker 'NVDA' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:23,795 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:23,795 - DEBUG - NVDA: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:23,798 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:23,871 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/NVDA?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:23,872 - ERROR - NVDA: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:23,874 - DEBUG - Exiting history()
+2025-10-03 18:08:23,874 - WARNING - NVDA: 历史数据为空
+2025-10-03 18:08:23,951 - WARNING - 无法获取 NVDA 的当前价格，使用买入价格 186.58 作为卖出价格
+2025-10-03 18:08:24,102 - INFO - 卖出 NVDA: 价格 186.58, 金额 9888.74
+2025-10-03 18:08:24,102 - INFO - BE: 持有时间 65.8 小时 > 24 小时, 决定卖出
+2025-10-03 18:08:24,102 - DEBUG - Entering history()
+2025-10-03 18:08:24,102 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:24,105 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,169 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:24,169 - ERROR - Failed to get ticker 'BE' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:24,169 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:24,170 - DEBUG - BE: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:24,172 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,254 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/BE?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:24,255 - ERROR - BE: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:24,257 - DEBUG - Exiting history()
+2025-10-03 18:08:24,257 - WARNING - BE: 历史数据为空
+2025-10-03 18:08:24,321 - WARNING - 无法获取 BE 的当前价格，使用买入价格 84.57 作为卖出价格
+2025-10-03 18:08:24,477 - INFO - 卖出 BE: 价格 84.57, 金额 9979.26
+2025-10-03 18:08:24,478 - INFO - RGTI: 看涨 2 个, 看跌 0 个, 决定买入
+2025-10-03 18:08:24,478 - DEBUG - Entering history()
+2025-10-03 18:08:24,478 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:24,482 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,555 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:24,556 - ERROR - Failed to get ticker 'RGTI' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:24,556 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:24,556 - DEBUG - RGTI: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:24,558 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,629 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/RGTI?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:24,630 - ERROR - RGTI: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:24,632 - DEBUG - Exiting history()
+2025-10-03 18:08:24,632 - WARNING - RGTI: 历史数据为空
+2025-10-03 18:08:24,632 - ERROR - 无法获取 RGTI 的当前价格
+2025-10-03 18:08:24,632 - INFO - MU: 看涨 4 个, 看跌 0 个, 决定买入
+2025-10-03 18:08:24,632 - DEBUG - Entering history()
+2025-10-03 18:08:24,632 - DEBUG -  Entering _fetch_ticker_tz()
+2025-10-03 18:08:24,635 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,704 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d HTTP/1.1" 429 23
+2025-10-03 18:08:24,705 - ERROR - Failed to get ticker 'MU' reason: Expecting value: line 1 column 1 (char 0)
+2025-10-03 18:08:24,705 - DEBUG -  Exiting _fetch_ticker_tz()
+2025-10-03 18:08:24,705 - DEBUG - MU: Yahoo GET parameters: {'range': '1d', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+2025-10-03 18:08:24,707 - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+2025-10-03 18:08:24,776 - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/MU?range=1d&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 429 23
+2025-10-03 18:08:24,777 - ERROR - MU: No price data found, symbol may be delisted (period=1d)
+2025-10-03 18:08:24,779 - DEBUG - Exiting history()
+2025-10-03 18:08:24,779 - WARNING - MU: 历史数据为空
+2025-10-03 18:08:24,779 - ERROR - 无法获取 MU 的当前价格
+2025-10-03 18:08:24,881 - INFO - 更新用户股票总价值
+2025-10-03 18:08:24,960 - INFO - 当前状态 - 现金: 99699.35, 股票: 0.00, 总资产: 99699.35
+2025-10-03 18:08:24,960 - INFO - 交易周期完成
+2025-10-03 18:08:24,961 - INFO - 数据库连接已关闭
