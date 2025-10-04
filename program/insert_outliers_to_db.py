@@ -133,17 +133,23 @@ class DatabaseInserter:
         folder_path = Path(self.folder_name) / subfolder
         if not folder_path.exists():
             logger.warning(f"⚠️ 文件夹不存在: {folder_path}")
-            return None, None
+            return None, None, None
         
         csv_files = list(folder_path.glob(file_pattern))
         if not csv_files:
             logger.warning(f"⚠️ 未找到匹配的CSV文件: {folder_path}/{file_pattern}")
-            return None, None
+            return None, None, None
         
-        # 按修改时间排序，获取最新文件
-        latest_file = max(csv_files, key=os.path.getmtime)
+        # 按修改时间排序，获取最新文件和上一个文件
+        sorted_files = sorted(csv_files, key=os.path.getmtime)
+        latest_file = sorted_files[-1]
+        previous_file = sorted_files[-2] if len(sorted_files) > 1 else None
+        
         logger.info(f"📄 找到最新文件: {latest_file}")
-        return latest_file, latest_file.name
+        if previous_file:
+            logger.info(f"📄 找到上一个文件: {previous_file}")
+        
+        return latest_file, latest_file.name, previous_file
     
     def read_csv_data(self, file_path):
         """读取CSV文件数据"""
@@ -154,6 +160,69 @@ class DatabaseInserter:
         except Exception as e:
             logger.error(f"❌ 读取CSV文件失败: {file_path}: {e}")
             return None
+    
+    def compare_data_similarity(self, current_df, previous_df, file_type):
+        """比较当前文件和上一个文件的数据相似性"""
+        if current_df is None or previous_df is None:
+            logger.info("📊 无法比较数据：缺少文件数据")
+            return False
+        
+        try:
+            # 根据文件类型选择比较的列
+            if file_type == 'volume_outlier':
+                compare_columns = ['contractSymbol', 'lastPrice_new', '股票价格(new)']
+            else:  # oi_outlier
+                compare_columns = ['contractSymbol', 'lastPrice_new', '股票价格(new)']
+            
+            # 检查必要的列是否存在
+            missing_cols = [col for col in compare_columns if col not in current_df.columns or col not in previous_df.columns]
+            if missing_cols:
+                logger.warning(f"⚠️ 缺少比较列: {missing_cols}")
+                return False
+            
+            # 创建比较用的数据框
+            current_compare = current_df[compare_columns].copy()
+            previous_compare = previous_df[compare_columns].copy()
+            
+            # 按contractSymbol排序
+            current_compare = current_compare.sort_values('contractSymbol').reset_index(drop=True)
+            previous_compare = previous_compare.sort_values('contractSymbol').reset_index(drop=True)
+            
+            # 检查行数是否相同
+            if len(current_compare) != len(previous_compare):
+                logger.info(f"📊 数据行数不同: 当前={len(current_compare)}, 上一个={len(previous_compare)}")
+                return False
+            
+            # 检查contractSymbol是否相同
+            if not current_compare['contractSymbol'].equals(previous_compare['contractSymbol']):
+                logger.info("📊 contractSymbol列表不同")
+                return False
+            
+            # 比较数值列（允许小的浮点数误差）
+            tolerance = 1e-6
+            for col in ['lastPrice_new', '股票价格(new)']:
+                current_col = pd.to_numeric(current_compare[col], errors='coerce')
+                previous_col = pd.to_numeric(previous_compare[col], errors='coerce')
+                
+                # 检查是否有NaN值
+                if current_col.isna().any() or previous_col.isna().any():
+                    logger.info(f"📊 {col}列包含NaN值，无法比较")
+                    return False
+                
+                # 比较数值差异
+                diff = abs(current_col - previous_col)
+                max_diff = diff.max()
+                
+                if max_diff > tolerance:
+                    logger.info(f"📊 {col}列最大差异: {max_diff:.6f} > {tolerance}")
+                    return False
+            
+            logger.info("✅ 数据完全相同，跳过插入")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ 比较数据失败: {e}")
+            return False
     
     def format_float_precision(self, value, precision=2):
         """格式化浮点数精度"""
@@ -447,8 +516,8 @@ class DatabaseInserter:
         """处理volume_outlier文件"""
         logger.info("🔄 开始处理volume_outlier文件...")
         
-        # 获取最新文件
-        file_path, csv_filename = self.get_latest_csv_file('volume_outlier', 'volume_outlier_*.csv')
+        # 获取最新文件和上一个文件
+        file_path, csv_filename, previous_file = self.get_latest_csv_file('volume_outlier', 'volume_outlier_*.csv')
         if not file_path:
             logger.warning("⚠️ 未找到volume_outlier文件")
             return False
@@ -459,14 +528,24 @@ class DatabaseInserter:
             logger.info(f"⏭️ 跳过已处理的文件: {csv_filename}")
             return True
         
-        # 读取数据
-        df = self.read_csv_data(file_path)
-        if df is None:
+        # 读取当前文件数据
+        current_df = self.read_csv_data(file_path)
+        if current_df is None:
             self.record_processed_file(csv_filename, 'volume_outlier', 0, 0, 'failed')
             return False
         
+        # 如果有上一个文件，比较数据相似性
+        if previous_file:
+            logger.info("📊 比较当前文件与上一个文件的数据...")
+            previous_df = self.read_csv_data(previous_file)
+            if self.compare_data_similarity(current_df, previous_df, 'volume_outlier'):
+                # 数据相同，记录为已处理但跳过插入
+                self.record_processed_file(csv_filename, 'volume_outlier', file_path.stat().st_size, len(current_df), 'skipped')
+                logger.info("⏭️ 数据与上一个文件相同，跳过插入")
+                return True
+        
         # 准备数据
-        data_list = self.prepare_volume_data(df)
+        data_list = self.prepare_volume_data(current_df)
         if not data_list:
             logger.warning("⚠️ 没有有效的volume数据")
             self.record_processed_file(csv_filename, 'volume_outlier', file_path.stat().st_size, 0, 'failed')
@@ -485,8 +564,8 @@ class DatabaseInserter:
         """处理oi_outlier文件"""
         logger.info("🔄 开始处理oi_outlier文件...")
         
-        # 获取最新文件
-        file_path, csv_filename = self.get_latest_csv_file('outlier', '*.csv')
+        # 获取最新文件和上一个文件
+        file_path, csv_filename, previous_file = self.get_latest_csv_file('outlier', '*.csv')
         if not file_path:
             logger.warning("⚠️ 未找到oi_outlier文件")
             return False
@@ -497,14 +576,24 @@ class DatabaseInserter:
             logger.info(f"⏭️ 跳过已处理的文件: {csv_filename}")
             return True
         
-        # 读取数据
-        df = self.read_csv_data(file_path)
-        if df is None:
+        # 读取当前文件数据
+        current_df = self.read_csv_data(file_path)
+        if current_df is None:
             self.record_processed_file(csv_filename, 'oi_outlier', 0, 0, 'failed')
             return False
         
+        # 如果有上一个文件，比较数据相似性
+        if previous_file:
+            logger.info("📊 比较当前文件与上一个文件的数据...")
+            previous_df = self.read_csv_data(previous_file)
+            if self.compare_data_similarity(current_df, previous_df, 'oi_outlier'):
+                # 数据相同，记录为已处理但跳过插入
+                self.record_processed_file(csv_filename, 'oi_outlier', file_path.stat().st_size, len(current_df), 'skipped')
+                logger.info("⏭️ 数据与上一个文件相同，跳过插入")
+                return True
+        
         # 准备数据
-        data_list = self.prepare_oi_data(df)
+        data_list = self.prepare_oi_data(current_df)
         if not data_list:
             logger.warning("⚠️ 没有有效的OI数据")
             self.record_processed_file(csv_filename, 'oi_outlier', file_path.stat().st_size, 0, 'failed')
