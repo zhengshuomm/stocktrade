@@ -19,8 +19,11 @@ volume_old, volume_new, amount_threshold, amount_to_market_cap,
 openInterest_new, expiry_date, lastPrice_new, lastPrice_old, 
 volume, symbol, 
 股票价格(new), 股票价格(old), 股票价格(new open), 股票价格(new high), 股票价格(new low), 
-create_time
+last_day_close_price, create_time
 ```
+
+**新增字段说明**:
+- `last_day_close_price` (DECIMAL): 前一天最后一个时间戳的股票收盘价，用于计算价格变化
 
 ### 2. oi_outlier 表
 **用途**: 存储持仓量异常数据

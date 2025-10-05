@@ -2,6 +2,67 @@
 """
 数据库插入程序 - 将异常数据插入到PostgreSQL数据库
 
+程序逻辑详解：
+================
+
+1. 程序入口和参数解析
+   - 支持两个数据文件夹：data 和 priority_data
+   - 可配置数据清理天数（默认7天）
+   - 可选择跳过数据清理步骤
+   - 支持详细日志模式
+
+2. 核心处理流程
+   ┌─────────────────────────────────────────────────────────────┐
+   │ 1. 连接PostgreSQL数据库 (Neon云数据库)                      │
+   ├─────────────────────────────────────────────────────────────┤
+   │ 2. 处理volume_outlier数据                                   │
+   │    ├─ 查找最新volume_outlier_*.csv文件                      │
+   │    ├─ 检查processed_files表避免重复处理                     │
+   │    ├─ 读取当前文件数据                                      │
+   │    ├─ 与上一个文件比较数据相似性（避免重复插入相同数据）      │
+   │    ├─ 获取前一天最后一个时间戳的股票价格数据（用于last_day_close_price）│
+   │    ├─ 准备数据（格式化浮点数精度、处理信号类型等）            │
+   │    ├─ 批量插入到volume_outlier表（使用ON CONFLICT处理重复）  │
+   │    └─ 记录处理结果到processed_files表                      │
+   ├─────────────────────────────────────────────────────────────┤
+   │ 3. 处理oi_outlier数据                                       │
+   │    ├─ 查找最新outlier/*.csv文件                            │
+   │    ├─ 检查processed_files表避免重复处理                     │
+   │    ├─ 读取当前文件数据                                      │
+   │    ├─ 与上一个文件比较数据相似性                            │
+   │    ├─ 准备数据（格式化浮点数精度、处理信号类型等）            │
+   │    ├─ 批量插入到oi_outlier表（使用ON CONFLICT处理重复）      │
+   │    └─ 记录处理结果到processed_files表                      │
+   ├─────────────────────────────────────────────────────────────┤
+   │ 4. 数据清理（可选）                                         │
+   │    ├─ 清理超过指定天数的volume_outlier数据                  │
+   │    ├─ 清理超过指定天数的oi_outlier数据                      │
+   │    └─ 清理超过指定天数的processed_files记录                 │
+   └─────────────────────────────────────────────────────────────┘
+
+3. 关键特性
+   - 重复处理防护：通过processed_files表记录已处理文件
+   - 数据去重：比较相邻文件数据相似性，跳过相同数据
+   - 信号类型管理：自动创建和管理signal_types表
+   - 时区处理：使用PST时区统一时间格式
+   - 浮点数精度：统一格式化数值精度避免精度问题
+   - 前一天收盘价：自动获取前一天最后一个时间戳的股票收盘价到last_day_close_price列
+   - 错误处理：完整的异常处理和回滚机制
+   - 批量操作：使用execute_values提高插入效率
+   - 冲突处理：使用ON CONFLICT DO UPDATE处理重复数据
+
+4. 数据库表结构
+   - volume_outlier: 存储成交量异常数据
+   - oi_outlier: 存储持仓量异常数据  
+   - signal_types: 存储信号类型定义
+   - processed_files: 记录文件处理状态
+
+5. 文件组织结构
+   data/ 或 priority_data/
+   ├── volume_outlier/     # 成交量异常CSV文件
+   ├── outlier/            # 持仓量异常CSV文件
+   └── 其他数据文件夹...
+
 功能：
 1. 读取 volume_outlier 和 oi_outlier CSV文件
 2. 检查 processed_files 表避免重复处理
@@ -245,7 +306,73 @@ class DatabaseInserter:
         except:
             return None
     
-    def prepare_volume_data(self, df):
+    def get_previous_day_stock_prices(self, current_file_path):
+        """获取前一天的股票价格数据"""
+        try:
+            # 获取当前文件的完整时间戳
+            current_filename = current_file_path.name
+            # 从文件名中提取时间戳，格式如：volume_outlier_20251003-1537.csv
+            if 'volume_outlier_' in current_filename:
+                # 提取时间戳部分：volume_outlier_20251003-1537.csv -> 20251003-1537
+                timestamp_part = current_filename.split('volume_outlier_')[1].replace('.csv', '')
+                # 解析时间戳：20251003-1537 -> 2025-10-03 15:37
+                current_datetime = datetime.strptime(timestamp_part, '%Y%m%d-%H%M')
+                
+                # 计算前一天的时间戳
+                from datetime import timedelta
+                previous_datetime = current_datetime - timedelta(days=1)
+                previous_date_str = previous_datetime.strftime('%Y%m%d')
+                
+                # 查找前一天的股票价格文件
+                stock_price_folder = Path(self.folder_name) / 'stock_price'
+                if not stock_price_folder.exists():
+                    logger.warning(f"⚠️ 股票价格文件夹不存在: {stock_price_folder}")
+                    return None
+                
+                # 查找前一天的股票价格文件（格式：all-YYYYMMDD-HHMM.csv）
+                previous_files = list(stock_price_folder.glob(f'all-{previous_date_str}-*.csv'))
+                if not previous_files:
+                    logger.warning(f"⚠️ 未找到前一天的股票价格文件: {previous_date_str}")
+                    return None
+                
+                # 找到前一天最后一个时间戳的文件
+                # 按文件名中的时间戳排序，获取最后一个
+                previous_files_with_time = []
+                for file in previous_files:
+                    try:
+                        # 从文件名提取时间戳：all-20251002-1459.csv -> 20251002-1459
+                        file_timestamp = file.name.split('all-')[1].replace('.csv', '')
+                        file_datetime = datetime.strptime(file_timestamp, '%Y%m%d-%H%M')
+                        previous_files_with_time.append((file, file_datetime))
+                    except Exception as e:
+                        logger.warning(f"⚠️ 无法解析文件名时间戳: {file.name} - {e}")
+                        continue
+                
+                if not previous_files_with_time:
+                    logger.warning(f"⚠️ 前一天没有有效的时间戳文件: {previous_date_str}")
+                    return None
+                
+                # 按时间戳排序，获取最后一个（最新的）
+                previous_files_with_time.sort(key=lambda x: x[1])
+                previous_file = previous_files_with_time[-1][0]
+                previous_file_time = previous_files_with_time[-1][1]
+                
+                logger.info(f"📄 找到前一天最后一个时间戳的股票价格文件: {previous_file} (时间: {previous_file_time})")
+                
+                # 读取前一天的股票价格数据
+                previous_df = pd.read_csv(previous_file)
+                logger.info(f"📊 读取前一天股票价格数据: {len(previous_df)} 条记录")
+                
+                return previous_df
+            else:
+                logger.warning(f"⚠️ 无法从文件名提取时间戳: {current_filename}")
+                return None
+                
+        except Exception as e:
+            logger.error(f"❌ 获取前一天股票价格失败: {e}")
+            return None
+    
+    def prepare_volume_data(self, df, previous_stock_prices=None):
         """准备volume_outlier数据"""
         if df is None or df.empty:
             return []
@@ -254,10 +381,24 @@ class DatabaseInserter:
         # 使用PST时间，格式化为数据库可接受的格式
         current_time = datetime.now(self.pst_tz).strftime('%Y-%m-%d %H:%M:%S')
         
+        # 创建前一天股票价格的映射字典
+        previous_close_prices = {}
+        if previous_stock_prices is not None and not previous_stock_prices.empty:
+            for _, stock_row in previous_stock_prices.iterrows():
+                symbol = str(stock_row.get('symbol', ''))
+                close_price = self.format_float_precision(stock_row.get('Close'))
+                if symbol and close_price is not None:
+                    previous_close_prices[symbol] = close_price
+            logger.info(f"📊 创建前一天收盘价映射: {len(previous_close_prices)} 个股票")
+        
         for _, row in df.iterrows():
             try:
                 signal_type_name = str(row.get('signal_type', ''))
                 signal_type_id = self.get_signal_type_id(signal_type_name)
+                
+                # 获取前一天收盘价
+                symbol = str(row.get('symbol', ''))
+                last_day_close_price = previous_close_prices.get(symbol) if symbol in previous_close_prices else None
                 
                 data = {
                     'contractSymbol': str(row.get('contractSymbol', '')),
@@ -273,12 +414,13 @@ class DatabaseInserter:
                     'expiry_date': str(row.get('expiry_date', '')),
                     'lastPrice_new': self.format_float_precision(row.get('lastPrice_new')),
                     'lastPrice_old': self.format_float_precision(row.get('lastPrice_old')),
-                    'symbol': str(row.get('symbol', '')),
+                    'symbol': symbol,
                     'stock_price_new': self.format_float_precision(row.get('股票价格(new)')),
                     'stock_price_old': self.format_float_precision(row.get('股票价格(old)')),
                     'stock_price_new_open': self.format_float_precision(row.get('股票价格(new open)')),
                     'stock_price_new_high': self.format_float_precision(row.get('股票价格(new high)')),
                     'stock_price_new_low': self.format_float_precision(row.get('股票价格(new low)')),
+                    'last_day_close_price': last_day_close_price,
                     'create_time': current_time
                 }
                 data_list.append(data)
@@ -345,7 +487,7 @@ class DatabaseInserter:
                 'volume_old', 'volume_new', 'amount_threshold', 'amount_to_market_cap',
                 'openInterest_new', 'expiry_date', 'lastPrice_new', 'lastPrice_old',
                 'symbol', 'stock_price_new', 'stock_price_old', 'stock_price_new_open',
-                'stock_price_new_high', 'stock_price_new_low', 'create_time'
+                'stock_price_new_high', 'stock_price_new_low', 'last_day_close_price', 'create_time'
             ]
             
             values = []
@@ -378,7 +520,8 @@ class DatabaseInserter:
                 stock_price_old = EXCLUDED.stock_price_old,
                 stock_price_new_open = EXCLUDED.stock_price_new_open,
                 stock_price_new_high = EXCLUDED.stock_price_new_high,
-                stock_price_new_low = EXCLUDED.stock_price_new_low
+                stock_price_new_low = EXCLUDED.stock_price_new_low,
+                last_day_close_price = EXCLUDED.last_day_close_price
             """
             
             execute_values(self.cursor, insert_query, values)
@@ -544,8 +687,11 @@ class DatabaseInserter:
                 logger.info("⏭️ 数据与上一个文件相同，跳过插入")
                 return True
         
+        # 获取前一天的股票价格数据
+        previous_stock_prices = self.get_previous_day_stock_prices(file_path)
+        
         # 准备数据
-        data_list = self.prepare_volume_data(current_df)
+        data_list = self.prepare_volume_data(current_df, previous_stock_prices)
         if not data_list:
             logger.warning("⚠️ 没有有效的volume数据")
             self.record_processed_file(csv_filename, 'volume_outlier', file_path.stat().st_size, 0, 'failed')
