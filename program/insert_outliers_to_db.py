@@ -665,6 +665,21 @@ class DatabaseInserter:
             logger.warning("⚠️ 未找到volume_outlier文件")
             return False
         
+        # 校验文件时间戳是否与当前PST时间相差超过2小时，超过则跳过处理
+        try:
+            # 从文件名中提取时间戳：volume_outlier_YYYYMMDD-HHMM.csv
+            ts_str = csv_filename.split('volume_outlier_')[1].replace('.csv', '')
+            file_dt_naive = datetime.strptime(ts_str, '%Y%m%d-%H%M')
+            # 文件名时间戳定义为PST时间
+            file_dt_pst = self.pst_tz.localize(file_dt_naive)
+            now_pst = datetime.now(self.pst_tz)
+            delta_hours = (now_pst - file_dt_pst).total_seconds() / 3600.0
+            if delta_hours > 2:
+                logger.info(f"⏭️ 跳过处理: 文件 {csv_filename} 时间戳 {file_dt_pst} 与当前PST时间 {now_pst} 相差 {delta_hours:.2f} 小时 (> 2h)")
+                return True
+        except Exception as e:
+            logger.warning(f"⚠️ 解析文件时间戳失败，继续处理: {csv_filename} - {e}")
+        
         # 检查是否已处理
         is_processed, status = self.check_file_processed(csv_filename, 'volume_outlier')
         if is_processed and status == 'success':
