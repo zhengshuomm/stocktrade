@@ -1,9 +1,6 @@
 name: 时区助手 - 检查当前时间
 
 on:
-  schedule:
-    # 每小时检查一次当前时间
-    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
