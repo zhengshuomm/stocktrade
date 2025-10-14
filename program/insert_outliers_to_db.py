@@ -620,6 +620,49 @@ class DatabaseInserter:
             logger.error(f"❌ 记录处理文件失败: {e}")
             self.conn.rollback()
     
+    def cleanup_old_csv_files(self, max_files=20):
+        """清理文件夹中超过指定数量的旧CSV文件"""
+        try:
+            logger.info(f"🧹 开始清理文件夹中超过{max_files}个的旧CSV文件...")
+            
+            # 需要清理的文件夹列表
+            folders_to_clean = ['option_data', 'outlier', 'stock_price', 'volume_outlier']
+            total_deleted = 0
+            
+            for folder_name in folders_to_clean:
+                folder_path = Path(self.folder_name) / folder_name
+                if not folder_path.exists():
+                    logger.info(f"📁 文件夹不存在，跳过: {folder_path}")
+                    continue
+                
+                # 获取所有CSV文件
+                csv_files = list(folder_path.glob('*.csv'))
+                if len(csv_files) <= max_files:
+                    logger.info(f"📁 {folder_name}: {len(csv_files)} 个文件，无需清理")
+                    continue
+                
+                # 按修改时间排序，保留最新的max_files个文件
+                sorted_files = sorted(csv_files, key=os.path.getmtime)
+                files_to_delete = sorted_files[:-max_files]  # 删除最老的文件
+                
+                logger.info(f"📁 {folder_name}: 找到 {len(csv_files)} 个文件，需要删除 {len(files_to_delete)} 个最老的文件")
+                
+                # 删除最老的文件
+                for file_to_delete in files_to_delete:
+                    try:
+                        file_to_delete.unlink()  # 删除文件
+                        logger.info(f"🗑️ 删除文件: {file_to_delete}")
+                        total_deleted += 1
+                    except Exception as e:
+                        logger.warning(f"⚠️ 删除文件失败: {file_to_delete} - {e}")
+            
+            logger.info(f"✅ CSV文件清理完成，共删除 {total_deleted} 个文件")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ 清理CSV文件失败: {e}")
+            return False
+    
     def cleanup_old_data(self, days=7):
         """清理超过指定天数的旧数据"""
         try:
@@ -769,7 +812,7 @@ class DatabaseInserter:
         
         return inserted_count > 0
     
-    def run(self, cleanup_days=7, no_cleanup=False):
+    def run(self, cleanup_days=7, no_cleanup=False, max_csv_files=20):
         """运行主程序"""
         logger.info(f"🚀 开始处理文件夹: {self.folder_name}")
         
@@ -787,6 +830,10 @@ class DatabaseInserter:
             # 数据处理完成后清理旧数据
             if volume_success or oi_success:
                 logger.info("✅ 数据处理完成")
+                
+                # 清理CSV文件（如果超过指定数量）
+                self.cleanup_old_csv_files(max_files=max_csv_files)
+                
                 # 清理旧数据（如果未禁用）
                 if not no_cleanup:
                     self.cleanup_old_data(days=cleanup_days)
@@ -814,6 +861,8 @@ def main():
                        help='清理超过指定天数的旧数据 (默认: 7天)')
     parser.add_argument('--no-cleanup', action='store_true',
                        help='跳过数据清理步骤')
+    parser.add_argument('--max-csv-files', type=int, default=20,
+                       help='每个文件夹保留的最大CSV文件数量 (默认: 20)')
     
     args = parser.parse_args()
     
@@ -827,7 +876,7 @@ def main():
     
     # 运行程序
     inserter = DatabaseInserter(args.folder)
-    success = inserter.run(cleanup_days=args.cleanup_days, no_cleanup=args.no_cleanup)
+    success = inserter.run(cleanup_days=args.cleanup_days, no_cleanup=args.no_cleanup, max_csv_files=args.max_csv_files)
     
     if success:
         logger.info("🎉 程序执行成功")
