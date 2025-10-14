@@ -87,9 +87,9 @@ class DiscordOutlierSender:
             time_range (str): 时间范围，格式: "20251010-1336 to 20251010-1354"
             stock_prices (dict): 股票价格信息，格式: {symbol: {"new": price, "old": price}}
         """
-        # 从 discord_outlier_sender.py 中获取的配置
-        self.token = "MTQyMjQ0NDY2OTg5MTI1MjI0NQ.GXPW4w.N9gMYn_3hOs4TNVbj9JIt_47PPTV8Dc4uB_aJk"
-        self.channel_id = 1422402343135088663
+        # 从环境变量获取Discord配置
+        self.token = os.getenv('DISCORD_BOT_TOKEN')
+        self.channel_id = int(os.getenv('DISCORD_CHANNEL_ID', '1422402343135088663'))
         self.message_title = message_title
         self.data_folder = data_folder
         self.time_range = time_range  # 格式: "20251010-1336 to 20251010-1354"
