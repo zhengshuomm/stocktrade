@@ -146,14 +146,19 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        
+        # 先拉取远程最新更改
+        git fetch origin main
+        git reset --hard origin/main
+        
+        # 添加所有数据文件
         git add data/
         if git diff --staged --quiet; then
           echo "没有新的数据文件需要提交"
         else
-          # 先提交当前更改
+          # 提交当前更改
           git commit -m "Auto-update: 完整股票分析数据 $(date '+%Y-%m-%d %H:%M') [$(date '+%Z')]"
-          # 然后拉取远程更改并rebase
-          git pull --rebase origin main
+          # 推送到远程
           git push origin main
         fi
  
