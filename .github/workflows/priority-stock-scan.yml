@@ -118,12 +118,18 @@ jobs:
         echo "扫描完成"
         
     - name: 运行持仓量异常检测
+      env:
+        DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
       run: |
         echo "开始持仓量异常检测..."
         python program/find_outliers_by_oi.py --folder priority_data -d
         echo "持仓量异常检测完成"
         
     - name: 运行成交量异常检测
+      env:
+        DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
       run: |
         echo "开始成交量异常检测..."
         python program/find_outliers_by_volume.py --folder priority_data -d --market-cap-ratio 0.000001
