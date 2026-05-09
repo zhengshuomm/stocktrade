@@ -89,6 +89,7 @@ DEFAULT_DATA_FOLDER = "data"
 # 数据文件路径（将在main函数中动态设置）
 OUTLIER_DIR = None
 VOLUME_OUTLIER_DIR = None
+STOCK_PRICE_DIR = None
 
 # 交易配置
 INITIAL_CASH = 100000.0
@@ -103,6 +104,7 @@ class StockTrader:
     def __init__(self):
         self.conn = None
         self.cursor = None
+        self.stock_price_file = None
         
     def connect_database(self):
         """连接数据库"""
@@ -278,6 +280,82 @@ class StockTrader:
         except Exception as e:
             logger.error(f"加载文件失败 {file_path}: {e}")
             return pd.DataFrame()
+
+    def extract_file_timestamp(self, file_path: str) -> Optional[str]:
+        """从异常文件名中提取 YYYYMMDD-HHMM 时间戳"""
+        if not file_path:
+            return None
+
+        basename = os.path.basename(file_path)
+        patterns = [
+            r'volume_outlier_(\d{8}-\d{4})',
+            r'(\d{8}-\d{4})',
+        ]
+
+        for pattern in patterns:
+            match = re.search(pattern, basename)
+            if match:
+                return match.group(1)
+        return None
+
+    def select_stock_price_file(self, *outlier_files: Optional[str]) -> Optional[str]:
+        """优先选择与异常文件同时间戳的stock_price文件"""
+        if not STOCK_PRICE_DIR:
+            return None
+
+        for outlier_file in outlier_files:
+            ts = self.extract_file_timestamp(outlier_file)
+            if not ts:
+                continue
+
+            candidate = os.path.join(STOCK_PRICE_DIR, f"all-{ts}.csv")
+            if os.path.exists(candidate):
+                logger.info(f"使用匹配时间戳的股票价格文件: {candidate}")
+                return candidate
+
+        stock_files = glob.glob(f"{STOCK_PRICE_DIR}/all-*.csv")
+        if not stock_files:
+            logger.warning(f"未找到股票价格文件: {STOCK_PRICE_DIR}/all-*.csv")
+            return None
+
+        def stock_file_timestamp(path):
+            ts = self.extract_file_timestamp(path)
+            if not ts:
+                return datetime.fromtimestamp(os.path.getmtime(path))
+            return datetime.strptime(ts, "%Y%m%d-%H%M")
+
+        latest_file = max(stock_files, key=stock_file_timestamp)
+        logger.info(f"未找到匹配时间戳的股票价格文件，使用最新文件: {latest_file}")
+        return latest_file
+
+    def get_stock_price_from_csv(self, symbol: str, file_path: Optional[str] = None) -> Optional[float]:
+        """从stock_price CSV中读取股票Close价格"""
+        price_file = file_path or self.stock_price_file
+        if not price_file or not os.path.exists(price_file):
+            return None
+
+        try:
+            stock_df = pd.read_csv(price_file)
+            if "symbol" not in stock_df.columns or "Close" not in stock_df.columns:
+                logger.warning(f"股票价格文件缺少必要列: {price_file}")
+                return None
+
+            row = stock_df[stock_df["symbol"].astype(str) == str(symbol)]
+            if row.empty:
+                logger.warning(f"{symbol}: 未在股票价格文件中找到: {price_file}")
+                return None
+
+            price = pd.to_numeric(row.iloc[0]["Close"], errors="coerce")
+            if pd.isna(price):
+                logger.warning(f"{symbol}: 股票价格不是有效数字: {price_file}")
+                return None
+
+            price = float(price)
+            logger.info(f"从CSV获取 {symbol} 价格: {price} ({price_file})")
+            return price
+        except Exception as e:
+            logger.warning(f"读取股票价格CSV失败 {price_file}: {e}")
+            return None
     
     def analyze_signals(self, outlier_df: pd.DataFrame, volume_outlier_df: pd.DataFrame) -> Dict[str, Dict[str, int]]:
         """分析看涨/看跌信号"""
@@ -324,6 +402,10 @@ class StockTrader:
     def get_current_price(self, symbol: str) -> Optional[float]:
         """获取股票当前价格"""
         import time
+
+        csv_price = self.get_stock_price_from_csv(symbol)
+        if csv_price is not None:
+            return csv_price
         
         for attempt in range(3):  # 重试3次
             try:
@@ -586,15 +668,17 @@ class StockTrader:
         try:
             logger.info("开始交易周期")
             
-            # 更新持有股票价格
-            self.update_holding_prices()
-            
             # 获取最新异常检测文件
             outlier_file, volume_outlier_file = self.get_latest_files()
             
             if not outlier_file and not volume_outlier_file:
                 logger.warning("没有找到有效的异常检测文件")
                 return
+
+            self.stock_price_file = self.select_stock_price_file(outlier_file, volume_outlier_file)
+            
+            # 更新持有股票价格
+            self.update_holding_prices()
             
             # 加载数据
             outlier_df = pd.DataFrame()
@@ -644,13 +728,15 @@ def main():
     args = parser.parse_args()
     
     # 设置全局数据路径
-    global OUTLIER_DIR, VOLUME_OUTLIER_DIR
+    global OUTLIER_DIR, VOLUME_OUTLIER_DIR, STOCK_PRICE_DIR
     OUTLIER_DIR = f"{args.folder}/outlier"
     VOLUME_OUTLIER_DIR = f"{args.folder}/volume_outlier"
+    STOCK_PRICE_DIR = f"{args.folder}/stock_price"
     
     logger.info(f"使用数据文件夹: {args.folder}")
     logger.info(f"Outlier目录: {OUTLIER_DIR}")
     logger.info(f"Volume Outlier目录: {VOLUME_OUTLIER_DIR}")
+    logger.info(f"Stock Price目录: {STOCK_PRICE_DIR}")
     
     trader = StockTrader()
     
