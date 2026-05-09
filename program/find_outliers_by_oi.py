@@ -67,6 +67,7 @@
 import os
 import glob
 import pandas as pd
+import numpy as np
 from datetime import datetime, timedelta
 import re
 from pytz import timezone
@@ -83,6 +84,10 @@ MARKET_CAP_FILE = f"{DEFAULT_DATA_FOLDER}/stock_symbol/symbol_market.csv"
 THRESHOLD_5M = 5_000_000    # 500万
 THRESHOLD_10M = 10_000_000  # 1000万
 THRESHOLD_50M = 50_000_000  # 5000万
+
+# 数据质量过滤参数
+MAX_BID_ASK_SPREAD_PCT = 0.50  # bid/ask价差超过50%时跳过，避免非流动合约误报
+MIN_OPTION_PRICE = 0.05        # 价格过低的合约百分比变化容易失真
 
 
 def parse_ts_from_filename(path: str) -> datetime:
@@ -252,9 +257,37 @@ def load_market_cap_csv(path: str) -> pd.DataFrame:
     return df
 
 
+def add_option_price_basis(df: pd.DataFrame, suffix: str) -> pd.DataFrame:
+    """
+    优先使用bid/ask中间价作为期权价格基准；报价不可用时回退到lastPrice。
+    """
+    df = df.copy()
+    last_col = f"price_basis_{suffix}"
+    source_col = f"price_source_{suffix}"
+    spread_col = f"spread_pct_{suffix}"
+
+    last_price = pd.to_numeric(df.get("lastPrice", 0), errors="coerce").fillna(0)
+    df[last_col] = last_price
+    df[source_col] = "lastPrice"
+    df[spread_col] = np.nan
+
+    if "bid" in df.columns and "ask" in df.columns:
+        bid = pd.to_numeric(df["bid"], errors="coerce").fillna(0)
+        ask = pd.to_numeric(df["ask"], errors="coerce").fillna(0)
+        mid = (bid + ask) / 2
+        valid_mid = (bid > 0) & (ask >= bid) & (mid > 0)
+
+        df.loc[valid_mid, last_col] = mid[valid_mid]
+        df.loc[valid_mid, source_col] = "mid"
+        df.loc[valid_mid, spread_col] = ((ask - bid) / mid).replace([np.inf, -np.inf], np.nan)
+
+    return df
+
+
 def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFrame, 
                     latest_stock_df: pd.DataFrame, prev_stock_df: pd.DataFrame, 
-                    market_cap_df: pd.DataFrame = None) -> pd.DataFrame:
+                    market_cap_df: pd.DataFrame = None, is_cross_day: bool = False,
+                    prev_day_stock_df: pd.DataFrame = None) -> pd.DataFrame:
     """
     根据股票价格变化、期权价格变化和持仓量变化判断异常情况
     """
@@ -263,9 +296,11 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
     prev_option_df = prev_option_df.copy()
     latest_stock_df = latest_stock_df.copy()
     prev_stock_df = prev_stock_df.copy()
+    if prev_day_stock_df is not None:
+        prev_day_stock_df = prev_day_stock_df.copy()
     
     # 确保数值列的类型正确
-    numeric_cols = ["openInterest", "lastPrice", "Close"]
+    numeric_cols = ["openInterest", "lastPrice", "Close", "Open", "High", "Low", "bid", "ask"]
     for col in numeric_cols:
         if col in latest_option_df.columns:
             latest_option_df[col] = pd.to_numeric(latest_option_df[col], errors="coerce").fillna(0)
@@ -287,18 +322,33 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
             prev_close = prev_row.iloc[0]['Close']
             price_change = (latest_close - prev_close) / prev_close if prev_close != 0 else 0
             stock_price_changes[symbol] = price_change
-            prev_open = prev_row.iloc[0]['Open']
+
+            if is_cross_day and prev_day_stock_df is not None:
+                prev_day_row = prev_day_stock_df[prev_day_stock_df['symbol'] == symbol]
+                if not prev_day_row.empty:
+                    prev_open = prev_day_row.iloc[0].get('Open', prev_close)
+                else:
+                    prev_open = prev_row.iloc[0].get('Open', prev_close)
+            else:
+                prev_open = prev_row.iloc[0].get('Open', prev_close)
+
             stock_prices[symbol] = {
                 'new': latest_close,
                 'old': prev_close,
                 'old_open': prev_open,
-                'new_open': row['Open'],
-                'new_high': row['High'],
-                'new_low': row['Low']
+                'new_open': row.get('Open', latest_close),
+                'new_high': row.get('High', latest_close),
+                'new_low': row.get('Low', latest_close)
             }
     
+    latest_option_df = add_option_price_basis(latest_option_df, "new")
+    prev_option_df = add_option_price_basis(prev_option_df, "old")
+
     # 合并期权数据
-    prev_option_subset = prev_option_df[["contractSymbol", "openInterest", "lastPrice"]].copy()
+    prev_option_subset = prev_option_df[[
+        "contractSymbol", "openInterest", "lastPrice",
+        "price_basis_old", "price_source_old", "spread_pct_old"
+    ]].copy()
     merged = latest_option_df.merge(prev_option_subset, on="contractSymbol", how="left", suffixes=("_new", "_old"))
     
     # 只处理同时存在于两份文件的合约
@@ -309,8 +359,11 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
     
     # 计算变化
     merged["oi_change"] = merged["openInterest_new"] - merged["openInterest_old"]
-    merged["option_price_change"] = (merged["lastPrice_new"] - merged["lastPrice_old"]) / merged["lastPrice_old"]
-    merged["option_price_change"] = merged["option_price_change"].fillna(0)
+    merged["oi_change_pct"] = (merged["oi_change"] / merged["openInterest_old"].replace(0, np.nan)).replace([np.inf, -np.inf], np.nan).fillna(0)
+    merged["option_price_change"] = (
+        (merged["price_basis_new"] - merged["price_basis_old"]) / merged["price_basis_old"].replace(0, np.nan)
+    )
+    merged["option_price_change"] = merged["option_price_change"].replace([np.inf, -np.inf], np.nan).fillna(0)
     
     # 添加股票价格变化
     merged["stock_price_change"] = merged["symbol"].map(stock_price_changes).fillna(0)
@@ -332,6 +385,14 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
         stock_change = row["stock_price_change"]
         option_change = row["option_price_change"]
         oi_change = row["oi_change"]
+        price_basis = row["price_basis_new"]
+        spread_pct = row.get("spread_pct_new", np.nan)
+
+        if price_basis <= MIN_OPTION_PRICE:
+            continue
+
+        if row.get("price_source_new") == "mid" and pd.notna(spread_pct) and spread_pct > MAX_BID_ASK_SPREAD_PCT:
+            continue
         
         # 判断变化方向
         stock_up = stock_change > 0.01  # 股票上涨超过1%
@@ -342,15 +403,14 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
         oi_down = oi_change < 0  # 持仓量减少
         
         # 对于持仓量变化特别大的情况，放宽期权价格变化的要求
-        oi_change_significant = abs(oi_change) * row["lastPrice_new"] * 100 >= THRESHOLD_10M  # 持仓量变化超过6000
+        oi_change_significant = abs(oi_change) * price_basis * 100 >= THRESHOLD_10M
         if oi_change_significant:
             option_up = option_change >= 0  # 期权价格不变或上涨
             option_down = option_change <= 0  # 期权价格不变或下跌
         
         # 计算金额门槛：OI差值 * 期权lastPrice * 100
         oi_change_abs = abs(oi_change)
-        last_price = row["lastPrice_new"]
-        amount_threshold = oi_change_abs * last_price * 100
+        amount_threshold = oi_change_abs * price_basis * 100
         
         # 金额门槛检查：必须大于500万
         if amount_threshold <= THRESHOLD_5M:
@@ -394,6 +454,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
             outlier_row["signal_type"] = signal_type
             outlier_row["stock_price_change_pct"] = stock_change * 100
             outlier_row["option_price_change_pct"] = option_change * 100
+            outlier_row["oi_change_pct"] = row["oi_change_pct"] * 100
             # 输出持仓量变化为带符号的值（不取绝对值）
             outlier_row["oi_change_abs"] = oi_change
             outlier_row["amount_threshold"] = amount_threshold
@@ -428,7 +489,7 @@ def compute_outliers(latest_option_df: pd.DataFrame, prev_option_df: pd.DataFram
     print(f"持仓量减少的合约: {len(merged[merged['oi_change'] < 0])}")
     
     # 计算金额门槛统计（>=500万，分档计数）
-    merged["amount_threshold"] = merged["oi_change"].abs() * merged["lastPrice_new"] * 100
+    merged["amount_threshold"] = merged["oi_change"].abs() * merged["price_basis_new"] * 100
     tier_5m = merged[merged["amount_threshold"] > THRESHOLD_5M]
     tier_10m = merged[merged["amount_threshold"] > THRESHOLD_10M]
     tier_50m = merged[merged["amount_threshold"] > THRESHOLD_50M]
@@ -470,10 +531,11 @@ def save_outliers(df: pd.DataFrame, out_dir: str) -> str:
     
     # 定义列顺序：前面几个重要列
     priority_columns = [
-        "contractSymbol", "strike", "oi_change", "signal_type", "stock_price_change_pct",
-        "option_type", "openInterest_new", "openInterest_old", "amount_threshold", 
+        "contractSymbol", "strike", "oi_change", "oi_change_pct", "signal_type", "stock_price_change_pct",
+        "option_type", "openInterest_new", "openInterest_old", "amount_threshold",
         "amount_to_market_cap", "amount_tier", "expiry_date",
-        "股票价格(new)", "股票价格(old)", "股票价格(new open)", "股票价格(new high)", "股票价格(new low)"
+        "price_basis_new", "price_basis_old", "price_source_new", "price_source_old",
+        "spread_pct_new", "股票价格(new)", "股票价格(old)", "股票价格(new open)", "股票价格(new high)", "股票价格(new low)"
     ]
     
     # 重新排列列顺序
@@ -555,7 +617,15 @@ def main():
         else:
             prev_day_stock_df = prev_stock_df
 
-        out_df = compute_outliers(latest_option_df, prev_option_df, latest_stock_df, prev_stock_df, market_cap_df)
+        out_df = compute_outliers(
+            latest_option_df,
+            prev_option_df,
+            latest_stock_df,
+            prev_stock_df,
+            market_cap_df,
+            is_cross_day,
+            prev_day_stock_df,
+        )
         if out_df.empty:
             print("未发现符合异常条件的期权合约。")
             return
@@ -611,18 +681,7 @@ def main():
                     signal_counts = out_df["signal_type"].value_counts()
                     signal_type_stats = signal_counts.to_dict()
                 
-                # 使用新的模块化Discord发送器
                 import asyncio
-                # 判断是否为跨日比较
-                is_cross_day = False
-                if args.files:
-                    # 从文件名提取日期
-                    import re
-                    file1_date = re.search(r'all-(\d{8})-\d{4}\.csv', args.files[0])
-                    file2_date = re.search(r'all-(\d{8})-\d{4}\.csv', args.files[1])
-                    if file1_date and file2_date:
-                        is_cross_day = file1_date.group(1) != file2_date.group(1)
-                
                 asyncio.run(send_oi_outliers(out_df, args.folder, time_range, stock_prices, None, signal_type_stats, out_path, is_cross_day))
             except Exception as e:
                 print(f"❌ Discord发送失败: {e}")
